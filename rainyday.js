@@ -396,11 +396,11 @@ RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
 };
 
 /**
- * GRAVITY function: sinusoidal gravity
+ * GRAVITY function: non-linear gravity
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_SIN = function(drop) {
+RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 	if (drop.clear()) {
 		return true;
 	}
