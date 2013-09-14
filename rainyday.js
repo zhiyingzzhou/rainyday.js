@@ -26,7 +26,7 @@
  * @param sourceid DOM id of the image element used as background image
  * @param width width of the rendering
  * @param height height of the rendering
- * @param opacity opacity attribute value of the glass canvas (default: 0.9)
+ * @param opacity opacity attribute value of the glass canvas (default: 1)
  * @param blur blur radius (default: 20)
  */
 
@@ -43,7 +43,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.h = this.canvas.height;
 
 	// create the glass canvas
-	this.prepareGlass(opacity ? opacity : 0.9);
+	this.prepareGlass(opacity ? opacity : 1);
 
 	// assume default reflection mechanism
 	if (!this.reflection) {
@@ -405,9 +405,28 @@ RainyDay.prototype.GRAVITY_SIN = function(drop) {
 		return true;
 	}
 
+	if (!drop.seed || drop.seed < 0) {
+		drop.seed = Math.floor(Math.random() * 5 * drop.r1);
+		drop.skipping = drop.skipping == false ? true : false;
+		drop.slowing = true;
+	}
+
+	drop.seed--;
+
 	if (drop.yspeed) {
-		drop.yspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
-		drop.xspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
+		if (drop.slowing) {
+			drop.yspeed /= 2;
+			drop.xspeed /= 2;
+			if (drop.yspeed < this.PRIVATE_GRAVITY_FORCE_FACTOR_Y) {
+				drop.slowing = false;
+			}
+		} else if (drop.skipping) {
+			drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;	
+			drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
+		} else {
+			drop.yspeed += 10 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
+			drop.xspeed += 10 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
+		}
 	} else {
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
