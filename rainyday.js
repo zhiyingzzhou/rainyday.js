@@ -68,6 +68,9 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 
 	// frames per second animation speed
 	this.VARIABLE_FPS = 25;
+
+	// context fill style when no REFLECTION_NONE is used
+	this.VARIABLE_FILL_STYLE = '#8ED6FF';
 }
 
 /**
@@ -444,7 +447,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_NONE = function(drop) {
-	this.context.fillStyle = '#8ED6FF';
+	this.context.fillStyle = this.VARIABLE_FILL_STYLE;
 	this.context.fill();
 };
 
