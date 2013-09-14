@@ -301,12 +301,12 @@ Drop.prototype.draw = function() {
  * @returns true if the animation is stopped
  */
 Drop.prototype.clear = function() {
-	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
 	if (this.y - this.r1 > this.rainyday.h) {
 		// over the bottom edge, stop the thread
 		clearInterval(this.intid);
 		return true;
 	}
+	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
 	return false;
 };
 
@@ -318,11 +318,9 @@ Drop.prototype.animate = function() {
 		(function(self) {
 			return function() {
 				if (self.rainyday.gravity) {
-					if (!self.clear()) {
-						self.rainyday.gravity(self);
-						if (self.rainyday.trail) {
-							self.rainyday.trail(self);
-						}
+					var stopped = self.rainyday.gravity(self);
+					if (!stopped && self.rainyday.trail) {
+						self.rainyday.trail(self);
 					}
 				}
 			}
@@ -353,18 +351,21 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
 /**
  * GRAVITY function: no gravity at all (default)
  * @param drop raindrop object
- * @returns true if the drop animation is stopped
+ * @returns true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_NONE = function(drop) {
-	// nothing going on here
 	return true;
 };
 
 /**
  * GRAVITY function: simple gravity
  * @param drop raindrop object
+ * @returns true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_SIMPLE = function(drop) {
+	if (drop.clear()) {
+		return true;
+	}
 	if (drop.speed) {
 		drop.speed += 0.005 * Math.floor(drop.r1);
 	} else {
@@ -372,14 +373,20 @@ RainyDay.prototype.GRAVITY_SIMPLE = function(drop) {
 	}
 	drop.y += drop.speed;
 	drop.draw();
+	return false;
 };
 
 /**
  * GRAVITY function: advanced gravity
  * @param drop raindrop object
+ * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_ADVANCED = function(drop) {
-
+RainyDay.prototype.GRAVITY_ = function(drop) {
+	if (drop.clear()) {
+		return true;
+	}
+	// TODO provide an implementation
+	return true;
 };
 
 /**
