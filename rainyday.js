@@ -251,8 +251,8 @@ function Drop(rainyday, centerX, centerY, min, base) {
 	this.y = Math.floor(centerY);
 	this.r1 = (Math.random() * base) + min;
 	this.rainyday = rainyday;
-	var iterations = 5;
-	this.r2 = 0.88 * this.r1;
+	var iterations = 4;
+	this.r2 = 0.8 * this.r1;
 	this.linepoints = rainyday.getLinepoints(iterations);
 	this.context = rainyday.context;
 	this.reflection = rainyday.reflected;
@@ -271,14 +271,14 @@ Drop.prototype.draw = function() {
 	this.context.beginPath();
 	point = this.linepoints.first;
 	theta = phase;
-	rad = this.r2 + point.y * (this.r1 - this.r2);
+	rad = this.r2 + 0.5 * Math.random() * (this.r2 - this.r1);
 	x0 = this.x + rad * Math.cos(theta);
 	y0 = this.y + rad * Math.sin(theta);
 	this.context.lineTo(x0, y0);
 	while (point.next != null) {
 		point = point.next;
 		theta = (Math.PI * 2 * point.x) + phase;
-		rad = this.r2 + point.y * (this.r1 - this.r2);
+		rad = this.r2 + 0.5 * Math.random() * (this.r2 - this.r1);
 		x0 = this.x + rad * Math.cos(theta);
 		y0 = this.y + rad * Math.sin(theta);
 		this.context.lineTo(x0, y0);
@@ -288,8 +288,6 @@ Drop.prototype.draw = function() {
 
 	if (this.rainyday.reflection) {
 		this.rainyday.reflection(this);
-	} else {
-
 	}
 
 	this.context.restore();
@@ -336,12 +334,13 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
 };
 
 /**
- * GRAVITY function: no gravity at all
+ * GRAVITY function: no gravity at all (default)
  * @param drop raindrop object
  * @returns true if the drop animation is stopped
  */
 RainyDay.prototype.GRAVITY_NONE = function(drop) {
 	// nothing going on here
+	return true;
 };
 
 /**
@@ -385,7 +384,7 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
-	this.context.drawImage(this.reflected, drop.x - drop.r2, drop.y - drop.r2, drop.r2 * 2, drop.r2 * 2);
+	this.context.drawImage(this.reflected, drop.x - drop.r1, drop.y - drop.r1, drop.r1 * 2, drop.r1 * 2);
 };
 
 var mul_table = [
