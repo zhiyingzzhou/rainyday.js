@@ -47,7 +47,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 		this.reflection = this.REFLECTION_MINIATURE;
 	}
 	if (!this.trail) {
-		this.trail = TRAIL_DROPS;
+		this.trail = this.TRAIL_DROPS;
 	}
 	this.prepareMiniatures();
 }
