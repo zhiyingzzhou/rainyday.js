@@ -72,8 +72,8 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 RainyDay.prototype.prepareReflections = function() {
 	// new canvas
 	this.reflected = document.createElement('canvas');
-	this.reflected.width = this.canvas.width / 2;
-	this.reflected.height = this.canvas.height / 2;
+	this.reflected.width = this.canvas.width;
+	this.reflected.height = this.canvas.height;
 
 	var ctx = this.reflected.getContext('2d');
 
@@ -385,13 +385,7 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
-	var mx = (drop.x * this.reflected.width) / this.glass.width;
-	var my = (drop.y * this.reflected.height) / this.glass.height;
-	var mw = drop.r1 * 10;
-	var mh = drop.r1 * 10;
-
-	this.context.drawImage(this.reflected, (mx - mw) < 0 ? 0 : (mx - mw), (my - mh) < 0 ? 0 : (my - mh),
-		mw * 2, mh * 2, drop.x - drop.r1, drop.y - drop.r1, 2 * drop.r1, 2 * drop.r1);
+	this.context.drawImage(this.reflected, drop.x - drop.r2, drop.y - drop.r2, drop.r2 * 2, drop.r2 * 2);
 };
 
 var mul_table = [
