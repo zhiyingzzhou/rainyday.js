@@ -55,6 +55,11 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 		this.trail = this.TRAIL_DROPS;
 	}
 
+	// assume default gravity
+	if (!this.gravity) {
+		this.gravity = this.GRAVITY_NONE;
+	}
+
 	// prepare canvas for drop reflections
 	if (this.reflection != this.REFLECTION_NONE) {
 		this.prepareReflections();
@@ -328,6 +333,15 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
 		drop.trail_y = drop.y;
 		this.putDrop(new Drop(this, drop.x, drop.y - drop.r1 - 5, 0, Math.ceil(drop.r1 / 5)));
 	}
+};
+
+/**
+ * GRAVITY function: no gravity at all
+ * @param drop raindrop object
+ * @returns true if the drop animation is stopped
+ */
+RainyDay.prototype.GRAVITY_NONE = function(drop) {
+	// nothing going on here
 };
 
 /**
