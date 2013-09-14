@@ -60,13 +60,14 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 		this.gravity = this.GRAVITY_NONE;
 	}
 
-	// prepare canvas for drop reflections
-	if (this.reflection != this.REFLECTION_NONE) {
-		this.prepareReflections();
-	}
-
 	// drop size threshold for the gravity algorhitm
 	this.VARIABLE_GRAVITY_THRESHOLD = 3;
+
+	// gravity angle
+	this.VARIABLE_GRAVITY_ANGLE = Math.PI / 2;
+
+	// frames per second animation speed
+	this.VARIABLE_FPS = 25;
 }
 
 /**
@@ -125,9 +126,18 @@ RainyDay.prototype.preset = function(min, base, quan) {
  * @param speed speed of the animation (if not provided or 0 static image will be generated)
  */
 RainyDay.prototype.rain = function(presets, speed) {
+	// prepare canvas for drop reflections
+	if (this.reflection != this.REFLECTION_NONE) {
+		this.prepareReflections();
+	}
+
 	if (speed > 0) {
 		// animation
 		this.presets = presets;
+
+		this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.005) / 25;
+		this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE )* (this.VARIABLE_FPS * 0.005) / 50;
+
 		setInterval(
 			(function(self) {
 				return function() {
@@ -306,6 +316,11 @@ Drop.prototype.clear = function() {
 		clearInterval(this.intid);
 		return true;
 	}
+	if ((this.x - this.r1 > this.rainyday.w) || (this.x + this.r1 < 0)) {
+		// over the right or left edge, stop the thread
+		clearInterval(this.intid);
+		return true;
+	}
 	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
 	return false;
 };
@@ -325,7 +340,7 @@ Drop.prototype.animate = function() {
 				}
 			}
 		})(this),
-		10
+		Math.floor(1000 / this.rainyday.VARIABLE_FPS)
 	);
 };
 
@@ -358,35 +373,51 @@ RainyDay.prototype.GRAVITY_NONE = function(drop) {
 };
 
 /**
- * GRAVITY function: simple gravity
+ * GRAVITY function: linear gravity
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_SIMPLE = function(drop) {
+RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
 	if (drop.clear()) {
 		return true;
 	}
-	if (drop.speed) {
-		drop.speed += 0.005 * Math.floor(drop.r1);
+	
+	if (drop.yspeed) {
+		drop.yspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
+		drop.xspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
 	} else {
-		drop.speed = 0.1;
+		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
+		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
-	drop.y += drop.speed;
+
+	drop.y += drop.yspeed;
 	drop.draw();
 	return false;
 };
 
 /**
- * GRAVITY function: advanced gravity
+ * GRAVITY function: sinusoidal gravity
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_ = function(drop) {
+RainyDay.prototype.GRAVITY_SIN = function(drop) {
 	if (drop.clear()) {
 		return true;
 	}
-	// TODO provide an implementation
-	return true;
+
+	if (drop.yspeed) {
+		drop.yspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
+		drop.xspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
+	} else {
+		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
+		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
+	}
+
+	drop.y += drop.yspeed;
+	drop.x += drop.xspeed;
+
+	drop.draw();
+	return false;
 };
 
 /**
