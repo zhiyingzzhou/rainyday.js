@@ -37,35 +37,46 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.sourceid = sourceid;
 	this.img = document.getElementById(sourceid);
 
+	// draw and blur the backgroiund image
 	this.prepareBackground(blur ? blur : 20, width, height);
 	this.w = this.canvas.width;
 	this.h = this.canvas.height;
 
+	// create the glass canvas
 	this.prepareGlass(opacity ? opacity : 0.9);
 
+	// assume default reflection mechanism
 	if (!this.reflection) {
 		this.reflection = this.REFLECTION_MINIATURE;
 	}
+
+	// assume default trail mechanism
 	if (!this.trail) {
 		this.trail = this.TRAIL_DROPS;
 	}
-	this.prepareMiniatures();
+
+	// prepare canvas for drop reflections
+	if (this.reflection != this.REFLECTION_NONE) {
+		this.prepareReflections();
+	}
 }
 
 /**
  * Create the helper canvas for rendering raindrop reflections.
  */
-RainyDay.prototype.prepareMiniatures = function() {
-	this.mini = document.createElement('canvas');
-	this.mini.width = this.canvas.width / 2;
-	this.mini.height = this.canvas.height / 2;
+RainyDay.prototype.prepareReflections = function() {
+	// new canvas
+	this.reflected = document.createElement('canvas');
+	this.reflected.width = this.canvas.width / 2;
+	this.reflected.height = this.canvas.height / 2;
 
-	var miniContext = this.mini.getContext('2d');
+	var ctx = this.reflected.getContext('2d');
 
-	miniContext.translate(this.mini.width / 2, this.mini.height / 2);
-	miniContext.rotate(Math.PI);
+	// rotate by 180 degress
+	ctx.translate(this.reflected.width / 2, this.reflected.height / 2);
+	ctx.rotate(Math.PI);
 
-	miniContext.drawImage(this.img, -this.mini.width / 2, -this.mini.height / 2, this.mini.width, this.mini.height);
+	ctx.drawImage(this.img, -this.reflected.width / 2, -this.reflected.height / 2, this.reflected.width, this.reflected.height);
 };
 
 /**
@@ -239,7 +250,7 @@ function Drop(rainyday, centerX, centerY, min, base) {
 	this.r2 = 0.88 * this.r1;
 	this.linepoints = rainyday.getLinepoints(iterations);
 	this.context = rainyday.context;
-	this.mini = rainyday.mini;
+	this.reflection = rainyday.reflected;
 }
 
 /**
@@ -322,6 +333,7 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
 /**
  * GRAVITY function: simple gravity
  * @param drop raindrop object
+ * @returns true if the drop animation is stopped
  */
 RainyDay.prototype.GRAVITY_SIMPLE = function(drop) {
 	if (drop.r1 < 3) { // size threshold
@@ -359,12 +371,12 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
-	var mx = (drop.x * this.mini.width) / this.glass.width;
-	var my = (drop.y * this.mini.height) / this.glass.height;
+	var mx = (drop.x * this.reflected.width) / this.glass.width;
+	var my = (drop.y * this.reflected.height) / this.glass.height;
 	var mw = drop.r1 * 10;
 	var mh = drop.r1 * 10;
 
-	this.context.drawImage(this.mini, (mx - mw) < 0 ? 0 : (mx - mw), (my - mh) < 0 ? 0 : (my - mh),
+	this.context.drawImage(this.reflected, (mx - mw) < 0 ? 0 : (mx - mw), (my - mh) < 0 ? 0 : (my - mh),
 		mw * 2, mh * 2, drop.x - drop.r1, drop.y - drop.r1, 2 * drop.r1, 2 * drop.r1);
 };
 
