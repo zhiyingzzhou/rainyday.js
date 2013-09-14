@@ -46,19 +46,13 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.prepareGlass(opacity ? opacity : 1);
 
 	// assume default reflection mechanism
-	if (!this.reflection) {
-		this.reflection = this.REFLECTION_MINIATURE;
-	}
+	this.reflection = this.REFLECTION_MINIATURE;
 
 	// assume default trail mechanism
-	if (!this.trail) {
-		this.trail = this.TRAIL_DROPS;
-	}
+	this.trail = this.TRAIL_DROPS;
 
 	// assume default gravity
-	if (!this.gravity) {
-		this.gravity = this.GRAVITY_NONE;
-	}
+	this.gravity = this.GRAVITY_NONE;
 
 	// drop size threshold for the gravity algorhitm
 	this.VARIABLE_GRAVITY_THRESHOLD = 3;
@@ -71,6 +65,9 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 
 	// context fill style when no REFLECTION_NONE is used
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
+
+	// collisions enabled by default
+	this.VARIABLE_COLLISIONS = true;
 }
 
 /**
@@ -132,6 +129,11 @@ RainyDay.prototype.rain = function(presets, speed) {
 	// prepare canvas for drop reflections
 	if (this.reflection != this.REFLECTION_NONE) {
 		this.prepareReflections();
+	}
+
+	// prepare gravity matrix
+	if (this.VARIABLE_COLLISIONS) {
+		
 	}
 
 	if (speed > 0) {
@@ -335,11 +337,9 @@ Drop.prototype.animate = function() {
 	this.intid = setInterval(
 		(function(self) {
 			return function() {
-				if (self.rainyday.gravity) {
-					var stopped = self.rainyday.gravity(self);
-					if (!stopped && self.rainyday.trail) {
-						self.rainyday.trail(self);
-					}
+				var stopped = self.rainyday.gravity(self);
+				if (!stopped && self.rainyday.trail) {
+					self.rainyday.trail(self);
 				}
 			}
 		})(this),
