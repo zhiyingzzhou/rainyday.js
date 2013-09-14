@@ -64,6 +64,9 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	if (this.reflection != this.REFLECTION_NONE) {
 		this.prepareReflections();
 	}
+
+	// drop size threshold for the gravity algorhitm
+	this.VARIABLE_GRAVITY_THRESHOLD = 3;
 }
 
 /**
@@ -161,7 +164,7 @@ RainyDay.prototype.rain = function(presets, speed) {
  */
 RainyDay.prototype.putDrop = function(drop) {
 	drop.draw();
-	if (this.gravity) {
+	if (this.gravity && drop.r1 > this.VARIABLE_GRAVITY_THRESHOLD) {
 		drop.animate();
 	}
 };
@@ -294,6 +297,20 @@ Drop.prototype.draw = function() {
 };
 
 /**
+ * Clears the raindrop region.
+ * @returns true if the animation is stopped
+ */
+Drop.prototype.clear = function() {
+	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
+	if (this.y - this.r1 > this.rainyday.h) {
+		// over the bottom edge, stop the thread
+		clearInterval(this.intid);
+		return true;
+	}
+	return false;
+};
+
+/**
  * Moves the raindrop to a new position according to the gravity.
  */
 Drop.prototype.animate = function() {
@@ -301,8 +318,8 @@ Drop.prototype.animate = function() {
 		(function(self) {
 			return function() {
 				if (self.rainyday.gravity) {
-					var stopped = self.rainyday.gravity(self);
-					if (!stopped) {
+					if (!self.clear()) {
+						self.rainyday.gravity(self);
 						if (self.rainyday.trail) {
 							self.rainyday.trail(self);
 						}
@@ -346,19 +363,8 @@ RainyDay.prototype.GRAVITY_NONE = function(drop) {
 /**
  * GRAVITY function: simple gravity
  * @param drop raindrop object
- * @returns true if the drop animation is stopped
  */
 RainyDay.prototype.GRAVITY_SIMPLE = function(drop) {
-	if (drop.r1 < 3) { // size threshold
-		clearInterval(drop.intid);
-		return true;
-	}
-	this.context.clearRect(drop.x - drop.r1 - 1, drop.y - drop.r1 - 1, 2 * drop.r1 + 2, 2 * drop.r1 + 2);
-	if (drop.y - drop.r1 > this.glass.height) {
-		clearInterval(drop.intid);
-		return true;
-	}
-
 	if (drop.speed) {
 		drop.speed += 0.005 * Math.floor(drop.r1);
 	} else {
@@ -366,8 +372,14 @@ RainyDay.prototype.GRAVITY_SIMPLE = function(drop) {
 	}
 	drop.y += drop.speed;
 	drop.draw();
+};
 
-	return false;
+/**
+ * GRAVITY function: advanced gravity
+ * @param drop raindrop object
+ */
+RainyDay.prototype.GRAVITY_ADVANCED = function(drop) {
+
 };
 
 /**
