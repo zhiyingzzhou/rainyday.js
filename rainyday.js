@@ -406,7 +406,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 	}
 
 	if (!drop.seed || drop.seed < 0) {
-		drop.seed = Math.floor(Math.random() * 5 * drop.r1);
+		drop.seed = Math.floor(Math.random() * this.VARIABLE_FPS);
 		drop.skipping = drop.skipping == false ? true : false;
 		drop.slowing = true;
 	}
@@ -415,8 +415,8 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 
 	if (drop.yspeed) {
 		if (drop.slowing) {
-			drop.yspeed /= 2;
-			drop.xspeed /= 2;
+			drop.yspeed /= 1.1;
+			drop.xspeed /= 1.1;
 			if (drop.yspeed < this.PRIVATE_GRAVITY_FORCE_FACTOR_Y) {
 				drop.slowing = false;
 			}
