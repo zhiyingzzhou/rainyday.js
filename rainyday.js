@@ -67,7 +67,10 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
 
 	// collisions enabled by default
-	this.VARIABLE_COLLISIONS = true;
+	this.VARIABLE_COLLISIONS = false;
+
+	// assume default collision algorhitm
+	this.collision = this.COLLISION_SIMPLE;
 }
 
 /**
@@ -335,9 +338,16 @@ Drop.prototype.draw = function() {
 
 /**
  * Clears the raindrop region.
+ * @param force force stop
  * @returns true if the animation is stopped
  */
-Drop.prototype.clear = function() {
+Drop.prototype.clear = function(force) {
+	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
+	if (force) {
+		// forced
+		clearInterval(this.intid);
+		return true;
+	}
 	if (this.y - this.r1 > this.rainyday.h) {
 		// over the bottom edge, stop the thread
 		clearInterval(this.intid);
@@ -348,7 +358,6 @@ Drop.prototype.clear = function() {
 		clearInterval(this.intid);
 		return true;
 	}
-	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
 	return false;
 };
 
@@ -364,7 +373,10 @@ Drop.prototype.animate = function() {
 					self.rainyday.trail(self);
 				}
 				if (self.rainyday.VARIABLE_COLLISIONS) {
-					self.rainyday.matrix.update(self, stopped);
+					var collision = self.rainyday.matrix.update(self, stopped);
+					if (collision) {
+						self.rainyday.collision(self, collision.drop);
+					}
 				}
 			}
 		})(this),
@@ -482,6 +494,20 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
 	this.context.drawImage(this.reflected, drop.x - drop.r1, drop.y - drop.r1, drop.r1 * 2, drop.r1 * 2);
+};
+
+/**
+ * COLLISION function: default collision implementation
+ * @param drop1 one of the drops colliding
+ * @param drop2 the other one
+ */
+RainyDay.prototype.COLLISION_SIMPLE = function(drop1, drop2) {
+	drop1.clear();
+	// force stopping the second drop
+	drop2.clear(true);
+
+	drop1.x = (drop1.x + drop2.x) / 2;
+	drop1.y = (drop1.y + drop2.y) / 2;
 };
 
 var mul_table = [
@@ -787,12 +813,13 @@ function GravityMatrix(x, y, r) {
  * Updates position of the given drop on the gravity matrix.
  * @param drop raindrop to be positioned/repositioned
  * @forceDelete if true the raindrop will be removed from the matrix
+ * @returns collisions if any
  */
 GravityMatrix.prototype.update = function(drop, forceDelete) {
 	if (drop.gid) {
 		this.matrix[drop.gmx][drop.gmy].remove(drop);
 		if (forceDelete) {
-			return;
+			return null;
 		}
 
 		drop.gmx = Math.floor(drop.x / this.resolution);
@@ -801,7 +828,7 @@ GravityMatrix.prototype.update = function(drop, forceDelete) {
 
 		var collisions = this.collisions(drop);
 		if (collisions && collisions.next != null) {
-			// TODO implement collisions
+			return collisions.next;
 		}
 	} else {
 		drop.gid = Math.random().toString(36).substr(2, 9);
@@ -809,6 +836,7 @@ GravityMatrix.prototype.update = function(drop, forceDelete) {
 		drop.gmy = Math.floor(drop.y / this.resolution);
 		this.matrix[drop.gmx][drop.gmy].add(drop);
 	}
+	return null;
 };
 
 /**
