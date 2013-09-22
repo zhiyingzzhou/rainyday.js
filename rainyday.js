@@ -52,7 +52,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.trail = this.TRAIL_DROPS;
 
 	// assume default gravity
-	this.gravity = this.GRAVITY_NONE;
+	this.gravity = this.GRAVITY_NON_LINEAR;
 
 	// drop size threshold for the gravity algorhitm
 	this.VARIABLE_GRAVITY_THRESHOLD = 3;
@@ -67,7 +67,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
 
 	// collisions enabled by default
-	this.VARIABLE_COLLISIONS = false;
+	this.VARIABLE_COLLISIONS = true;
 
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
@@ -156,7 +156,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 				// initialize the gravity matrix
 				var mwi = Math.ceil(this.w / maxDropRadius);
 				var mhi = Math.ceil(this.h / maxDropRadius);
-				this.matrix = new GravityMatrix(mwi, mhi, maxDropRadius);
+				this.matrix = new CollisionMatrix(mwi, mhi, maxDropRadius);
 			} else {
 				this.VARIABLE_COLLISIONS = false;
 			}
@@ -404,7 +404,7 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
 };
 
 /**
- * GRAVITY function: no gravity at all (default)
+ * GRAVITY function: no gravity at all
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
@@ -436,7 +436,7 @@ RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
 };
 
 /**
- * GRAVITY function: non-linear gravity
+ * GRAVITY function: non-linear gravity (default)
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
@@ -489,7 +489,7 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
 };
 
 /**
- * REFLECTION function: miniature reflection
+ * REFLECTION function: miniature reflection (default)
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
@@ -796,26 +796,26 @@ function BlurStack() {
  * @param r grid size
  */
 
-function GravityMatrix(x, y, r) {
+function CollisionMatrix(x, y, r) {
 	this.resolution = r;
 	this.xc = x;
 	this.yc = y;
 	this.matrix = new Array(x);
-	for (var i = 0; i < x; i++) {
+	for (var i = 0; i <= (x + 5); i++) {
 		this.matrix[i] = Array(y);
-		for (var j = 0; j < y; ++j) {
+		for (var j = 0; j <= (y + 5); ++j) {
 			this.matrix[i][j] = new DropItem(null);
 		}
 	}
 }
 
 /**
- * Updates position of the given drop on the gravity matrix.
+ * Updates position of the given drop on the collision matrix.
  * @param drop raindrop to be positioned/repositioned
  * @forceDelete if true the raindrop will be removed from the matrix
  * @returns collisions if any
  */
-GravityMatrix.prototype.update = function(drop, forceDelete) {
+CollisionMatrix.prototype.update = function(drop, forceDelete) {
 	if (drop.gid) {
 		this.matrix[drop.gmx][drop.gmy].remove(drop);
 		if (forceDelete) {
@@ -844,7 +844,7 @@ GravityMatrix.prototype.update = function(drop, forceDelete) {
  * @param drop raindrop to be checked
  * @returns list of drops that collide with it
  */
-GravityMatrix.prototype.collisions = function(drop) {
+CollisionMatrix.prototype.collisions = function(drop) {
 	var item = new DropItem(null);
 	var first = item;
 
@@ -864,7 +864,7 @@ GravityMatrix.prototype.collisions = function(drop) {
  * @param y y position in the matrix
  * @returns last discovered item on the list
  */
-GravityMatrix.prototype.addAll = function(to, x, y) {
+CollisionMatrix.prototype.addAll = function(to, x, y) {
 	if (x > 0 && y > 0 && x < this.xc && y < this.yc) {
 		var items = this.matrix[x][y];
 		while (items.next != null) {
