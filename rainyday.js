@@ -459,7 +459,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 	}
 
 	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0) {
-		//drop.xspeed += ((Math.random() * 2 - 1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
+		drop.xspeed += ((Math.random() * 2 - 1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
 	drop.y += drop.yspeed;
