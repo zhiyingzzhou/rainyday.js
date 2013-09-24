@@ -41,7 +41,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.VARIABLE_GRAVITY_ANGLE = Math.PI / 2;
 
 	// frames per second animation speed
-	this.VARIABLE_FPS = 25;
+	this.VARIABLE_FPS = 15;
 
 	// context fill style when no REFLECTION_NONE is used
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
@@ -344,23 +344,29 @@ Drop.prototype.clear = function(force) {
  * Moves the raindrop to a new position according to the gravity.
  */
 Drop.prototype.animate = function() {
-	this.intid = setInterval(
-		(function(self) {
-			return function() {
-				var stopped = self.rainyday.gravity(self);
-				if (!stopped && self.rainyday.trail) {
-					self.rainyday.trail(self);
-				}
-				if (self.rainyday.VARIABLE_COLLISIONS) {
-					var collision = self.rainyday.matrix.update(self, stopped);
-					if (collision) {
-						self.rainyday.collision(self, collision.drop);
-					}
-				}
+	requestAnimationFrame = requestAnimationFrame || mozRequestAnimationFrame || function(cb) {
+		setTimeout(cb, Math.floor(1000 / this.rainyday.VARIABLE_FPS))
+	};
+
+	var self = this;
+
+	function animationCallback() {
+		var stopped = self.rainyday.gravity(self);
+		if (!stopped && self.rainyday.trail) {
+			self.rainyday.trail(self);
+		}
+		if (self.rainyday.VARIABLE_COLLISIONS) {
+			var collision = self.rainyday.matrix.update(self, stopped);
+			if (collision) {
+				self.rainyday.collision(self, collision.drop);
 			}
-		})(this),
-		Math.floor(1000 / this.rainyday.VARIABLE_FPS)
-	);
+		}
+		if (!stopped) {
+			requestAnimationFrame(animationCallback);
+		}
+	};
+
+	requestAnimationFrame(animationCallback);
 };
 
 /**
@@ -425,7 +431,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 	}
 
 	if (!drop.seed || drop.seed < 0) {
-		drop.seed = Math.floor(Math.random() * this.VARIABLE_FPS);
+		drop.seed = Math.floor(5 * Math.random() * this.VARIABLE_FPS);
 		drop.skipping = drop.skipping == false ? true : false;
 		drop.slowing = true;
 	}
@@ -443,8 +449,8 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 			drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 			drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 		} else {
-			drop.yspeed += 10 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
-			drop.xspeed += 10 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
+			drop.yspeed += 3 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
+			drop.xspeed += 3 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
 		}
 	} else {
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
