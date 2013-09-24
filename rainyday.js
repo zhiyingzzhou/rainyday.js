@@ -15,9 +15,10 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.sourceid = sourceid;
 	this.img = document.getElementById(sourceid);
 	this.opacity = opacity ? opacity : 1;
+	this.blurRadius = blur ? blur : 20;
 
 	// draw and blur the background image
-	this.prepareBackground(blur ? blur : 20, width, height);
+	this.prepareBackground(width, height);
 	this.w = this.canvas.width;
 	this.h = this.canvas.height;
 
@@ -528,11 +529,10 @@ var shg_table = [
 
 /**
  * Resizes canvas, draws original image and applies bluring algorithm.
- * @param radius blur radius to be applied
  * @param width width of the canvas
  * @param height height of the canvas
  */
-RainyDay.prototype.prepareBackground = function(radius, width, height) {
+RainyDay.prototype.prepareBackground = function(width, height) {
 	if (width && height) {
 		this.canvas.style.width = width + "px";
 		this.canvas.style.height = height + "px";
@@ -551,9 +551,9 @@ RainyDay.prototype.prepareBackground = function(radius, width, height) {
 	context.clearRect(0, 0, width, height);
 	context.drawImage(this.img, 0, 0, width, height);
 
-	if (isNaN(radius) || radius < 1) return;
+	if (isNaN(this.blurRadius) || this.blurRadius < 1) return;
 
-	this.stackBlurCanvasRGB(0, 0, width, height, radius);
+	this.stackBlurCanvasRGB(0, 0, width, height, this.blurRadius);
 };
 
 /**
