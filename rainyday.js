@@ -534,7 +534,7 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
 		lower = drop;
 	}
 
-
+	lower.clear();
 	// force stopping the second drop
 	higher.clear(true);
 	lower.draw();
@@ -545,8 +545,6 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
 	lower.r1 = 0.8 * Math.sqrt((lower.r1 * lower.r1) + (higher.r2 * higher.r2));
 	lower.r2 = 0.8 * lower.r1;
 	lower.collided = true;
-
-	lower.x = (higher.x + lower.x) / 2;
 };
 
 var mul_table = [
