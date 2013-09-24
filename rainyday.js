@@ -40,6 +40,9 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	// gravity angle
 	this.VARIABLE_GRAVITY_ANGLE = Math.PI / 2;
 
+	// angle variance
+	this.VARIABLE_GRAVITY_ANGLE_VARIANCE = 0;
+
 	// frames per second animation speed
 	this.VARIABLE_FPS = 15;
 
@@ -455,6 +458,10 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 	} else {
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
+	}
+
+	if(this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0){
+		drop.xspeed += ((Math.random() * 2 + -1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
 	drop.y += drop.yspeed;
