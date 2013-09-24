@@ -1,0 +1,16 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,600,800|Source+Code+Pro);
+body { overflow: hidden; background-image: url(back.png); font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; font-size: 14px; }
+#contents { position: absolute; overflow: hidden; top: 10px; width: 60%; height: 98%; overflow-y: auto; margin-left: 20%; background-color: #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; }
+#contents div { margin-bottom: 50px; }
+h1 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0px; margin-left: 40px; }
+h2 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0px; margin-left: 40px; margin-top: 20px; }
+hr { margin-top: 20px; margin-bottom: 10px; }
+p { margin-left: 100px; margin-right: 100px; text-align: justify; }
+a:link { color: black; }
+a:visited { color: black; }
+a:active { color: black; }
+a:hover { color: #002678; }
+figure { margin-left: 100px; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,1); border-radius: 5px; }
+::-webkit-scrollbar-thumb { border-radius: 5px; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,1); }
