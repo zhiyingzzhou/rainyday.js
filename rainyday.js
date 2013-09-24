@@ -50,7 +50,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
 
 	// collisions enabled by default
-	this.VARIABLE_COLLISIONS = false;
+	this.VARIABLE_COLLISIONS = true;
 
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
@@ -327,6 +327,7 @@ Drop.prototype.clear = function(force) {
 	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
 	if (force) {
 		// forced
+		this.terminate = true;
 		return true;
 	}
 	if (this.y - this.r1 > this.rainyday.h) {
@@ -351,22 +352,33 @@ Drop.prototype.animate = function() {
 	var self = this;
 
 	function animationCallback() {
+		if (self.terminate) {
+			return;
+		}
 		var stopped = self.rainyday.gravity(self);
 		if (!stopped && self.rainyday.trail) {
 			self.rainyday.trail(self);
 		}
 		if (self.rainyday.VARIABLE_COLLISIONS) {
-			var collision = self.rainyday.matrix.update(self, stopped);
-			if (collision) {
-				self.rainyday.collision(self, collision.drop);
+			var collisions = self.rainyday.matrix.update(self, stopped);
+			if (collisions) {
+				self.rainyday.collision(self, collisions);
 			}
 		}
-		if (!stopped) {
+		if (!stopped || self.terminate) {
 			requestAnimationFrame(animationCallback);
 		}
 	};
 
 	requestAnimationFrame(animationCallback);
+};
+
+/**
+ * Merge linepoints with another drop
+ * @param drop the other drop
+ */
+Drop.prototype.merge = function(drop) {
+
 };
 
 /**
@@ -430,8 +442,13 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 		return true;
 	}
 
-	if (!drop.seed || drop.seed < 0) {
-		drop.seed = Math.floor(7 * Math.random() * this.VARIABLE_FPS);
+	if (drop.collided) {
+		drop.collided = false;
+		drop.seed = Math.floor(drop.r1 * Math.random() * this.VARIABLE_FPS);
+		drop.skipping = false;
+		drop.slowing = false;
+	} else if (!drop.seed || drop.seed < 0) {
+		drop.seed = Math.floor(drop.r1 * Math.random() * this.VARIABLE_FPS);
 		drop.skipping = drop.skipping == false ? true : false;
 		drop.slowing = true;
 	}
@@ -488,16 +505,48 @@ RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
 
 /**
  * COLLISION function: default collision implementation
- * @param drop1 one of the drops colliding
- * @param drop2 the other one
+ * @param drop one of the drops colliding
+ * @param colllisions list of potential collisions
  */
-RainyDay.prototype.COLLISION_SIMPLE = function(drop1, drop2) {
-	drop1.clear();
-	// force stopping the second drop
-	drop2.clear(true);
+RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
+	var item = collisions;
+	var drop2;
+	while (item != null) {
+		var p = item.drop;
+		if (Math.sqrt(Math.pow(drop.x - p.x, 2) + Math.pow(drop.y - p.y, 2)) < (drop.r1 + p.r1)) {
+			drop2 = p;
+			break;
+		}
+		item = item.next;
+	}
 
-	drop1.x = (drop1.x + drop2.x) / 2;
-	drop1.y = (drop1.y + drop2.y) / 2;
+	if (!drop2) {
+		return;
+	}
+
+	// rename so that we're dealing with low/high drops
+	var higher, lower;
+	if (drop.y > drop2.y) {
+		higher = drop;
+		lower = drop2;
+	} else {
+		higher = drop2;
+		lower = drop;
+	}
+
+
+	// force stopping the second drop
+	higher.clear(true);
+	lower.draw();
+
+	// combine linepoints
+	higher.merge(lower);
+
+	lower.r1 = 0.8 * Math.sqrt((lower.r1 * lower.r1) + (higher.r2 * higher.r2));
+	lower.r2 = 0.8 * lower.r1;
+	lower.collided = true;
+
+	lower.x = (higher.x + lower.x) / 2;
 };
 
 var mul_table = [
@@ -841,11 +890,9 @@ CollisionMatrix.prototype.collisions = function(drop) {
 	var item = new DropItem(null);
 	var first = item;
 
-	item = this.addAll(item, drop.gmx - 1, drop.gmy);
 	item = this.addAll(item, drop.gmx - 1, drop.gmy + 1);
 	item = this.addAll(item, drop.gmx, drop.gmy + 1);
 	item = this.addAll(item, drop.gmx + 1, drop.gmy + 1);
-	item = this.addAll(item, drop.gmx + 1, drop.gmy);
 
 	return first;
 };
