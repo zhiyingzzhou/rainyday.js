@@ -327,17 +327,14 @@ Drop.prototype.clear = function(force) {
 	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
 	if (force) {
 		// forced
-		clearInterval(this.intid);
 		return true;
 	}
 	if (this.y - this.r1 > this.rainyday.h) {
 		// over the bottom edge, stop the thread
-		clearInterval(this.intid);
 		return true;
 	}
 	if ((this.x - this.r1 > this.rainyday.w) || (this.x + this.r1 < 0)) {
 		// over the right or left edge, stop the thread
-		clearInterval(this.intid);
 		return true;
 	}
 	return false;
@@ -434,7 +431,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 	}
 
 	if (!drop.seed || drop.seed < 0) {
-		drop.seed = Math.floor(5 * Math.random() * this.VARIABLE_FPS);
+		drop.seed = Math.floor(7 * Math.random() * this.VARIABLE_FPS);
 		drop.skipping = drop.skipping == false ? true : false;
 		drop.slowing = true;
 	}
@@ -448,20 +445,21 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 			if (drop.yspeed < this.PRIVATE_GRAVITY_FORCE_FACTOR_Y) {
 				drop.slowing = false;
 			}
+
 		} else if (drop.skipping) {
 			drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 			drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 		} else {
-			drop.yspeed += 3 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
-			drop.xspeed += 3 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
+			drop.yspeed += 1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
+			drop.xspeed += 1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
 		}
 	} else {
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
 
-	if(this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0){
-		drop.xspeed += ((Math.random() * 2 + -1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
+	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0) {
+		//drop.xspeed += ((Math.random() * 2 - 1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
 	drop.y += drop.yspeed;
