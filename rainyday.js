@@ -15,7 +15,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.sourceid = sourceid;
 	this.img = document.getElementById(sourceid);
 
-	// draw and blur the backgroiund image
+	// draw and blur the background image
 	this.prepareBackground(blur ? blur : 20, width, height);
 	this.w = this.canvas.width;
 	this.h = this.canvas.height;
