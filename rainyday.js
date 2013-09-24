@@ -14,14 +14,16 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 
 	this.sourceid = sourceid;
 	this.img = document.getElementById(sourceid);
+	this.opacity = opacity ? opacity : 1;
+	this.blurRadius = blur ? blur : 20;
 
-	// draw and blur the backgroiund image
-	this.prepareBackground(blur ? blur : 20, width, height);
+	// draw and blur the background image
+	this.prepareBackground(width, height);
 	this.w = this.canvas.width;
 	this.h = this.canvas.height;
 
 	// create the glass canvas
-	this.prepareGlass(opacity ? opacity : 1);
+	this.prepareGlass();
 
 	// assume default reflection mechanism
 	this.reflection = this.REFLECTION_MINIATURE;
@@ -71,19 +73,12 @@ RainyDay.prototype.prepareReflections = function() {
 
 /**
  * Create the glass canvas and position it directly over the main one.
- * @param opacity opacity attribute value of the glass canvas
  */
-RainyDay.prototype.prepareGlass = function(opacity) {
+RainyDay.prototype.prepareGlass = function() {
 	this.glass = document.createElement('canvas');
 	this.glass.width = this.canvas.width;
 	this.glass.height = this.canvas.height;
-	this.glass.style.position = "absolute";
-	this.glass.style.top = this.canvas.offsetTop;
-	this.glass.style.left = this.canvas.offsetLeft;
-	this.glass.style.zIndex = this.canvas.style.zIndex + 100;
-	this.canvas.parentNode.appendChild(this.glass);
 	this.context = this.glass.getContext('2d');
-	this.glass.style.opacity = opacity;
 };
 
 /**
@@ -143,6 +138,8 @@ RainyDay.prototype.rain = function(presets, speed) {
 		setInterval(
 			(function(self) {
 				return function() {
+					var context = self.canvas.getContext("2d");
+					context.drawImage(self.background, 0, 0, self.canvas.width, self.canvas.height);
 					var random = Math.random();
 					// select matching preset
 					var preset;
@@ -155,6 +152,10 @@ RainyDay.prototype.rain = function(presets, speed) {
 					if (preset) {
 						self.putDrop(new Drop(self, Math.random() * self.w, Math.random() * self.h, preset.min, preset.base));
 					}
+					context.save();
+					context.globalAlpha = self.opacity;
+					context.drawImage(self.glass, 0, 0, self.canvas.width, self.canvas.height);
+					context.restore();
 				}
 			})(this),
 			speed
@@ -528,11 +529,10 @@ var shg_table = [
 
 /**
  * Resizes canvas, draws original image and applies bluring algorithm.
- * @param radius blur radius to be applied
  * @param width width of the canvas
  * @param height height of the canvas
  */
-RainyDay.prototype.prepareBackground = function(radius, width, height) {
+RainyDay.prototype.prepareBackground = function(width, height) {
 	if (width && height) {
 		this.canvas.style.width = width + "px";
 		this.canvas.style.height = height + "px";
@@ -543,13 +543,17 @@ RainyDay.prototype.prepareBackground = function(radius, width, height) {
 		height = this.canvas.height;
 	}
 
-	var context = this.canvas.getContext("2d");
+	this.background = document.createElement('canvas');
+	this.background.width = this.canvas.width;
+	this.background.height = this.canvas.height;
+
+	var context = this.background.getContext("2d");
 	context.clearRect(0, 0, width, height);
 	context.drawImage(this.img, 0, 0, width, height);
 
-	if (isNaN(radius) || radius < 1) return;
+	if (isNaN(this.blurRadius) || this.blurRadius < 1) return;
 
-	this.stackBlurCanvasRGB(0, 0, width, height, radius);
+	this.stackBlurCanvasRGB(0, 0, width, height, this.blurRadius);
 };
 
 /**
@@ -563,7 +567,7 @@ RainyDay.prototype.prepareBackground = function(radius, width, height) {
 RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, radius) {
 	radius |= 0;
 
-	var context = this.canvas.getContext("2d");
+	var context = this.background.getContext("2d");
 	var imageData = context.getImageData(top_x, top_y, width, height);
 
 	var pixels = imageData.data;
