@@ -69,6 +69,8 @@ RainyDay.prototype.animateDrops = function() {
 		setTimeout(cb, Math.floor(1000 / this.rainyday.VARIABLE_FPS))
 	};
 
+        if (this.addDropCallback)
+            this.addDropCallback();
 	// |this.drops| array may be changed as we iterate over drops
 	var dropsClone = this.drops.slice();
 	var newDrops = [];
@@ -161,8 +163,12 @@ RainyDay.prototype.rain = function(presets, speed) {
 				this.VARIABLE_COLLISIONS = false;
 			}
 		}
-
-		var cb = function() {
+                var lastExecutionTime = 0;
+		this.addDropCallback = function() {
+                        var timestamp = new Date().getTime();
+                        if (timestamp - lastExecutionTime < speed)
+                            return;
+                        lastExecutionTime = timestamp;
 			var context = this.canvas.getContext("2d");
 			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 			var random = Math.random();
@@ -182,7 +188,6 @@ RainyDay.prototype.rain = function(presets, speed) {
 			context.drawImage(this.glass, 0, 0, this.canvas.width, this.canvas.height);
 			context.restore();
 		}.bind(this);
-		setInterval(cb, speed);
 
 	} else {
 		// static picture
