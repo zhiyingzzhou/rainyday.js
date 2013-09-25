@@ -56,8 +56,8 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.VARIABLE_COLLISIONS = true;
 
 	this.REFLECTION_SCALEDOWN_FACTOR = 5;
-	this.REFLECTION_DROP_MAPPING_WIDTH = 100;
-	this.REFLECTION_DROP_MAPPING_HEIGHT = 100;
+	this.REFLECTION_DROP_MAPPING_WIDTH = 200;
+	this.REFLECTION_DROP_MAPPING_HEIGHT = 200;
 
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
@@ -93,11 +93,7 @@ RainyDay.prototype.prepareReflections = function() {
 
 	var ctx = this.reflected.getContext('2d');
 
-	// rotate by 180 degress
-	ctx.translate(this.reflected.width / 2, this.reflected.height / 2);
-	ctx.rotate(Math.PI);
-
-	ctx.drawImage(this.img, -this.reflected.width / 2, -this.reflected.height / 2, this.reflected.width, this.reflected.height);
+	ctx.drawImage(this.img, 0, 0, this.reflected.width, this.reflected.height);
 };
 
 /**
