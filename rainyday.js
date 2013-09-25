@@ -55,9 +55,9 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	// collisions enabled by default
 	this.VARIABLE_COLLISIONS = true;
 
-        this.REFLECTION_SCALEDOWN_FACTOR = 5;
-        this.REFLECTION_DROP_MAPPING_WIDTH = 100;
-        this.REFLECTION_DROP_MAPPING_HEIGHT = 100;
+	this.REFLECTION_SCALEDOWN_FACTOR = 5;
+	this.REFLECTION_DROP_MAPPING_WIDTH = 100;
+	this.REFLECTION_DROP_MAPPING_HEIGHT = 100;
 
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
@@ -69,8 +69,8 @@ RainyDay.prototype.animateDrops = function() {
 		setTimeout(cb, Math.floor(1000 / this.rainyday.VARIABLE_FPS))
 	};
 
-        if (this.addDropCallback)
-            this.addDropCallback();
+	if (this.addDropCallback)
+		this.addDropCallback();
 	// |this.drops| array may be changed as we iterate over drops
 	var dropsClone = this.drops.slice();
 	var newDrops = [];
@@ -163,12 +163,12 @@ RainyDay.prototype.rain = function(presets, speed) {
 				this.VARIABLE_COLLISIONS = false;
 			}
 		}
-                var lastExecutionTime = 0;
+		var lastExecutionTime = 0;
 		this.addDropCallback = function() {
-                        var timestamp = new Date().getTime();
-                        if (timestamp - lastExecutionTime < speed)
-                            return;
-                        lastExecutionTime = timestamp;
+			var timestamp = new Date().getTime();
+			if (timestamp - lastExecutionTime < speed)
+				return;
+			lastExecutionTime = timestamp;
 			var context = this.canvas.getContext("2d");
 			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 			var random = Math.random();
@@ -524,18 +524,18 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
-        var sx = Math.max((drop.x - this.REFLECTION_DROP_MAPPING_WIDTH) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
-        var sy = Math.max((drop.y - this.REFLECTION_DROP_MAPPING_HEIGHT) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
-        var sw = Math.min(this.REFLECTION_DROP_MAPPING_WIDTH * 2 / this.REFLECTION_SCALEDOWN_FACTOR, this.reflected.width - sx);
-        var sh = Math.min(this.REFLECTION_DROP_MAPPING_HEIGHT * 2 / this.REFLECTION_SCALEDOWN_FACTOR, this.reflected.height - sy);
+	var sx = Math.max((drop.x - this.REFLECTION_DROP_MAPPING_WIDTH) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
+	var sy = Math.max((drop.y - this.REFLECTION_DROP_MAPPING_HEIGHT) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
+	var sw = Math.min(this.REFLECTION_DROP_MAPPING_WIDTH * 2 / this.REFLECTION_SCALEDOWN_FACTOR, this.reflected.width - sx);
+	var sh = Math.min(this.REFLECTION_DROP_MAPPING_HEIGHT * 2 / this.REFLECTION_SCALEDOWN_FACTOR, this.reflected.height - sy);
 	this.context.drawImage(this.reflected,
-            // coordinates of source image
-            sx, sy, sw, sh,
-            // destination
-            drop.x - drop.r1,
-            drop.y - drop.r1,
-            drop.r1 * 2,
-            drop.r1 * 2);
+		// coordinates of source image
+		sx, sy, sw, sh,
+		// destination
+		drop.x - drop.r1,
+		drop.y - drop.r1,
+		drop.r1 * 2,
+		drop.r1 * 2);
 };
 
 /**
