@@ -25,6 +25,9 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	// create the glass canvas
 	this.prepareGlass();
 
+	this.drops = [];
+	this.animateDrops();
+
 	// assume default reflection mechanism
 	this.reflection = this.REFLECTION_MINIATURE;
 
@@ -54,6 +57,23 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
+
+}
+
+RainyDay.prototype.animateDrops = function() {
+	var raf = requestAnimationFrame || mozRequestAnimationFrame || function(cb) {
+		setTimeout(cb, Math.floor(1000 / this.rainyday.VARIABLE_FPS))
+	};
+
+	// |this.drops| array may be changed as we iterate over drops
+	var dropsClone = this.drops.slice();
+	var newDrops = [];
+	for(var i = 0; i < dropsClone.length; ++i) {
+		if (dropsClone[i].animate())
+			newDrops.push(dropsClone[i]);
+	}
+	this.drops = newDrops;
+	raf(this.animateDrops.bind(this));
 }
 
 /**
@@ -138,31 +158,28 @@ RainyDay.prototype.rain = function(presets, speed) {
 			}
 		}
 
-		setInterval(
-			(function(self) {
-				return function() {
-					var context = self.canvas.getContext("2d");
-					context.drawImage(self.background, 0, 0, self.canvas.width, self.canvas.height);
-					var random = Math.random();
-					// select matching preset
-					var preset;
-					for (var i = 0; i < presets.length; i++) {
-						if (random < presets[i].quan) {
-							preset = presets[i];
-							break;
-						}
-					}
-					if (preset) {
-						self.putDrop(new Drop(self, Math.random() * self.w, Math.random() * self.h, preset.min, preset.base));
-					}
-					context.save();
-					context.globalAlpha = self.opacity;
-					context.drawImage(self.glass, 0, 0, self.canvas.width, self.canvas.height);
-					context.restore();
+		var cb = function() {
+			var context = this.canvas.getContext("2d");
+			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
+			var random = Math.random();
+			// select matching preset
+			var preset;
+			for (var i = 0; i < presets.length; i++) {
+				if (random < presets[i].quan) {
+					preset = presets[i];
+					break;
 				}
-			})(this),
-			speed
-		);
+			}
+			if (preset) {
+				this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, preset.min, preset.base));
+			}
+			context.save();
+			context.globalAlpha = this.opacity;
+			context.drawImage(this.glass, 0, 0, this.canvas.width, this.canvas.height);
+			context.restore();
+		}.bind(this);
+		setInterval(cb, speed);
+
 	} else {
 		// static picture
 		for (var i = 0; i < presets.length; i++) {
@@ -186,10 +203,20 @@ RainyDay.prototype.putDrop = function(drop) {
 			// put on the gravity matrix
 			this.matrix.update(drop);
 		}
+		this.drops.push(drop);
 
-		drop.animate();
 	}
 };
+
+RainyDay.prototype.clearDrop = function(drop, force) {
+	var result = drop.clear(force);
+	if (result) {
+		var index = this.drops.indexOf(drop);
+		if (index >= 0)
+			this.drops.splice(index, 1);
+	}
+	return result;
+}
 
 /**
  * Imperfectly approximates shape of a circle.
@@ -345,32 +372,20 @@ Drop.prototype.clear = function(force) {
  * Moves the raindrop to a new position according to the gravity.
  */
 Drop.prototype.animate = function() {
-	requestAnimationFrame = requestAnimationFrame || mozRequestAnimationFrame || function(cb) {
-		setTimeout(cb, Math.floor(1000 / this.rainyday.VARIABLE_FPS))
-	};
-
-	var self = this;
-
-	function animationCallback() {
-		if (self.terminate) {
-			return;
+	if (this.terminate) {
+		return false;
+	}
+	var stopped = this.rainyday.gravity(this);
+	if (!stopped && this.rainyday.trail) {
+		this.rainyday.trail(this);
+	}
+	if (this.rainyday.VARIABLE_COLLISIONS) {
+		var collisions = this.rainyday.matrix.update(this, stopped);
+		if (collisions) {
+			this.rainyday.collision(this, collisions);
 		}
-		var stopped = self.rainyday.gravity(self);
-		if (!stopped && self.rainyday.trail) {
-			self.rainyday.trail(self);
-		}
-		if (self.rainyday.VARIABLE_COLLISIONS) {
-			var collisions = self.rainyday.matrix.update(self, stopped);
-			if (collisions) {
-				self.rainyday.collision(self, collisions);
-			}
-		}
-		if (!stopped || self.terminate) {
-			requestAnimationFrame(animationCallback);
-		}
-	};
-
-	requestAnimationFrame(animationCallback);
+	}
+	return !stopped || this.terminate
 };
 
 /**
@@ -415,7 +430,7 @@ RainyDay.prototype.GRAVITY_NONE = function(drop) {
  * @returns true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
-	if (drop.clear()) {
+	if (this.clearDrop(drop)) {
 		return true;
 	}
 
@@ -438,7 +453,7 @@ RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
  * @returns true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
-	if (drop.clear()) {
+	if (this.clearDrop(drop)) {
 		return true;
 	}
 
@@ -534,9 +549,9 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
 		lower = drop;
 	}
 
-	lower.clear();
+	this.clearDrop(lower);
 	// force stopping the second drop
-	higher.clear(true);
+	this.clearDrop(higher, true);
 	lower.draw();
 
 	// combine linepoints
