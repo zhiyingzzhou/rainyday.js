@@ -55,6 +55,10 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	// collisions enabled by default
 	this.VARIABLE_COLLISIONS = true;
 
+        this.REFLECTION_SCALEDOWN_FACTOR = 5;
+        this.REFLECTION_DROP_MAPPING_WIDTH = 100;
+        this.REFLECTION_DROP_MAPPING_HEIGHT = 100;
+
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
 
@@ -82,8 +86,8 @@ RainyDay.prototype.animateDrops = function() {
 RainyDay.prototype.prepareReflections = function() {
 	// new canvas
 	this.reflected = document.createElement('canvas');
-	this.reflected.width = this.canvas.width;
-	this.reflected.height = this.canvas.height;
+	this.reflected.width = this.canvas.width / this.REFLECTION_SCALEDOWN_FACTOR;
+	this.reflected.height = this.canvas.height / this.REFLECTION_SCALEDOWN_FACTOR;
 
 	var ctx = this.reflected.getContext('2d');
 
@@ -515,7 +519,17 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
-	this.context.drawImage(this.reflected, drop.x - drop.r1, drop.y - drop.r1, drop.r1 * 2, drop.r1 * 2);
+	this.context.drawImage(this.reflected,
+            // coordinates of source image
+            (drop.x - this.REFLECTION_DROP_MAPPING_WIDTH) / this.REFLECTION_SCALEDOWN_FACTOR,
+            (drop.y - this.REFLECTION_DROP_MAPPING_HEIGHT) / this.REFLECTION_SCALEDOWN_FACTOR,
+            this.REFLECTION_DROP_MAPPING_WIDTH * 2 / this.REFLECTION_SCALEDOWN_FACTOR,
+            this.REFLECTION_DROP_MAPPING_HEIGHT * 2 / this.REFLECTION_SCALEDOWN_FACTOR,
+            // destination
+            drop.x - drop.r1,
+            drop.y - drop.r1,
+            drop.r1 * 2,
+            drop.r1 * 2);
 };
 
 /**
