@@ -524,12 +524,13 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
+        var sx = Math.max((drop.x - this.REFLECTION_DROP_MAPPING_WIDTH) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
+        var sy = Math.max((drop.y - this.REFLECTION_DROP_MAPPING_HEIGHT) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
+        var sw = Math.min(this.REFLECTION_DROP_MAPPING_WIDTH * 2 / this.REFLECTION_SCALEDOWN_FACTOR, this.reflected.width - sx);
+        var sh = Math.min(this.REFLECTION_DROP_MAPPING_HEIGHT * 2 / this.REFLECTION_SCALEDOWN_FACTOR, this.reflected.height - sy);
 	this.context.drawImage(this.reflected,
             // coordinates of source image
-            (drop.x - this.REFLECTION_DROP_MAPPING_WIDTH) / this.REFLECTION_SCALEDOWN_FACTOR,
-            (drop.y - this.REFLECTION_DROP_MAPPING_HEIGHT) / this.REFLECTION_SCALEDOWN_FACTOR,
-            this.REFLECTION_DROP_MAPPING_WIDTH * 2 / this.REFLECTION_SCALEDOWN_FACTOR,
-            this.REFLECTION_DROP_MAPPING_HEIGHT * 2 / this.REFLECTION_SCALEDOWN_FACTOR,
+            sx, sy, sw, sh,
             // destination
             drop.x - drop.r1,
             drop.y - drop.r1,
