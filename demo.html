@@ -26,6 +26,10 @@
  						engine.trail = engine.TRAIL_DROPS;
  						engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
 						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
+					} else if (preset == 3) {
+						engine.gravity = engine.GRAVITY_NON_LINEAR;
+ 						engine.trail = engine.TRAIL_SMUDGE;
+						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
 					}
 				};
     			image.crossOrigin = "anonymous";

@@ -421,6 +421,23 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
 };
 
 /**
+ * TRAIL function: trail of unblurred image
+ * @param drop raindrop object
+ */
+RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
+	var context = this.canvas.getContext('2d');
+	var y = drop.y - drop.r1 - 2;
+	var x = drop.x - drop.r2 + (Math.random() * 2);
+	var w = drop.r2;
+
+	this.context.drawImage(this.img,
+		// coordinates of source image
+		(x * this.img.width) / this.w, (y * this.img.height) / this.h, w, 2,
+		// destination
+		x, y, w, 2);
+};
+
+/**
  * GRAVITY function: no gravity at all
  * @param drop raindrop object
  * @returns true if the animation is stopped
