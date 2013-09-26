@@ -32,8 +32,8 @@
 				var image = document.getElementById('background');
 				image.onload = function() {
 					var engine = null;
-					var preset = getURLParameter('preset') || 1;
-					if (preset === 1) {
+					var preset = getURLParameter('preset') || '1';
+					if (preset === '1') {
 						engine = new RainyDay({
 							element: 'background',
 							blur: 10,
@@ -42,10 +42,8 @@
 							speed: 30,
 							autoHide: false
 						});
-						engine.gravity = engine.GRAVITY_NON_LINEAR;
-						engine.trail = engine.TRAIL_DROPS;
 						engine.rain([ engine.preset(3, 3, 0.88), engine.preset(5, 5, 0.9), engine.preset(6, 2, 1) ], 100);
-					} else if (preset === 2) {
+					} else if (preset === '2') {
 						engine = new RainyDay({
 							element: 'background',
 							blur: 10,
@@ -54,11 +52,9 @@
 							speed: 30,
 							autoHide: false
 						});
-						engine.gravity = engine.GRAVITY_NON_LINEAR;
-							engine.trail = engine.TRAIL_DROPS;
-							engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
+						engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
 						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
-					} else if (preset === 3) {
+					} else if (preset === '3') {
 						engine = new RainyDay({
 							element: 'background',
 							blur: 10,
@@ -67,8 +63,7 @@
 							speed: 30,
 							autoHide: false
 						});
-						engine.gravity = engine.GRAVITY_NON_LINEAR;
-							engine.trail = engine.TRAIL_SMUDGE;
+						engine.trail = engine.TRAIL_SMUDGE;
 						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
 					}
 				};

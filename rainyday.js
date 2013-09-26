@@ -174,8 +174,8 @@ RainyDay.prototype.rain = function(presets, speed) {
 		// animation
 		this.presets = presets;
 
-		this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.005) / 25;
-		this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.005) / 50;
+		this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.001) / 25;
+		this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.001) / 50;
 
 		// prepare gravity matrix
 		if (this.VARIABLE_COLLISIONS) {
@@ -287,11 +287,24 @@ Drop.prototype.draw = function() {
 	this.context.save();
 	this.context.beginPath();
 
-	var randomizer = (Math.random() + 3);
-	var yr = 1.5;
-	this.context.moveTo(this.x - this.r, this.y);
-	this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r, this.y);
-	this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r, this.y);
+	if (this.colliding) {
+		var collider = this.colliding;
+		this.r = 1.001 * (this.r > collider.r ? this.r : collider.r);
+		this.x += (collider.x - this.x);
+		this.colliding = null;
+
+		var randomizer = (Math.random() + 3);
+		var yr = 1 + 0.05 *this.yspeed;
+		this.context.moveTo(this.x - this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
+	} else {
+		var randomizer = (Math.random() + 3);
+		var yr = 1 + 0.05 *this.yspeed;
+		this.context.moveTo(this.x - this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
+	}
 
 	this.context.clip();
 
@@ -346,14 +359,6 @@ Drop.prototype.animate = function() {
 };
 
 /**
- * Merge linepoints with another drop
- * @param drop the other drop
- */
-Drop.prototype.merge = function(drop) {
-	// TODO
-};
-
-/**
  * TRAIL function: no trail at all
  * @param drop raindrop object
  */
@@ -368,7 +373,7 @@ RainyDay.prototype.TRAIL_NONE = function(drop) {
 RainyDay.prototype.TRAIL_DROPS = function(drop) {
 	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 10 * drop.r) {
 		drop.trail_y = drop.y;
-		this.putDrop(new Drop(this, drop.x, drop.y - drop.r - 5, 0, Math.ceil(drop.r / 5)));
+		this.putDrop(new Drop(this, drop.x, drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
 	}
 };
 
@@ -377,14 +382,12 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
-	var context = this.canvas.getContext('2d');
 	var y = drop.y - drop.r - 2;
 	var x = drop.x - drop.r / 2 + (Math.random() * 2);
 	if (y < 0 || x < 0) {
 		return;
 	}
-	var w = drop.r2;
-	this.context.drawImage(this.img, x, y, w, 2);
+	this.context.drawImage(this.img, x, y, drop.r, 2, x, y, drop.r * 0.8, 2);
 };
 
 /**
@@ -462,8 +465,8 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
 
-	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE !== 0) {
-		drop.xspeed += ((Math.random() * 2 - 1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
+	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0) {
+		drop.xspeed += ((Math.random() * 2 - 1) * drop.yspeed * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
 	drop.y += drop.yspeed;
@@ -539,11 +542,7 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
 	this.clearDrop(higher, true);
 	lower.draw();
 
-	// combine linepoints
-	higher.merge(lower);
-
-	lower.r = 0.8 * Math.sqrt((lower.r * lower.r) + (higher.r * higher.r));
-	lower.r = 0.8 * lower.r;
+	lower.colliding = higher;
 	lower.collided = true;
 };
 
