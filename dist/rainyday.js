@@ -65,16 +65,19 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 }
 
 RainyDay.prototype.animateDrops = function() {
-	var raf = requestAnimationFrame || mozRequestAnimationFrame || function(cb) {
-		setTimeout(cb, Math.floor(1000 / this.rainyday.VARIABLE_FPS))
-	};
+	var raf = window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+			function(callback) {
+				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
+		};
 
 	if (this.addDropCallback)
 		this.addDropCallback();
 	// |this.drops| array may be changed as we iterate over drops
 	var dropsClone = this.drops.slice();
 	var newDrops = [];
-	for(var i = 0; i < dropsClone.length; ++i) {
+	for (var i = 0; i < dropsClone.length; ++i) {
 		if (dropsClone[i].animate())
 			newDrops.push(dropsClone[i]);
 	}
