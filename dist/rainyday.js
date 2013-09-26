@@ -428,6 +428,9 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
 	var context = this.canvas.getContext('2d');
 	var y = drop.y - drop.r1 - 2;
 	var x = drop.x - drop.r2 + (Math.random() * 2);
+	if (y < 0 || x < 0) {
+		return;
+	}
 	var w = drop.r2;
 
 	this.context.drawImage(this.img,
