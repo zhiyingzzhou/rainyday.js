@@ -1,12 +1,5 @@
 <html>
 	<head>
-		<style media="screen" type="text/css">
-			img { display: none; }
-			body { overflow: hidden; }
-			#canvas { position: absolute; top: 0px; left: 0px; }
-			#sound { position: absolute; width: 30%; height: 30%; overflow-y: auto; margin-left: 35%; -moz-border-radius: 15px; border-radius: 15px; background-color: #C4C4C4; opacity: 0.3; margin-top: 5%; }
-			.video { position: absolute; width: 90%; height: 80%; margin-left: 5%; margin-top: 5%; }
-		</style>
 		<script src="rainyday.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			function getURLParameter(name) {
@@ -16,36 +9,31 @@
  			function demo() {
 				
 				var testCanvas = document.createElement('canvas');
-				testCanvas.width = 960;
-				testCanvas.height = 640;
+				testCanvas.width = 896;
+				testCanvas.height = 504;
 
 				testCanvas.id = 'testCanvas';
 				testCanvas.style.display = "none";
 
-				var raf = window.requestAnimationFrame ||
-						window.webkitRequestAnimationFrame ||
-						window.mozRequestAnimationFrame ||
-							function(callback) {
-								window.setTimeout(callback, 1000 / 30);
-							};
-
-					raf(function drawThing(){
-						testCanvas.getContext('2d').drawImage(video,0,0,960,640);
-						if(window.engine){
-							engine.prepareBackground(960,640);
-							engine.prepareReflections();
-							engine.stoppedDrops.forEach(function(x){
-								x.draw()
-							});
-						}
-						raf(drawThing);
-					});
+				setTimeout(function drawThing(){
+					testCanvas.getContext('2d').drawImage(video,0,0,960,640);
+					if(window.engine){
+						engine.prepareBackground(960,640);
+						engine.prepareReflections();
+						engine.stoppedDrops.forEach(function(x){
+							x.draw()
+						});
+					}
+					setTimeout(drawThing,1000/24);
+				},1000/24); //Request animation frame is not used because the movie is 24fps, we dont need 60.
 
 				document.body.appendChild(testCanvas);
 
-				window.setupEngine = function(){
-	    			var engine = new RainyDay(document.getElementById('canvas'),testCanvas, 960, 640, 1, getURLParameter("blur") || 20);
-					window.engine = engine;
+				var setupEngine = function(){
+					if (window.engine) return;
+					
+	    			var engine = new RainyDay(document.getElementById('canvas'),testCanvas, 896, 504, 1, getURLParameter("blur") || 20);
+					window.engine = engine; //for debugging
 
 					var preset = getURLParameter("preset") || 3;
 					if (preset == 1) {
@@ -66,6 +54,7 @@
 					}
 				}
 				var video = document.getElementById('video');
+				video.addEventListener('play',setupEngine);
 				video.play();
  			}
 		</script>
@@ -74,8 +63,7 @@
 		<div id="sound" style="z-index: -1;"></div>
 		<img id="background" src="bg_1.jpg" style="display:none;"/>
 		<video id="video" src="movie.ogv" controls="true"></video>
-		<div id="cholder">
-			<canvas id="canvas"></canvas>
-		</div>
+		<canvas id="canvas"></canvas>
+		<a href="http://commons.wikimedia.org/wiki/File:Big_Buck_Bunny_medium.ogv">Video source</a>
 	</body>
 </html>
