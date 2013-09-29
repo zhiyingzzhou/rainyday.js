@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Rainy JS</title>
+	<title>Rainy JS Demo</title>
 	<style media="screen" type="text/css">
 		#parent {
 			width: 50%;
@@ -19,12 +19,17 @@
 		window.onload = function demo() {
 			var engine = new RainyDay({
 				element: 'background',
-				blur: 0.5,
+				blur: 10,
 				opacity: 1,
 				fps: 30,
 				speed: 30,
-				presets: [{ min: 3, base: 3, quan: 0.88 }, { min: 5, base: 5, quan: 0.9 }, { min: 6, base: 2, quan: 1 }]
+				autoHide: false
 			});
+
+			setTimeout(function () {
+				console.log(engine)
+				engine.constructor();
+			}, 1000);
 		}
 	</script>
 </head>

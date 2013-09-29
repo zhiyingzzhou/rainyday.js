@@ -1,22 +1,21 @@
 /**
  * Defines a new instance of the rainyday.js.
- * @param canvasid DOM id of the canvas used for rendering
- * @param sourceid DOM id of the image element used as background image
- * @param width width of the rendering
- * @param height height of the rendering
+ * @param element DOM id of the image element used as background image 
  * @param opacity opacity attribute value of the glass canvas (default: 1)
- * @param blur blur radius (default: 20)
+ * @param blur blur radius (default: 10)
+ * @param fps desired fps for animation
+ * @param speed desired speed for rain drops
  */
 
 //function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 function RainyDay(options) {
 	this.img = document.getElementById(options.element);
-	this.opacity = options.opacity ? options.opacity : 0.5;
-	this.blurRadius = options.blur ? options.blur : 5;
+	this.opacity = options.opacity ? options.opacity : 1;
+	this.blurRadius = options.blur ? options.blur : 10;
 	this.w = this.img.clientWidth;
 	this.h = this.img.clientHeight;
 	//Create a canvas element for drops
-	this.canvas = this.prepareCanvas(this.img);
+	this.canvas = this.prepareCanvas(this.img, options.autoHide);
 	// draw and blur the background image
 	this.prepareBackground(this.img.clientWidth, this.img.clientHeight);
 
@@ -61,10 +60,10 @@ function RainyDay(options) {
 	this.collision = this.COLLISION_SIMPLE;
 
 	//Start rain
-	this.rain(options.presets, options.speed);
+	this.rain([{ min: 3, base: 3, quan: 0.88 }, { min: 5, base: 5, quan: 0.9 }, { min: 6, base: 2, quan: 1 }], options.speed);
 }
 
-RainyDay.prototype.prepareCanvas = function (element) {
+RainyDay.prototype.prepareCanvas = function (element, autoHide) {
 	var canvas = document.createElement('canvas');
 	canvas.style.position = "absolute";
 	canvas.width = element.clientWidth;
@@ -77,11 +76,13 @@ RainyDay.prototype.prepareCanvas = function (element) {
 		checkSize(canvas, element);
 	}, 500);
 
-	canvas.onmouseover = function () {
-		canvas.style.display = 'none';
-	}
-	element.onmouseleave = function () {
-		canvas.style.display = 'block';
+	if (autoHide == true) {
+		canvas.onmouseover = function () {
+			canvas.style.display = 'none';
+		}
+		element.onmouseleave = function () {
+			canvas.style.display = 'block';
+		}
 	}
 	return canvas;
 }
