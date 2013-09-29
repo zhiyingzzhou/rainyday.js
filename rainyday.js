@@ -19,9 +19,7 @@ function RainyDay(options) {
 	this.canvas = this.prepareCanvas(this.img);
 	// draw and blur the background image
 	this.prepareBackground(this.img.clientWidth, this.img.clientHeight);
-	this.w = this.canvas.width;
-	this.h = this.canvas.height;
-
+	
 	// create the glass canvas
 	this.prepareGlass();
 
