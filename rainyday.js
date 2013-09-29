@@ -19,7 +19,7 @@ function RainyDay(options) {
 	this.canvas = this.prepareCanvas(this.img);
 	// draw and blur the background image
 	this.prepareBackground(this.img.clientWidth, this.img.clientHeight);
-	
+
 	// create the glass canvas
 	this.prepareGlass();
 
@@ -71,10 +71,32 @@ RainyDay.prototype.prepareCanvas = function (element) {
 	canvas.style.top = element.offsetTop;
 	document.getElementsByTagName('body')[0].appendChild(canvas);
 
-	canvas.onmouseenter = function () {
-		
+	setInterval(function () {
+		checkSize(canvas, element);
+	}, 500);
+
+	canvas.onmouseover = function () {
+		canvas.style.display = 'none';
+	}
+	element.onmouseleave = function () {
+		canvas.style.display = 'block';
 	}
 	return canvas;
+}
+
+function checkSize(canvas, element) {
+	if (canvas.style.width != element.clientWidth) {
+		canvas.style.width = element.clientWidth;
+	}
+	if (canvas.style.height != element.clientHeight) {
+		canvas.style.height = element.clientHeight;
+	}
+	if (canvas.style.left != element.offsetLeft) {
+		canvas.style.left = element.offsetLeft;
+	}
+	if (canvas.style.top != element.offsetTop) {
+		canvas.style.top = element.offsetTop;
+	}
 }
 
 RainyDay.prototype.animateDrops = function () {
