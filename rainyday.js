@@ -45,7 +45,7 @@ function RainyDay(options) {
 	this.VARIABLE_GRAVITY_ANGLE_VARIANCE = 0;
 
 	// frames per second animation speed
-	this.VARIABLE_FPS = 5;
+	this.VARIABLE_FPS = options.fps;
 
 	// context fill style when no REFLECTION_NONE is used
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
@@ -60,6 +60,8 @@ function RainyDay(options) {
 	// assume default collision algorhitm
 	this.collision = this.COLLISION_SIMPLE;
 
+	//Start rain
+	this.rain(options.presets, options.speed);
 }
 
 RainyDay.prototype.prepareCanvas = function (element) {
