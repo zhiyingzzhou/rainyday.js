@@ -1,9 +1,9 @@
 body {
-	overflow: hidden;
 	background-image: url("../img/back.png");
 	font-family: "Open Sans", Helvetica, Arial, sans-serif;
-	font-weight: lighter;
 	font-size: 14px;
+	font-weight: lighter;
+	overflow: hidden;
 }
 
 #contents {
@@ -14,7 +14,7 @@ body {
 	height: 98%;
 	overflow-y: auto;
 	margin-left: 20%;
-	background-color: #FFFFFF;
+	background-color: white;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 }
@@ -37,8 +37,8 @@ h2 {
 }
 
 hr {
-	margin-top: 20px;
 	margin-bottom: 10px;
+	margin-top: 20px;
 }
 
 p {
@@ -61,8 +61,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-	border-radius: 5px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 1);
+	border-radius: 5px;
 }
 
 a:link,
