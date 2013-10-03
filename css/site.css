@@ -1,8 +1,6 @@
 body {
 	background-image: url("../img/back.png");
-	font-family: "Open Sans", Helvetica, Arial, sans-serif;
-	font-size: 14px;
-	font-weight: lighter;
+	font: lighter 14px "Open Sans", Helvetica, Arial, sans-serif;
 	overflow: hidden;
 }
 
