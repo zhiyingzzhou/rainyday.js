@@ -61,7 +61,7 @@ function RainyDay(options) {
 
 RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 	var canvas = document.createElement('canvas');
-	canvas.style.position = "absolute";
+	canvas.style.position = 'absolute';
 	canvas.width = element.clientWidth;
 	canvas.height = element.clientHeight;
 	canvas.style.left = element.offsetLeft;
@@ -72,28 +72,28 @@ RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 		checkSize(canvas, element);
 	}, 500);
 
-	if (autoHide == true) {
+	if (autoHide === true) {
 		canvas.onmouseover = function() {
 			canvas.style.display = 'none';
-		}
+		};
 		element.onmouseleave = function() {
 			canvas.style.display = 'block';
-		}
+		};
 	}
 	return canvas;
-}
+};
 
 function checkSize(canvas, element) {
-	if (canvas.style.width != element.clientWidth) {
+	if (canvas.style.width !== element.clientWidth) {
 		canvas.style.width = element.clientWidth;
 	}
-	if (canvas.style.height != element.clientHeight) {
+	if (canvas.style.height !== element.clientHeight) {
 		canvas.style.height = element.clientHeight;
 	}
-	if (canvas.style.left != element.offsetLeft) {
+	if (canvas.style.left !== element.offsetLeft) {
 		canvas.style.left = element.offsetLeft;
 	}
-	if (canvas.style.top != element.offsetTop) {
+	if (canvas.style.top !== element.offsetTop) {
 		canvas.style.top = element.offsetTop;
 	}
 }
@@ -104,19 +104,21 @@ RainyDay.prototype.animateDrops = function() {
 		window.mozRequestAnimationFrame ||
 			function(callback) {
 				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
-		};
-	if (this.addDropCallback)
+			};
+	if (this.addDropCallback) {
 		this.addDropCallback();
+	}
 	// |this.drops| array may be changed as we iterate over drops
 	var dropsClone = this.drops.slice();
 	var newDrops = [];
 	for (var i = 0; i < dropsClone.length; ++i) {
-		if (dropsClone[i].animate())
+		if (dropsClone[i].animate()) {
 			newDrops.push(dropsClone[i]);
+		}
 	}
 	this.drops = newDrops;
 	raf(this.animateDrops.bind(this));
-}
+};
 
 /**
  * Create the helper canvas for rendering raindrop reflections.
@@ -151,10 +153,10 @@ RainyDay.prototype.prepareGlass = function() {
  */
 RainyDay.prototype.preset = function(min, base, quan) {
 	return {
-		"min": min,
-		"base": base,
-		"quan": quan
-	}
+		'min': min,
+		'base': base,
+		'quan': quan
+	};
 };
 
 /**
@@ -164,7 +166,7 @@ RainyDay.prototype.preset = function(min, base, quan) {
  */
 RainyDay.prototype.rain = function(presets, speed) {
 	// prepare canvas for drop reflections
-	if (this.reflection != this.REFLECTION_NONE) {
+	if (this.reflection !== this.REFLECTION_NONE) {
 		this.prepareReflections();
 	}
 
@@ -198,10 +200,11 @@ RainyDay.prototype.rain = function(presets, speed) {
 		var lastExecutionTime = 0;
 		this.addDropCallback = function() {
 			var timestamp = new Date().getTime();
-			if (timestamp - lastExecutionTime < speed)
+			if (timestamp - lastExecutionTime < speed) {
 				return;
+			}
 			lastExecutionTime = timestamp;
-			var context = this.canvas.getContext("2d");
+			var context = this.canvas.getContext('2d');
 			context.clearRect(0,0,this.canvas.width,this.canvas.height);
 			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 			var random = Math.random();
@@ -254,11 +257,12 @@ RainyDay.prototype.clearDrop = function(drop, force) {
 	var result = drop.clear(force);
 	if (result) {
 		var index = this.drops.indexOf(drop);
-		if (index >= 0)
+		if (index >= 0) {
 			this.drops.splice(index, 1);
+		}
 	}
 	return result;
-}
+};
 
 /**
  * Imperfectly approximates shape of a circle.
@@ -274,7 +278,7 @@ RainyDay.prototype.getLinepoints = function(iterations) {
 	var lastPoint = {
 		x: 1,
 		y: 1
-	}
+	};
 	var minY = 1;
 	var maxY = 1;
 	var point;
@@ -313,7 +317,7 @@ RainyDay.prototype.getLinepoints = function(iterations) {
 	}
 
 	//normalize to values between 0 and 1
-	if (maxY != minY) {
+	if (maxY !== minY) {
 		var normalizeRate = 1 / (maxY - minY);
 		point = pointList.first;
 		while (point != null) {
@@ -427,7 +431,7 @@ Drop.prototype.animate = function() {
 			this.rainyday.collision(this, collisions);
 		}
 	}
-	return !stopped || this.terminate
+	return !stopped || this.terminate;
 };
 
 /**
@@ -521,7 +525,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 		drop.slowing = false;
 	} else if (!drop.seed || drop.seed < 0) {
 		drop.seed = Math.floor(drop.r1 * Math.random() * this.VARIABLE_FPS);
-		drop.skipping = drop.skipping == false ? true : false;
+		drop.skipping = drop.skipping === false ? true : false;
 		drop.slowing = true;
 	}
 
@@ -547,7 +551,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
 
-	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0) {
+	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE !== 0) {
 		drop.xspeed += ((Math.random() * 2 - 1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
@@ -677,8 +681,8 @@ var shg_table = [
  */
 RainyDay.prototype.prepareBackground = function(width, height) {
 	if (width && height) {
-		this.canvas.style.width = width + "px";
-		this.canvas.style.height = height + "px";
+		this.canvas.style.width = width + 'px';
+		this.canvas.style.height = height + 'px';
 		this.canvas.width = width;
 		this.canvas.height = height;
 	} else {
@@ -690,11 +694,13 @@ RainyDay.prototype.prepareBackground = function(width, height) {
 	this.background.width = this.canvas.width;
 	this.background.height = this.canvas.height;
 
-	var context = this.background.getContext("2d");
+	var context = this.background.getContext('2d');
 	context.clearRect(0, 0, width, height);
 	context.drawImage(this.img, 0, 0, width, height);
 
-	if (isNaN(this.blurRadius) || this.blurRadius < 1) return;
+	if (isNaN(this.blurRadius) || this.blurRadius < 1) {
+		return;
+	}
 
 	this.stackBlurCanvasRGB(0, 0, width, height, this.blurRadius);
 };
@@ -710,7 +716,7 @@ RainyDay.prototype.prepareBackground = function(width, height) {
 RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, radius) {
 	radius |= 0;
 
-	var context = this.background.getContext("2d");
+	var context = this.background.getContext('2d');
 	var imageData = context.getImageData(top_x, top_y, width, height);
 
 	var pixels = imageData.data;
@@ -731,7 +737,9 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 	var stack = stackStart;
 	for (i = 1; i < div; i++) {
 		stack = stack.next = new BlurStack();
-		if (i == radiusPlus1) var stackEnd = stack;
+		if (i === radiusPlus1) {
+			var stackEnd = stack;
+		}
 	}
 	stack.next = stackStart;
 	var stackIn = null;
@@ -927,7 +935,7 @@ function CollisionMatrix(x, y, r) {
 	this.yc = y;
 	this.matrix = new Array(x);
 	for (var i = 0; i <= (x + 5); i++) {
-		this.matrix[i] = Array(y);
+		this.matrix[i] = new Array(y);
 		for (var j = 0; j <= (y + 5); ++j) {
 			this.matrix[i][j] = new DropItem(null);
 		}
@@ -1030,7 +1038,7 @@ DropItem.prototype.remove = function(drop) {
 	while (item.next != null) {
 		prevItem = item;
 		item = item.next;
-		if (item.drop.gid == drop.gid) {
+		if (item.drop.gid === drop.gid) {
 			prevItem.next = item.next;
 		}
 	}
