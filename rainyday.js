@@ -104,7 +104,7 @@ RainyDay.prototype.animateDrops = function() {
 		window.mozRequestAnimationFrame ||
 			function(callback) {
 				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
-			};
+		};
 	if (this.addDropCallback) {
 		this.addDropCallback();
 	}
@@ -205,7 +205,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 			}
 			lastExecutionTime = timestamp;
 			var context = this.canvas.getContext('2d');
-			context.clearRect(0,0,this.canvas.width,this.canvas.height);
+			context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 			var random = Math.random();
 			// select matching preset
