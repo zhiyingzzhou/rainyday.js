@@ -2,8 +2,8 @@
 body { overflow: hidden; background-image: url(../img/back.png); font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; font-size: 14px; }
 #contents { position: absolute; overflow: hidden; top: 10px; width: 60%; height: 98%; overflow-y: auto; margin-left: 20%; background-color: #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; }
 #contents div { margin-bottom: 50px; }
-h1 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0px; margin-left: 40px; }
-h2 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0px; margin-left: 40px; margin-top: 20px; }
+h1 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0; margin-left: 40px; }
+h2 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0; margin-left: 40px; margin-top: 20px; }
 hr { margin-top: 20px; margin-bottom: 10px; }
 p { margin-left: 100px; margin-right: 100px; text-align: justify; }
 a:link { color: black; }
