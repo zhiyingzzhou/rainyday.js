@@ -104,7 +104,7 @@ RainyDay.prototype.animateDrops = function() {
 		window.mozRequestAnimationFrame ||
 			function(callback) {
 				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
-		};
+			};
 	if (this.addDropCallback) {
 		this.addDropCallback();
 	}
