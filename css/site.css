@@ -1,5 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,600,800|Source+Code+Pro);
-body { overflow: hidden; background-image: url(back.png); font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; font-size: 14px; }
+body { overflow: hidden; background-image: url(../img/back.png); font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; font-size: 14px; }
 #contents { position: absolute; overflow: hidden; top: 10px; width: 60%; height: 98%; overflow-y: auto; margin-left: 20%; background-color: #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; }
 #contents div { margin-bottom: 50px; }
 h1 { font-family: "Open Sans",Helvetica,Arial,sans-serif; font-weight: lighter; margin-bottom: 0px; margin-left: 40px; }
