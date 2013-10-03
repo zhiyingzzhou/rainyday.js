@@ -387,7 +387,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
 	if (y < 0 || x < 0) {
 		return;
 	}
-	this.context.drawImage(this.img, x, y, drop.r, 2, x, y, drop.r * 0.8, 2);
+	this.context.drawImage(this.img, (x * this.img.width) / this.w, (y * this.img.height) / this.h, drop.r, 2, x, y, drop.r, 2);
 };
 
 /**
