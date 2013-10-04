@@ -902,6 +902,9 @@ function CollisionMatrix(x, y, r) {
  * @returns collisions if any
  */
 CollisionMatrix.prototype.update = function(drop, forceDelete) {
+	if (drop.x < 0 || drop.y < 0){
+		return null;
+	}
 	if (drop.gid) {
 		this.matrix[drop.gmx][drop.gmy].remove(drop);
 		if (forceDelete) {
