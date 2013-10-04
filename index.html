@@ -8,25 +8,165 @@
 </head>
 <body>
 <div id="contents">
-	<h1>rainyday.js: a simple script for simulating raindrops falling on a glass surface</h1>
+	<h1>rainyday.js: a simple script for simulating raindrops</h1>
 	<hr/>
-	<h2>source</h2>
+	<h2>about</h2>
 	<p>
-		You can find the source on <a href="https://github.com/maroslaw/rainyday.js">github</a>.
-	</p>
-	<h2>previews</h2>
-	<p>
-		Just to give you an idea of what's been going on at the master branch here are some previews:
+		You can find the source code of the project on <a href="https://github.com/maroslaw/rainyday.js">github</a>.
 	</p>
 	<p>
-		<a href="./master.html?imgur=nH2ziAk&amp;preset=3&amp;novideo=1&amp;youtube=8zFi--dz4zg" target="_blank"><img class="small" src="http://i.imgur.com/f6RHGQt.png" alt="new trailing method implementation"/></a>&nbsp;<a href="./master.html?imgur=95Uy6op&amp;preset=3&amp;youtube=iTEEdfO8GCQ&amp;blur=9" target="_blank"><img class="small" src="http://i.imgur.com/nbsq0y7.png" alt="with video"/></a>
-	</p>
-	<h2>demos: v0.1.1</h2>
-	<p>
-		The demos below have prepared using v0.1.1 of the script. You can read more about how things are done in the article <a href="http://flippinawesome.org/2013/09/23/creating-a-realistic-rain-effect-with-canvas-and-javascript/" target="_blank">here</a>.
+		More about how things are done in the article <a href="http://flippinawesome.org/2013/09/23/creating-a-realistic-rain-effect-with-canvas-and-javascript/" target="_blank">here</a>.
 	</p>
 	<p>
-		<a href="./demo.html?imgur=I2tZMAg&amp;youtube=Ftu5ZpAk8dM" target="_blank"><img class="small" src="http://i.imgur.com/IGnD12v.png" alt="demo #1"/></a>&nbsp;<a href="./demo.html?imgur=rhnaa4G&amp;youtube=MLBSAVcC1TA&amp;preset=2" target="_blank"><img class="small" src="http://i.imgur.com/2jbuH1m.png" alt="demo #2"/></a>&nbsp;<a href="./demo.html?imgur=cXtZG7w&amp;youtube=ioQnaB1ijtk" target="_blank"><img class="small" src="http://i.imgur.com/WbYgwFv.jpg" alt="demo #3"/></a>
+		There's also a <a href="http://reddit.com/r/rainydayjs" target="_blank">subreddit</a> for Q&A.
+	</p>
+	<h2>gallery</h2>
+	<p>	
+	<table class="compatibility" id="compTable" cellspacing="7">
+	<col span="5" class="Rest" />
+	<tr class="compheader">
+		<th>Version</th>
+		<th colspan="4">Demos</th>
+	</tr>
+	<tr>
+		<td class="declaration">0.1.2 (unreleased)</td>
+		<td class="comp clean"><a href="./master.html?imgur=nH2ziAk&amp;preset=3&amp;novideo=1&amp;youtube=8zFi--dz4zg" target="_blank"><img src="img/f6RHGQt.png" alt="new trailing method implementation"/></a></td>
+		<td class="comp clean"><a href="./master.html?imgur=95Uy6op&amp;preset=3&amp;youtube=iTEEdfO8GCQ&amp;blur=9" target="_blank"><img src="img/nbsq0y7.png" alt="with video"/></a></td>
+		<td class="comp clean small"></td>
+
+	</tr>
+	<tr>
+		<td class="declaration">0.1.1</td>
+		<td class="comp clean"><a href="./demo.html?imgur=I2tZMAg&amp;youtube=Ftu5ZpAk8dM" target="_blank"><img src="img/IGnD12v.png" alt="demo #1"/></a></td>
+		<td class="comp clean"><a href="./demo.html?imgur=rhnaa4G&amp;youtube=MLBSAVcC1TA&amp;preset=2" target="_blank"><img src="img/2jbuH1m.png" alt="demo #2"/></a></td>
+		<td class="comp clean"><a href="./demo.html?imgur=cXtZG7w&amp;youtube=ioQnaB1ijtk" target="_blank"><img src="img/WbYgwFv.png" alt="demo #3"/></a></td>
+		<td class="comp clean small"></td>
+	</tr>
+	</table>
+	<h2>browser compatibility (results coming soon)</h2>
+	<p>
+	<table class="compatibility" id="compTable" cellspacing="7">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>PC</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+	<tr>
+		<td class="declaration">0.1.2 (unreleased)</td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+	</tr>
+	<tr>
+		<td class="declaration">0.1.1</td>
+		<td class="comp test" colspan="17">untested pre-release</td>
+	</tr>
+	<tr>
+		<td class="declaration">0.1</td>
+		<td class="comp test" colspan="17">untested pre-release</td>
+	</tr>
+	</table>
+	</p>
+	<p>
+	<table class="compatibility wide" cellspacing="5">
+		<col />
+		<col span="3" />
+		<col span="3" />
+		<col span="3" />
+		<col span="3" />
+		<col span="3" />
+		<col span="3" />
+
+	<tr class="compheader">
+		<th rowspan="2">Mobile</th>
+		<th>Opera Mobile</th>
+		<th>Safari</th>
+		<th>Android 2</th>
+		<th>Android 3/4</th>
+		<th>Chrome</th>
+		<th>Dolphin</th>
+		<th>Black<wbr>Berry</th>
+		<th>Symbian</th>
+		<th>Tizen</th>
+		<th>Palm</th>
+		<th>MeeGo</th>
+		<th>UC</th>
+		<th>QQ</th>
+		<th>Firefox</th>
+		<th>IE9</th>
+		<th>IE10</th>
+	</tr>
+	<tr class="compheader">
+		<th>Presto</th>
+		<th colspan="12">WebKit</th>
+		<th>Gecko</th>
+		<th colspan="2">Trident</th>
+	</tr>
+	<tr>
+		<td class="declaration">0.1.2 (unreleased)</td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+		<td class="comp test"></td>
+	</tr>
+	<tr>
+		<td class="declaration">0.1.1</td>
+		<td class="comp test" colspan="16">untested pre-release</td>
+	</tr>
+	<tr>
+		<td class="declaration">0.1</td>
+		<td class="comp test" colspan="16">untested pre-release</td>
+	</tr>
+	</table>
 	</p>
 	<h2>for contributors</h2>
 	<p>
@@ -40,6 +180,7 @@
 		<li>alternative way of bluring the background (current bluring algorithm is about 200 lines...)</li>
 		<li>testing! :)</li>
 	</ul>
+	<h2>&nbsp;</h2>
 </div>
 </body>
 </html>
