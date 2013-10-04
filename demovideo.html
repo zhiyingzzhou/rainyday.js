@@ -24,6 +24,10 @@
 		</style>
 		<script src="rainyday.js"></script>
 		<script>
+
+			function getURLParameter(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,''])[1].replace(/\+/g, '%20'))||null;
+			}
  			function demo() {
 				
 				var testCanvas = document.createElement('canvas');
@@ -50,7 +54,14 @@
 				var setupEngine = function(){
 					if (window.engine) return;
 					
-	    			var engine = new RainyDay(document.getElementById('canvas'),testCanvas, 896, 504, 1, getURLParameter("blur") || 20);
+	    			var engine = new RainyDay({
+						element: testCanvas,
+						blur: getURLParameter("blur"),
+						opacity: 1,
+						fps: 30,
+						speed: 30,
+						autoHide: false
+					});
 					window.engine = engine; //for debugging
 
 					var preset = getURLParameter("preset") || 3;

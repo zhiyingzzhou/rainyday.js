@@ -1,6 +1,6 @@
 /**
  * Defines a new instance of the rainyday.js.
- * @param element DOM id of the image element used as background image
+ * @param element DOM id of the image element or a video/canvas element used as background image
  * @param opacity opacity attribute value of the glass canvas (default: 1)
  * @param blur blur radius (default: 10)
  * @param fps desired fps for animation
@@ -8,15 +8,18 @@
  */
 
 function RainyDay(options) {
-	this.img = document.getElementById(options.element);
+	if (typeof options.element === "string"){
+		options.element = document.getElementById(options.element);
+	}
+	this.img = options.element;
 	this.opacity = options.opacity ? options.opacity : 1;
 	this.blurRadius = options.blur ? options.blur : 10;
-	this.w = this.img.clientWidth;
-	this.h = this.img.clientHeight;
+	this.w = this.img.clientWidth || this.img.width;
+	this.h = this.img.clientHeight || this.img.height;
 	//Create a canvas element for drops
 	this.canvas = this.prepareCanvas(this.img, options.autoHide);
 	// draw and blur the background image
-	this.prepareBackground(this.img.clientWidth, this.img.clientHeight);
+	this.prepareBackground(this.w, this.h);
 
 	// create mask
 	this.prepareMask();
@@ -66,8 +69,8 @@ function RainyDay(options) {
 RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 	var canvas = document.createElement('canvas');
 	canvas.style.position = 'absolute';
-	canvas.width = element.clientWidth;
-	canvas.height = element.clientHeight;
+	canvas.width = element.clientWidth || element.width;
+	canvas.height = element.clientHeight || element.height;
 	canvas.style.left = element.offsetLeft;
 	canvas.style.top = element.offsetTop;
 	document.getElementsByTagName('body')[0].appendChild(canvas);
@@ -88,11 +91,13 @@ RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 };
 
 function checkSize(canvas, element) {
-	if (canvas.style.width !== element.clientWidth) {
-		canvas.style.width = element.clientWidth;
+	var elementWidth = element.clientWidth || element.width,
+		elementHeight = element.clientHeight || element.height;
+	if (canvas.style.width !== elementWidth) {
+		canvas.style.width = elementWidth;
 	}
-	if (canvas.style.height !== element.clientHeight) {
-		canvas.style.height = element.clientHeight;
+	if (canvas.style.height !== elementHeight) {
+		canvas.style.height = elementHeight;
 	}
 	if (canvas.style.left !== element.offsetLeft) {
 		canvas.style.left = element.offsetLeft;
