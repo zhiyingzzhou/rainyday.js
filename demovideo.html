@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Rainy JS Demo</title>
+		<style media="screen">
+			body {
+				overflow-y: hidden;
+			}
+
+			#parent {
+				width: 100%;
+				height: 100%;
+				margin: 0 auto;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+			}
+
+			#parent img {
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+		<script src="rainyday.js"></script>
+		<script>
+ 			function demo() {
+				
+				var testCanvas = document.createElement('canvas');
+				testCanvas.width = 896;
+				testCanvas.height = 504;
+
+				testCanvas.id = 'testCanvas';
+				testCanvas.style.display = "none";
+
+				setTimeout(function drawThing(){
+					testCanvas.getContext('2d').drawImage(video,0,0,960,640);
+					if(window.engine){
+						engine.prepareBackground(960,640);
+						engine.prepareReflections();
+						engine.stoppedDrops.forEach(function(x){
+							x.draw()
+						});
+					}
+					setTimeout(drawThing,1000/24);
+				},1000/24); //Request animation frame is not used because the movie is 24fps, we dont need 60.
+
+				document.body.appendChild(testCanvas);
+
+				var setupEngine = function(){
+					if (window.engine) return;
+					
+	    			var engine = new RainyDay(document.getElementById('canvas'),testCanvas, 896, 504, 1, getURLParameter("blur") || 20);
+					window.engine = engine; //for debugging
+
+					var preset = getURLParameter("preset") || 3;
+					if (preset == 1) {
+						engine.gravity = engine.GRAVITY_NON_LINEAR;
+						engine.trail = engine.TRAIL_DROPS;
+						engine.rain([ engine.preset(3, 3, 0.88), engine.preset(5, 5, 0.9), engine.preset(6, 2, 1) ], 100);
+					} else if (preset == 2) {
+						engine.gravity = engine.GRAVITY_NON_LINEAR;
+							engine.trail = engine.TRAIL_DROPS;
+							engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
+						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
+					} else if (preset == 3) {
+						// engine.gravity = engine.GRAVITY_NON_LINEAR;
+						engine.reflection = engine.REFLECTION_MINIATURE;
+							engine.trail = engine.TRAIL_DROPS;
+							engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
+						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
+					}
+				}
+				var video = document.getElementById('video');
+				video.addEventListener('play',setupEngine);
+				video.play();
+ 			}
+		</script>
+	</head>
+	<body onload="demo();">
+		<div id="sound" style="z-index: -1;"></div>
+		<video id="video" src="movie.ogv" controls="true"></video>
+		<canvas id="canvas"></canvas>
+		<div id="parent">
+			<img id="background" alt="background" src="" />
+		</div>
+	</body>
+</html>

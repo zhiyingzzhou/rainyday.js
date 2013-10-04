@@ -280,7 +280,7 @@ RainyDay.prototype.clearDrop = function(drop, force) {
 		var index = this.drops.indexOf(drop);
 		if (index >= 0) {
 			this.drops.splice(index, 1);
-		else{
+		}else{
 			index = this.stoppedDrops.indexOf(drop);
 			if (index >= 0){
 				this.stoppedDrops.splice(index, 1);
