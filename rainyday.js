@@ -101,10 +101,12 @@ function checkSize(canvas, element) {
 RainyDay.prototype.animateDrops = function() {
 	var raf = window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
-		window.mozRequestAnimationFrame ||
-			function(callback) {
-				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
+		window.mozRequestAnimationFrame;
+	if (!raf) {
+		raf = function(callback) {
+			window.setTimeout(callback, 1000 / this.VARIABLE_FPS);
 		};
+	}
 	if (this.addDropCallback) {
 		this.addDropCallback();
 	}
@@ -288,7 +290,7 @@ Drop.prototype.draw = function() {
 	this.context.beginPath();
 
 	var orgR = this.r;
-	this.r = 0.9 * this.r;
+	this.r = 0.95 * this.r;
 	if (this.r < 3) {
 		this.context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
 		this.context.closePath();
