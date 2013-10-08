@@ -104,7 +104,7 @@ RainyDay.prototype.animateDrops = function() {
 		window.mozRequestAnimationFrame ||
 			function(callback) {
 				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
-			};
+		};
 	if (this.addDropCallback) {
 		this.addDropCallback();
 	}
@@ -294,13 +294,13 @@ Drop.prototype.draw = function() {
 		this.colliding = null;
 
 		var randomizer = (Math.random() + 3);
-		var yr = 1 + 0.05 *this.yspeed;
+		var yr = 1 + 0.05 * this.yspeed;
 		this.context.moveTo(this.x - this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
 	} else {
 		var randomizer = (Math.random() + 3);
-		var yr = 1 + 0.05 *this.yspeed;
+		var yr = 1 + 0.05 * this.yspeed;
 		this.context.moveTo(this.x - this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
@@ -387,7 +387,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
 	if (y < 0 || x < 0) {
 		return;
 	}
-	this.context.drawImage(this.img, (x * this.img.width) / this.w, (y * this.img.height) / this.h, drop.r, 2, x, y, drop.r, 2);
+	this.context.drawImage(this.img, x, y, drop.r, 2, x, y, drop.r, 2);
 };
 
 /**
@@ -540,6 +540,7 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
 	this.clearDrop(lower);
 	// force stopping the second drop
 	this.clearDrop(higher, true);
+	this.matrix.remove(higher);
 	lower.draw();
 
 	lower.colliding = higher;
@@ -915,6 +916,14 @@ CollisionMatrix.prototype.addAll = function(to, x, y) {
 		}
 	}
 	return to;
+};
+
+/**
+ * Removed the drop from its current position
+ * @param drop to be removed
+ */
+CollisionMatrix.prototype.remove = function(drop) {
+	this.matrix[drop.gmx][drop.gmy].remove(drop);
 };
 
 /**
