@@ -878,6 +878,9 @@ CollisionMatrix.prototype.update = function(drop, forceDelete) {
 
 		drop.gmx = Math.floor(drop.x / this.resolution);
 		drop.gmy = Math.floor(drop.y / this.resolution);
+		if (!this.matrix[drop.gmx] || !this.matrix[drop.gmx][drop.gmy]) {
+			return null;
+		}
 		this.matrix[drop.gmx][drop.gmy].add(drop);
 
 		var collisions = this.collisions(drop);
@@ -888,6 +891,10 @@ CollisionMatrix.prototype.update = function(drop, forceDelete) {
 		drop.gid = Math.random().toString(36).substr(2, 9);
 		drop.gmx = Math.floor(drop.x / this.resolution);
 		drop.gmy = Math.floor(drop.y / this.resolution);
+		if (!this.matrix[drop.gmx] || !this.matrix[drop.gmx][drop.gmy]) {
+			return null;
+		}
+
 		this.matrix[drop.gmx][drop.gmy].add(drop);
 	}
 	return null;
