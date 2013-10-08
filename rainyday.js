@@ -287,20 +287,23 @@ Drop.prototype.draw = function() {
 	this.context.save();
 	this.context.beginPath();
 
-	if (this.colliding) {
+	if (this.r < 3) {
+		this.context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
+		this.context.closePath();
+	} else if (this.colliding) {
 		var collider = this.colliding;
 		this.r = 1.001 * (this.r > collider.r ? this.r : collider.r);
 		this.x += (collider.x - this.x);
 		this.colliding = null;
 
 		var randomizer = (Math.random() + 3);
-		var yr = 1 + 0.05 * this.yspeed;
+		var yr = 1 + 0.1 * this.yspeed;
 		this.context.moveTo(this.x - this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
 	} else {
 		var randomizer = (Math.random() + 3);
-		var yr = 1 + 0.05 * this.yspeed;
+		var yr = 1 + 0.1 * this.yspeed;
 		this.context.moveTo(this.x - this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
@@ -371,7 +374,7 @@ RainyDay.prototype.TRAIL_NONE = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.TRAIL_DROPS = function(drop) {
-	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 10 * drop.r) {
+	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 100 * drop.r) {
 		drop.trail_y = drop.y;
 		this.putDrop(new Drop(this, drop.x, drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
 	}
