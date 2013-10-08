@@ -383,7 +383,7 @@ RainyDay.prototype.TRAIL_NONE = function(drop) {
 RainyDay.prototype.TRAIL_DROPS = function(drop) {
 	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 100 * drop.r) {
 		drop.trail_y = drop.y;
-		this.putDrop(new Drop(this, drop.x, drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
+		this.putDrop(new Drop(this, drop.x + (Math.random() * 2 - 1) * Math.random(), drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
 	}
 };
 
