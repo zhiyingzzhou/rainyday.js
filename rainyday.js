@@ -287,6 +287,8 @@ Drop.prototype.draw = function() {
 	this.context.save();
 	this.context.beginPath();
 
+	var orgR = this.r;
+	this.r = 0.9 * this.r;
 	if (this.r < 3) {
 		this.context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
 		this.context.closePath();
@@ -314,6 +316,8 @@ Drop.prototype.draw = function() {
 
 	this.context.clip();
 
+	this.r = orgR;
+
 	if (this.rainyday.reflection) {
 		this.rainyday.reflection(this);
 	}
@@ -327,7 +331,7 @@ Drop.prototype.draw = function() {
  * @returns true if the animation is stopped
  */
 Drop.prototype.clear = function(force) {
-	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 1, 2 * this.r + 2, 2 * this.r + 2);
+	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 2, 2 * this.r + 2, 2 * this.r + 2);
 	if (force) {
 		// forced
 		this.terminate = true;
@@ -388,7 +392,7 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
  * @param drop raindrop object
  */
 RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
-	var y = drop.y - drop.r - 2;
+	var y = drop.y - drop.r - 3;
 	var x = drop.x - drop.r / 2 + (Math.random() * 2);
 	if (y < 0 || x < 0) {
 		return;
@@ -506,10 +510,10 @@ RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
 		// coordinates of source image
 		sx, sy, sw, sh,
 		// destination
-		drop.x - 2 * drop.r,
-		drop.y - 2 * drop.r,
-		drop.r * 4,
-		drop.r * 4);
+		drop.x - 1.1 * drop.r,
+		drop.y - 1.1 * drop.r,
+		drop.r * 2,
+		drop.r * 2);
 };
 
 /**
