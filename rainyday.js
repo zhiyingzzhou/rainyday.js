@@ -296,17 +296,20 @@ Drop.prototype.draw = function() {
 		this.x += (collider.x - this.x);
 		this.colliding = null;
 
-		var randomizer = (Math.random() + 3);
+		var randomizer = 1;
+		var yr = 1 + 0.1 * this.yspeed;
+		this.context.moveTo(this.x - this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
+	} else if (this.yspeed > 2) {
+		var randomizer = 1;
 		var yr = 1 + 0.1 * this.yspeed;
 		this.context.moveTo(this.x - this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
 		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
 	} else {
-		var randomizer = (Math.random() + 3);
-		var yr = 1 + 0.1 * this.yspeed;
-		this.context.moveTo(this.x - this.r / yr, this.y);
-		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
-		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
+		this.context.arc(this.x, this.y, this.r * 0.9, 0, Math.PI * 2, true);
+		this.context.closePath();
 	}
 
 	this.context.clip();
@@ -324,7 +327,7 @@ Drop.prototype.draw = function() {
  * @returns true if the animation is stopped
  */
 Drop.prototype.clear = function(force) {
-	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 1, 2 * this.r + 2, 2 * this.r + 2);
+	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 5, 2 * this.r + 2, 2 * this.r + 2);
 	if (force) {
 		// forced
 		this.terminate = true;
@@ -503,10 +506,10 @@ RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
 		// coordinates of source image
 		sx, sy, sw, sh,
 		// destination
-		drop.x - drop.r,
-		drop.y - drop.r,
-		drop.r * 2,
-		drop.r * 2);
+		drop.x - 2 * drop.r,
+		drop.y - 2 * drop.r,
+		drop.r * 4,
+		drop.r * 4);
 };
 
 /**
