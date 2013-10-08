@@ -327,7 +327,7 @@ Drop.prototype.draw = function() {
  * @returns true if the animation is stopped
  */
 Drop.prototype.clear = function(force) {
-	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 5, 2 * this.r + 2, 2 * this.r + 2);
+	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 1, 2 * this.r + 2, 2 * this.r + 2);
 	if (force) {
 		// forced
 		this.terminate = true;
