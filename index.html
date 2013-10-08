@@ -5,6 +5,26 @@
 	<title>rainyday.js</title>
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,600,800|Source+Code+Pro"/>
 	<link rel="stylesheet" type="text/css" href="./css/site.css"/>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['version', 'size (bytes)'],
+          ['0.1', 	7637],
+          ['0.1.1',	9304],
+          ['0.1.2 (unreleased)',	14238]
+        ]);
+
+        var options = {
+          title: ''
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('size_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 </head>
 <body>
 <div id="header">
@@ -44,32 +64,36 @@
 		<td class="comp clean small"></td>
 	</tr>
 	</table>
-	<h2>browser compatibility (results coming soon)</h2>
+	<h2>browser compatibility</h2>
 	<p>
 	<table class="compatibility" id="compTable" cellspacing="7">
 	<col />
 	<col span="3" class="IE" />
 	<col span="2" class="FF" />
-	<col span="1" class="Saf" />
-	<col span="3" class="Chrome" />
-	<col span="3" class="Op" />
-	<col span="1" class="Rest" />
+	<col span="2" class="Saf" />
+	<col span="4" class="Chrome" />
+	<col span="4" class="Op" />
+	<col span="2" class="Rest" />
 
 	<tr class="compheader">
-		<th>PC</th>
+		<th></th>
 		<th>IE8 and below</th>
 		<th>IE9</th>
 		<th>IE10</th>
 		<th>FF 23</th>
 		<th>FF 24</th>
-		<th>Saf 5.1 Win</th>
+		<th>Safari 5.1</th>
+		<th>Safari mobile</th>
 		<th>Chrome 28</th>
 		<th>Chrome 29</th>
 		<th>Chrome 30</th>
+		<th>Chrome mobile</th>
 		<th>Opera 11.60</th>
 		<th>Opera 12.00</th>
 		<th>Opera 12.16</th>
+		<th>Opera mobile</th>
 		<th>Konqueror 4.10.5</th>
+		<th>Android 4</th>
 	</tr>
 	<tr>
 		<td class="declaration">0.1.2 (unreleased)</td>
@@ -79,87 +103,31 @@
 		<td class="comp buggy">buggy</td>
 		<td class="comp yes">yes</td>
 		<td class="comp severebug">security issue</td>
+		<td class="comp test"></td>
+		<td class="comp yes">yes</td>
 		<td class="comp yes">yes</td>
 		<td class="comp yes">yes</td>
 		<td class="comp yes">yes</td>
 		<td class="comp test"></td>
 		<td class="comp test"></td>
 		<td class="comp severebug">blur issues</td>
+		<td class="comp test"></td>
 		<td class="comp no">no</td>
+		<td class="comp test"></td>
 	</tr>
 	<tr>
 		<td class="declaration">0.1.1</td>
-		<td class="comp test" colspan="13">untested pre-release</td>
+		<td class="comp test" colspan="17">untested pre-release</td>
 	</tr>
 	<tr>
 		<td class="declaration">0.1</td>
-		<td class="comp test" colspan="13">untested pre-release</td>
+		<td class="comp test" colspan="17">untested pre-release</td>
 	</tr>
 	</table>
 	</p>
+	<h2>script size</h2>
 	<p>
-	<table class="compatibility wide" cellspacing="5">
-		<col />
-		<col span="3" />
-		<col span="3" />
-		<col span="3" />
-		<col span="3" />
-		<col span="3" />
-		<col span="3" />
-
-	<tr class="compheader">
-		<th rowspan="2">Mobile</th>
-		<th>Opera Mobile</th>
-		<th>Safari</th>
-		<th>Android 2</th>
-		<th>Android 3/4</th>
-		<th>Chrome</th>
-		<th>Dolphin</th>
-		<th>Black<wbr>Berry</th>
-		<th>Symbian</th>
-		<th>Tizen</th>
-		<th>Palm</th>
-		<th>MeeGo</th>
-		<th>UC</th>
-		<th>QQ</th>
-		<th>Firefox</th>
-		<th>IE9</th>
-		<th>IE10</th>
-	</tr>
-	<tr class="compheader">
-		<th>Presto</th>
-		<th colspan="12">WebKit</th>
-		<th>Gecko</th>
-		<th colspan="2">Trident</th>
-	</tr>
-	<tr>
-		<td class="declaration">0.1.2 (unreleased)</td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp yes">yes</td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-		<td class="comp test"></td>
-	</tr>
-	<tr>
-		<td class="declaration">0.1.1</td>
-		<td class="comp test" colspan="16">untested pre-release</td>
-	</tr>
-	<tr>
-		<td class="declaration">0.1</td>
-		<td class="comp test" colspan="16">untested pre-release</td>
-	</tr>
-	</table>
+		<div id="size_chart_div"></div>
 	</p>
 	<h2>for contributors</h2>
 	<p>
