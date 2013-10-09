@@ -7,16 +7,16 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         banner: '/*!\n' +
-                ' * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author.name %>\n' +
-                ' * Copyright (c) <%= grunt.template.today("yyyy") %>\n' +
+                ' * <%= pkg.name %> v<%= pkg.version %> - <%= pkg.homepage %>\n' +
+                ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
                 ' * Licensed under the <%= pkg.license %> license\n' +
                 ' */\n',
 
-        jshint:{
+        jshint: {
             files: ['*.js'],
-            options:{
+            options: {
                 'browser': true,
-                'node': true,
+                'node': false,
                 /*'camelcase': true,*/
                 'curly': true,
                 'eqeqeq': true,
@@ -30,10 +30,10 @@ module.exports = function (grunt) {
                 'lastsemic': true,
                 'loopfunc': true,
                 'noarg': true,
+                'noempty': true,
                 'newcap': true,
                 'plusplus': false,
                 'quotmark': 'single',
-                'regexp': true,
                 'shadow': true,
                 'smarttabs': false,
                 'strict': false,
@@ -44,17 +44,17 @@ module.exports = function (grunt) {
                 ignores: ['bower_components', 'node_modules']
             }
         },
-        uglify:{
-            dist:{
+        uglify: {
+            options: {
+                banner: '<%= banner %>',
+                compress: true,
+                mangle: true,
+                preserveComments: false,
+                report: 'min'
+            },
+            dist: {
                 files: {
                     'dist/rainyday.min.js': ['rainyday.js']
-                },
-                options: {
-                    banner: '<%= banner %>',
-                    compress: true,
-                    mangle: true,
-                    preserveComments: false,
-                    report: 'min'
                 }
             }
         }
