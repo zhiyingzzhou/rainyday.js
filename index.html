@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta charset="utf-8">
 	<title>rainyday.js</title>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,300italic,600,800|Source+Code+Pro"/>
-	<link rel="stylesheet" type="text/css" href="css/site.css"/>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
+	<link rel="stylesheet" href="css/site.css"/>
+	<script src="http://www.google.com/jsapi"></script>
+	<script>
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		google.setOnLoadCallback(drawChart);
 		function drawChart() {
@@ -43,88 +43,88 @@
 	</p>
 	<h2>gallery</h2>
 
-	<table class="compatibility" cellspacing="7">
-	<col span="5" class="Rest"/>
-	<tr class="compheader">
-		<th>Version</th>
-		<th colspan="4">Demos</th>
-	</tr>
-	<tr>
-		<td class="declaration">0.1.2 (unreleased)</td>
-		<td class="comp clean"><a href="./master.html?imgur=nH2ziAk&amp;preset=3&amp;novideo=1&amp;youtube=8zFi--dz4zg" target="_blank"><img src="img/f6RHGQt.png" alt="new trailing method implementation" width="200" height="100"/></a></td>
-		<td class="comp clean"><a href="./master.html?imgur=95Uy6op&amp;preset=3&amp;youtube=iTEEdfO8GCQ&amp;blur=9" target="_blank"><img src="img/nbsq0y7.png" alt="with video" width="200" height="100"/></a></td>
-		<td class="comp clean small"></td>
-
-	</tr>
-	<tr>
-		<td class="declaration">0.1.1</td>
-		<td class="comp clean"><a href="./demo.html?imgur=I2tZMAg&amp;youtube=Ftu5ZpAk8dM" target="_blank"><img src="img/IGnD12v.png" alt="demo #1" width="200" height="100"/></a></td>
-		<td class="comp clean"><a href="./demo.html?imgur=rhnaa4G&amp;youtube=MLBSAVcC1TA&amp;preset=2" target="_blank"><img src="img/2jbuH1m.png" alt="demo #2" width="200" height="100"/></a></td>
-		<td class="comp clean"><a href="./demo.html?imgur=cXtZG7w&amp;youtube=ioQnaB1ijtk" target="_blank"><img src="img/WbYgwFv.png" alt="demo #3" width="200" height="100"/></a></td>
-		<td class="comp clean small"></td>
-	</tr>
+	<table class="compatibility">
+		<col span="5" class="Rest"/>
+		<tr class="compheader">
+			<th>Version</th>
+			<th colspan="4">Demos</th>
+		</tr>
+		<tr>
+			<td class="declaration">0.1.2 (unreleased)</td>
+			<td class="comp clean"><a href="./master.html?imgur=nH2ziAk&amp;preset=3&amp;novideo=1&amp;youtube=8zFi--dz4zg" target="_blank"><img src="img/f6RHGQt.png" alt="new trailing method implementation" width="200" height="100"/></a></td>
+			<td class="comp clean"><a href="./master.html?imgur=95Uy6op&amp;preset=3&amp;youtube=iTEEdfO8GCQ&amp;blur=9" target="_blank"><img src="img/nbsq0y7.png" alt="with video" width="200" height="100"/></a></td>
+			<td class="comp clean small"></td>
+			<td class="comp clean small"></td>
+		</tr>
+		<tr>
+			<td class="declaration">0.1.1</td>
+			<td class="comp clean"><a href="./demo.html?imgur=I2tZMAg&amp;youtube=Ftu5ZpAk8dM" target="_blank"><img src="img/IGnD12v.png" alt="demo #1" width="200" height="100"/></a></td>
+			<td class="comp clean"><a href="./demo.html?imgur=rhnaa4G&amp;youtube=MLBSAVcC1TA&amp;preset=2" target="_blank"><img src="img/2jbuH1m.png" alt="demo #2" width="200" height="100"/></a></td>
+			<td class="comp clean"><a href="./demo.html?imgur=cXtZG7w&amp;youtube=ioQnaB1ijtk" target="_blank"><img src="img/WbYgwFv.png" alt="demo #3" width="200" height="100"/></a></td>
+			<td class="comp clean small"></td>
+		</tr>
 	</table>
 	<h2>browser compatibility</h2>
 
-	<table class="compatibility" cellspacing="7">
-	<col/>
-	<col span="3" class="IE"/>
-	<col span="2" class="FF"/>
-	<col span="1" class="Saf"/>
-	<col span="4" class="Chrome"/>
-	<col span="4" class="Op"/>
-	<col span="4" class="Rest"/>
+	<table class="compatibility">
+		<col/>
+		<col span="3" class="IE"/>
+		<col span="2" class="FF"/>
+		<col span="1" class="Saf"/>
+		<col span="4" class="Chrome"/>
+		<col span="4" class="Op"/>
+		<col span="4" class="Rest"/>
 
-	<tr class="compheader">
-		<th></th>
-		<th>IE8 and below</th>
-		<th>IE9</th>
-		<th>IE10</th>
-		<th>FF 23 and below</th>
-		<th>FF 24</th>
-		<th>Safari 5.1</th>
-		<th>Chrome 27 and below</th>
-		<th>Chrome 28</th>
-		<th>Chrome 29</th>
-		<th>Chrome 30</th>
-		<th>Opera 11.60</th>
-		<th>Opera 12.00</th>
-		<th>Opera 12.16</th>
-		<th>Opera mobile</th>
-		<th>Konqueror 4.10.5</th>
-		<th>Android 4</th>
-		<th>Chrome mobile</th>
-		<th>Safari mobile</th>
-	</tr>
-	<tr>
-		<td class="declaration">0.1.2 (unreleased)</td>
-		<td class="comp no"><a title="not supported">-</a></td>
-		<td class="comp test"><a title="not tested">?</a></td>
-		<td class="comp severebug"><a title="severe issues">-</a></td>
-		<td class="comp almost"><a title="supported with limited testing">+</a></td>
-		<td class="comp yes"><a title="supported">+</a></td>
-		<td class="comp severebug"><a title="severe issues">-</a></td>
-		<td class="comp almost"><a title="supported with limited testing">+</a></td>
-		<td class="comp yes"><a title="supported">+</a></td>
-		<td class="comp yes"><a title="supported">+</a></td>
-		<td class="comp yes"><a title="supported">+</a></td>		
-		<td class="comp test"><a title="not tested">?</a></td>
-		<td class="comp test"><a title="not tested">?</a></td>
-		<td class="comp severebug"><a title="severe issues">-</a></td>		
-		<td class="comp no"><a title="not supported">-</a></td>
-		<td class="comp test"><a title="not tested">?</a></td>
-		<td class="comp test"><a title="not tested">?</a></td>
-		<td class="comp yes"><a title="supported">+</a></td>
-		<td class="comp test"><a title="not tested">?</a></td>
-	</tr>
-	<tr>
-		<td class="declaration">0.1.1</td>
-		<td class="comp test" colspan="18">untested pre-release</td>
-	</tr>
-	<tr>
-		<td class="declaration">0.1</td>
-		<td class="comp test" colspan="18">untested pre-release</td>
-	</tr>
+		<tr class="compheader">
+			<th></th>
+			<th>IE8 and below</th>
+			<th>IE9</th>
+			<th>IE10</th>
+			<th>FF 23 and below</th>
+			<th>FF 24</th>
+			<th>Safari 5.1</th>
+			<th>Chrome 27 and below</th>
+			<th>Chrome 28</th>
+			<th>Chrome 29</th>
+			<th>Chrome 30</th>
+			<th>Opera 11.60</th>
+			<th>Opera 12.00</th>
+			<th>Opera 12.16</th>
+			<th>Opera mobile</th>
+			<th>Konqueror 4.10.5</th>
+			<th>Android 4</th>
+			<th>Chrome mobile</th>
+			<th>Safari mobile</th>
+		</tr>
+		<tr>
+			<td class="declaration">0.1.2 (unreleased)</td>
+			<td class="comp no"><a title="not supported">-</a></td>
+			<td class="comp test"><a title="not tested">?</a></td>
+			<td class="comp severebug"><a title="severe issues">-</a></td>
+			<td class="comp almost"><a title="supported with limited testing">+</a></td>
+			<td class="comp yes"><a title="supported">+</a></td>
+			<td class="comp severebug"><a title="severe issues">-</a></td>
+			<td class="comp almost"><a title="supported with limited testing">+</a></td>
+			<td class="comp yes"><a title="supported">+</a></td>
+			<td class="comp yes"><a title="supported">+</a></td>
+			<td class="comp yes"><a title="supported">+</a></td>		
+			<td class="comp test"><a title="not tested">?</a></td>
+			<td class="comp test"><a title="not tested">?</a></td>
+			<td class="comp severebug"><a title="severe issues">-</a></td>		
+			<td class="comp no"><a title="not supported">-</a></td>
+			<td class="comp test"><a title="not tested">?</a></td>
+			<td class="comp test"><a title="not tested">?</a></td>
+			<td class="comp yes"><a title="supported">+</a></td>
+			<td class="comp test"><a title="not tested">?</a></td>
+		</tr>
+		<tr>
+			<td class="declaration">0.1.1</td>
+			<td class="comp test" colspan="18">untested pre-release</td>
+		</tr>
+		<tr>
+			<td class="declaration">0.1</td>
+			<td class="comp test" colspan="18">untested pre-release</td>
+		</tr>
 	</table>
 
 	<h2>script size</h2>
