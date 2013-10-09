@@ -22,7 +22,7 @@
     "url": "https://github.com/maroslaw/rainyday.js/issues"
   },
   "scripts": {
-    "test": "grunt jshint"
+    "test": "grunt"
   },
   "dependencies": {},
   "devDependencies": {
