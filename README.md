@@ -1,3 +1,6 @@
+[![Dependency Status](https://gemnasium.com/maroslaw/rainyday.js.png)](https://gemnasium.com/maroslaw/rainyday.js)
+[![Build Status](https://travis-ci.org/maroslaw/rainyday.js.png)](https://travis-ci.org/maroslaw/rainyday.js)
+
 # rainyday.js
 
 A simple script for simulating raindrops falling on a glass surface.
