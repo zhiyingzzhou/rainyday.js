@@ -410,7 +410,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
 	if (y < 0 || x < 0) {
 		return;
 	}
-	this.context.drawImage(this.background, x, y, drop.r, 2, x, y, drop.r, 2);
+	this.context.drawImage(this.clearbackground, x, y, drop.r, 2, x, y, drop.r, 2);
 };
 
 /**
@@ -627,8 +627,16 @@ RainyDay.prototype.prepareBackground = function(width, height) {
 	this.background = document.createElement('canvas');
 	this.background.width = this.canvas.width;
 	this.background.height = this.canvas.height;
+	
+	this.clearbackground = document.createElement('canvas');
+	this.clearbackground.width = this.canvas.width;
+	this.clearbackground.height = this.canvas.height;
 
 	var context = this.background.getContext('2d');
+	context.clearRect(0, 0, width, height);
+	context.drawImage(this.img, 0, 0, width, height);
+	
+	context = this.clearbackground.getContext('2d');
 	context.clearRect(0, 0, width, height);
 	context.drawImage(this.img, 0, 0, width, height);
 
