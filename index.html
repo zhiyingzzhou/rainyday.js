@@ -3,28 +3,28 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>rainyday.js</title>
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,600,800|Source+Code+Pro"/>
-	<link rel="stylesheet" type="text/css" href="./css/site.css"/>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-      google.load('visualization', '1.0', {'packages':['corechart']});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['version', 'size (bytes)'],
-          ['0.1', 	7637],
-          ['0.1.1',	9304],
-          ['0.1.2 (unreleased)',	14238]
-        ]);
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,300italic,600,800|Source+Code+Pro"/>
+	<link rel="stylesheet" type="text/css" href="css/site.css"/>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load('visualization', '1.0', {'packages':['corechart']});
+		google.setOnLoadCallback(drawChart);
+		function drawChart() {
+			var data = google.visualization.arrayToDataTable([
+				['version', 'size (bytes)'],
+				['0.1',   7637],
+				['0.1.1', 9304],
+				['0.1.2 (unreleased)', 14238]
+			]);
 
-        var options = {
-          title: ''
-        };
+			var options = {
+				title: ''
+			};
 
-        var chart = new google.visualization.LineChart(document.getElementById('size_chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
+			var chart = new google.visualization.LineChart(document.getElementById('size_chart_div'));
+			chart.draw(data, options);
+		}
+	</script>
 </head>
 <body>
 <div id="header">
@@ -39,12 +39,12 @@
 		More about how things are done in the article <a href="http://flippinawesome.org/2013/09/23/creating-a-realistic-rain-effect-with-canvas-and-javascript/" target="_blank">here</a>.
 	</p>
 	<p>
-		There's also a <a href="http://reddit.com/r/rainydayjs" target="_blank">subreddit</a> for Q&A.
+		There's also a <a href="http://reddit.com/r/rainydayjs" target="_blank">subreddit</a> for Q&amp;A.
 	</p>
 	<h2>gallery</h2>
-	<p>
-	<table class="compatibility" id="compTable" cellspacing="7">
-	<col span="5" class="Rest" />
+
+	<table class="compatibility" cellspacing="7">
+	<col span="5" class="Rest"/>
 	<tr class="compheader">
 		<th>Version</th>
 		<th colspan="4">Demos</th>
@@ -65,15 +65,15 @@
 	</tr>
 	</table>
 	<h2>browser compatibility</h2>
-	<p>
-	<table class="compatibility" id="compTable" cellspacing="7">
-	<col />
-	<col span="3" class="IE" />
-	<col span="2" class="FF" />
-	<col span="1" class="Saf" />
-	<col span="4" class="Chrome" />
-	<col span="4" class="Op" />
-	<col span="4" class="Rest" />
+
+	<table class="compatibility" cellspacing="7">
+	<col/>
+	<col span="3" class="IE"/>
+	<col span="2" class="FF"/>
+	<col span="1" class="Saf"/>
+	<col span="4" class="Chrome"/>
+	<col span="4" class="Op"/>
+	<col span="4" class="Rest"/>
 
 	<tr class="compheader">
 		<th></th>
@@ -126,11 +126,10 @@
 		<td class="comp test" colspan="18">untested pre-release</td>
 	</tr>
 	</table>
-	</p>
+
 	<h2>script size</h2>
-	<p>
-		<div id="size_chart_div"></div>
-	</p>
+	<div id="size_chart_div"></div>
+
 	<h2>for contributors</h2>
 	<p>
 		<i>Any input from your side will be most welcome!</i>
