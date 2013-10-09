@@ -1,0 +1,35 @@
+{
+    "name":"rainyday.js",
+    "description":"Simulating raindrops falling on a window",
+    "version":"0.1.2",
+    "keywords":["raindrops"],
+    "author":{
+        "name":"Marek Brodziakt",
+        "email":"marek.brodziak@gmail.com"
+    },
+
+    "bugs":"https://github.com/maroslaw/rainyday.js/issues",
+    "license":{
+        "type":"GPLv2",
+        "url":"https://github.com/maroslaw/rainyday.js/blob/master/LICENSE.md"
+    },
+    "repositories":[
+        {
+            "type":"git",
+            "url":"git@github.com:maroslaw/rainyday.js.git"
+        }
+    ],
+    "dependencies":{
+    },
+    "devDependencies": {
+        "grunt-release": "latest",
+        "grunt-compare-size": "latest",
+        "grunt-contrib-watch": "latest",
+        "grunt-contrib-jshint": "latest",
+        "grunt-contrib-uglify": "latest",
+        "grunt-shell": "latest",
+        "grunt": "~0.4",
+        "bower": "latest"
+    },
+    "homepage":"https://github.com/maroslaw/rainyday.js"
+}
