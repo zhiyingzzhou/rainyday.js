@@ -21,6 +21,9 @@
   "bugs": {
     "url": "https://github.com/maroslaw/rainyday.js/issues"
   },
+  "scripts": {
+    "test": "grunt jshint"
+  },
   "dependencies": {},
   "devDependencies": {
     "bower": "~1.2.7",
