@@ -150,7 +150,7 @@ col[span="1"] {
 }
 
 .compheader {
-	background-color: #F2F3EF;
+	background-color: #f2f3ef;
 }
 
 .compheader th {
@@ -182,7 +182,7 @@ col[span="1"] {
 }
 
 .comp {
-	font-family: verdana,sans-serif;
+	font-family: verdana, sans-serif;
 	font-size: 95%;
 	text-transform: lowercase;
 	text-align: center;
@@ -191,17 +191,17 @@ col[span="1"] {
 }
 
 .yes {
-	background-color: #7EB000;
+	background-color: #7eb000;
 	color: #ffffff;
 }
 
 .almost {
-	background-color: #40A662;
+	background-color: #40a662;
 	color: #ffffff;
 }
 
 .incomplete {
-	color: #00882D;
+	color: #00882d;
 }
 
 .alternative {
@@ -212,38 +212,35 @@ col[span="1"] {
 	color: #006699;
 }
 
-.minimal {
-	color: #CB000F;
-}
-
+.minimal,
 .incorrect {
-	color: #CB000F;
+	color: #cb000f;
 }
 
 .toomany {
-	background-color: #CCE7D5;
+	background-color: #cce7d5;
 }
 
 .buggy {
-	background-color: #DA4C57;
+	background-color: #da4c57;
 	color: #ffffff;
 }
 
 .severebug {
-	background-color: #82000A;
+	background-color: #82000a;
 	color: #ffffff;
 }
 
 .no {
-	background-color: #FF0512;
+	background-color: #ff0512;
 	color: #ffffff;
 }
 
 .crash {
 	background-color: #535353;
+	color: #ffffff;
 	font-weight: bold;
 	text-transform: uppercase;
-	color: #ffffff;
 }
 
 .test {
@@ -252,7 +249,7 @@ col[span="1"] {
 }
 
 .clean {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 td pre {
