@@ -9,14 +9,14 @@
 
 function RainyDay(options) {
 	this.img = document.getElementById(options.element);
-	this.opacity = options.opacity ? options.opacity : 1;
-	this.blurRadius = options.blur ? options.blur : 10;
+	this.opacity = options.opacity || 1;
+	this.blurRadius = options.blur || 10;
 	this.w = this.img.clientWidth;
 	this.h = this.img.clientHeight;
 	//Create a canvas element for drops
 	this.canvas = this.prepareCanvas(this.img, options.autoHide);
 	// draw and blur the background image
-	this.prepareBackground(this.img.clientWidth, this.img.clientHeight);
+	this.prepareBackground(this.w, this.h);
 
 	// create the glass canvas
 	this.prepareGlass();
@@ -59,6 +59,12 @@ function RainyDay(options) {
 	this.collision = this.COLLISION_SIMPLE;
 }
 
+/**
+ * Create the main canvas over a given element
+ * @param element to place the canvas on top of
+ * @param autoHide determined whether to hide the canvas on mouse over
+ * @returns the canvas
+ */
 RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 	var canvas = document.createElement('canvas');
 	canvas.style.position = 'absolute';
@@ -83,6 +89,11 @@ RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 	return canvas;
 };
 
+/**
+ * Periodically check the size of the underlying element
+ * @param canvas the canvas
+ * @param element the element below
+ */
 function checkSize(canvas, element) {
 	if (canvas.style.width !== element.clientWidth) {
 		canvas.style.width = element.clientWidth;
@@ -399,7 +410,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
 	if (y < 0 || x < 0) {
 		return;
 	}
-	this.context.drawImage(this.img, x, y, drop.r, 2, x, y, drop.r, 2);
+	this.context.drawImage(this.background, x, y, drop.r, 2, x, y, drop.r, 2);
 };
 
 /**
@@ -625,22 +636,20 @@ RainyDay.prototype.prepareBackground = function(width, height) {
 		return;
 	}
 
-	this.stackBlurCanvasRGB(0, 0, width, height, this.blurRadius);
+	this.stackBlurCanvasRGB(width, height, this.blurRadius);
 };
 
 /**
  * Implements the Stack Blur Algorithm (@see http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html).
- * @param top_x x of top-left corner of the blurred rectangle
- * @param top_y y of top-left corner of the blurred rectangle
  * @param width width of the canvas
  * @param height height of the canvas
  * @param radius blur radius
  */
-RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, radius) {
+RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 	radius |= 0;
 
 	var context = this.background.getContext('2d');
-	var imageData = context.getImageData(top_x, top_y, width, height);
+	var imageData = context.getImageData(0, 0, width, height);
 
 	var pixels = imageData.data;
 
@@ -828,7 +837,7 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 		}
 	}
 
-	context.putImageData(imageData, top_x, top_y);
+	context.putImageData(imageData, 0, 0);
 
 };
 
