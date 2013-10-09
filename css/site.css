@@ -94,30 +94,30 @@ figure {
 
 /* COMPATIBILITY TABLES */
 
-table.compatibility {
+.compatibility {
     margin-left: 40px;
     margin-right: 40px;
     border-spacing: 0.1em;
     position: relative;
 }
 
-table.compatibility caption {
+.compatibility caption {
 	padding: 10px 0;
 	text-align: left;
 }
 
-table.compatibility caption select {
+.compatibility caption select {
 	width: 221px;
 	margin-left: 5px;
 	margin-right: 7px;
 }
 
-tr {
-	width: 100%;
+.compatibility td {
+	vertical-align: top;
 }
 
-table.compatibility td {
-	vertical-align: top;
+tr {
+	width: 100%;
 }
 
 col {
@@ -137,48 +137,38 @@ col[span="3"] {
 }
 
 col[span="2"] {
-	width: 6em;	
+	width: 6em;
 }
 
 col[span="1"] {
 	width: 12em;
 }
 
-tr.compheader {
+.compheader {
 	background-color: #F2F3EF;
 }
 
-tr.compheader th {
+.compheader th {
 	font-weight: normal;
 	font-size: 80%;
 	line-height: 150%;
 	color: #666666;
 }
 
-tr.compheader th:first-child {
+.compheader th:first-child {
 	text-align: right;
 	padding: 1em;
 }
 
-tr.compheader th[colspan] {
+.compheader th[colspan] {
 	text-align: center;
 }
 
-tr.compheader:last-child th {
+.compheader:last-child th {
 	border: none;
 }
 
-td.header {
-	background-color: #F2F3EF;
-	padding: 0.3em;
-}
-
-td.header h3,td.header h4 {
-	margin-top: 0.5em;
-	text-align: center;
-}
-
-td.declaration {
+.declaration {
 	background-color: #F2F3EF;
 	text-align: right;
 	padding-right: 10px;
@@ -186,7 +176,7 @@ td.declaration {
 	width: 100px;
 }
 
-td.comp {
+.comp {
 	font-family: verdana,sans-serif;
 	font-size: 95%;
 	text-transform: lowercase;
@@ -195,72 +185,68 @@ td.comp {
 	vertical-align: middle !important;
 }
 
-table.keepCaps td.comp {
-	text-transform: none;
-}
-
-td.yes {
+.yes {
 	background-color: #7EB000;
 	color: #ffffff;
 }
 
-td.almost {
+.almost {
 	background-color: #40A662;
 	color: #ffffff;
 }
 
-td.incomplete {
+.incomplete {
 	color: #00882D;
 }
 
-td.alternative {
+.alternative {
 	color: #666666;
 }
 
-td.untestable {
+.untestable {
 	color: #006699;
 }
 
-td.minimal {
+.minimal {
 	color: #CB000F;
 }
 
-td.incorrect {
+.incorrect {
 	color: #CB000F;
 }
 
-td.toomany {
+.toomany {
 	background-color: #CCE7D5;
 }
 
-td.buggy {
+.buggy {
 	background-color: #DA4C57;
 	color: #ffffff;
 }
 
-td.severebug {
+.severebug {
 	background-color: #82000A;
 	color: #ffffff;
 }
 
-td.no {
+.no {
 	background-color: #FF0512;
 	color: #ffffff;
 }
 
-td.crash {
+.crash {
 	background-color: #535353;
 	font-weight: bold;
 	text-transform: uppercase;
 	color: #ffffff;
 }
 
-td.test {
+.test {
 	background-color: #bbbbbb;
 	color: #ffffff;
 }
 
-td.clean {
+.clean {
 	background-color: #FFFFFF;
 }
 
@@ -272,7 +258,8 @@ td pre + p {
 	margin-top: 2px;
 }
 
-td th,td td {
+td th,
+td td {
 	padding: 1px !important;
 	vertical-align: top;
 	color: #666666;
@@ -282,4 +269,3 @@ td th {
 	text-align: left !important;
 	width: 8em;
 }
-
