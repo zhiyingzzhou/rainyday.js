@@ -7,8 +7,8 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         banner: '/*!\n' +
-                ' * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author.name %>\n' +
-                ' * Copyright (c) <%= grunt.template.today("yyyy") %>\n' +
+                ' * <%= pkg.name %> v<%= pkg.version %> - <%= pkg.homepage %>\n' +
+                ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
                 ' * Licensed under the <%= pkg.license %> license\n' +
                 ' */\n',
 
