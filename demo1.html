@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<title>rainy.js demo1</title>
 		<link rel="shortcut icon" href="favicon.ico">
 		<style media="screen">
 			img { display: none; }
@@ -11,7 +12,7 @@
 		<script src="dist/rainyday.0.1.1.min.js"></script>
 		<script>
 			function demo() {
-				var engine = new RainyDay('canvas','background', window.innerWidth, window.innerHeight);
+				var engine = new RainyDay('canvas', 'background', window.innerWidth, window.innerHeight);
 				engine.gravity = engine.GRAVITY_NON_LINEAR;
 				engine.trail = engine.TRAIL_DROPS;
 
@@ -28,7 +29,7 @@
 		</script>
 	</head>
 	<body onload="demo();">
-		<img id="background" src="./img/night.jpg" alt="background" />
+		<img id="background" src="img/night.jpg" alt="background" />
 		<div id="cholder">
 			<canvas id="canvas"></canvas>
 		</div>
