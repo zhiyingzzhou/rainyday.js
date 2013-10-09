@@ -374,7 +374,7 @@ Drop.prototype.animate = function() {
  * TRAIL function: no trail at all
  * @param drop raindrop object
  */
-RainyDay.prototype.TRAIL_NONE = function(drop) {
+RainyDay.prototype.TRAIL_NONE = function() {
 	// nothing going on here
 };
 
@@ -407,7 +407,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_NONE = function(drop) {
+RainyDay.prototype.GRAVITY_NONE = function() {
 	return true;
 };
 
@@ -477,7 +477,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
 
-	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0) {
+	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE !== 0) {
 		drop.xspeed += ((Math.random() * 2 - 1) * drop.yspeed * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
@@ -492,7 +492,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
  * REFLECTION function: no reflection at all
  * @param drop raindrop object
  */
-RainyDay.prototype.REFLECTION_NONE = function(drop) {
+RainyDay.prototype.REFLECTION_NONE = function() {
 	this.context.fillStyle = this.VARIABLE_FILL_STYLE;
 	this.context.fill();
 };
@@ -650,7 +650,6 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 		pr, pg, pb, rbs;
 
 	var div = radius + radius + 1;
-	var w4 = width << 2;
 	var widthMinus1 = width - 1;
 	var heightMinus1 = height - 1;
 	var radiusPlus1 = radius + 1;

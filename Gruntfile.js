@@ -3,29 +3,40 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        meta: {
-            banner: '/* <%= pkg.description %>, <%= pkg.version %> <%= pkg.homepage %>\n' +
-                'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>, <%= pkg.license.type %> license ' +
-                '<%= pkg.license.url %>*/\n'
-        },
+        banner: '/* <%= pkg.description %>, <%= pkg.version %> <%= pkg.homepage %>\n' +
+            'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>, <%= pkg.license.type %> license ' +
+            '<%= pkg.license.url %>*/\n',
+
         jshint:{
+            files: ['*.js'],
             options:{
-                curly:true,
-                eqeqeq:true,
-                forin:true,
-                indent:2,
-                latedef:false,
-                newcap:true,
-                noarg:true,
-                noempty:true,
-                white:false,
-                sub:true,
-                undef:true,
-                unused:true,
-                loopfunc:true,
-                expr:true,
-                evil:true,
-                eqnull:true
+                'browser': true,
+                'node': true,
+                /*'camelcase': true,*/
+                'curly': true,
+                'eqeqeq': true,
+                'eqnull': true,
+                'forin': true,
+                'immed': true,
+                'indent': 4,
+                /*'latedef': true,*/
+                'laxbreak': true,
+                'laxcomma': true,
+                'lastsemic': true,
+                'loopfunc': true,
+                'noarg': true,
+                'newcap': true,
+                'plusplus': false,
+                'quotmark': 'single',
+                'regexp': true,
+                'shadow': true,
+                'smarttabs': false,
+                'strict': false,
+                'sub': true,
+                'trailing': true,
+                'undef': true,
+                'unused': true,
+                ignores: ['bower_components', 'node_modules']
             }
         },
         uglify:{
@@ -34,7 +45,11 @@ module.exports = function (grunt) {
                     'dist/rainyday.min.js': ['rainyday.js']
                 },
                 options: {
-                    banner: '<%=meta.banner%>'
+                    banner: '<%= banner %>',
+                    compress: true,
+                    mangle: true,
+                    preserveComments: false,
+                    report: 'min'
                 }
             }
         },
@@ -48,7 +63,6 @@ module.exports = function (grunt) {
     // load tasks
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-shell');
 
     // Default task(s).
     grunt.registerTask('default', ['jshint', 'uglify']);

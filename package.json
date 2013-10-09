@@ -1,35 +1,35 @@
 {
-    "name":"rainyday.js",
-    "description":"Simulating raindrops falling on a window",
-    "version":"0.1.2",
-    "keywords":["raindrops"],
-    "author":{
-        "name":"Marek Brodziakt",
-        "email":"marek.brodziak@gmail.com"
-    },
-
-    "bugs":"https://github.com/maroslaw/rainyday.js/issues",
-    "license":{
-        "type":"GPLv2",
-        "url":"https://github.com/maroslaw/rainyday.js/blob/master/LICENSE.md"
-    },
-    "repositories":[
-        {
-            "type":"git",
-            "url":"git@github.com:maroslaw/rainyday.js.git"
-        }
-    ],
-    "dependencies":{
-    },
-    "devDependencies": {
-        "grunt-release": "latest",
-        "grunt-compare-size": "latest",
-        "grunt-contrib-watch": "latest",
-        "grunt-contrib-jshint": "latest",
-        "grunt-contrib-uglify": "latest",
-        "grunt-shell": "latest",
-        "grunt": "~0.4",
-        "bower": "latest"
-    },
-    "homepage":"https://github.com/maroslaw/rainyday.js"
+  "name": "rainyday.js",
+  "description": "Simulating raindrops falling on a window",
+  "version": "0.1.2",
+  "keywords": [
+    "raindrops"
+  ],
+  "author":{
+    "name": "Marek Brodziakt",
+    "email": "marek.brodziak@gmail.com"
+  },
+  "license":{
+    "type": "GPLv2",
+    "url": "https://github.com/maroslaw/rainyday.js/blob/master/LICENSE.md"
+  },
+  "homepage": "https://github.com/maroslaw/rainyday.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:maroslaw/rainyday.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maroslaw/rainyday.js/issues"
+  },
+  "scripts": {
+    "test": "grunt jshint"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "~1.2.7",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3"
+  }
 }
