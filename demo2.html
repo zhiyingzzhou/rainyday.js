@@ -2,16 +2,17 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<title>rainy.js demo2</title>
 		<link rel="shortcut icon" href="favicon.ico">
 		<style media="screen">
 			img { display: none; }
 			body { overflow: hidden; }
 			#canvas { position: absolute; top: 0; left: 0; }
 		</style>
-		<script src="./dist/rainyday.0.1.1.min.js"></script>
+		<script src="dist/rainyday.0.1.1.min.js"></script>
 		<script>
 			function demo() {
-				var engine = new RainyDay('canvas','background', window.innerWidth, window.innerHeight);
+				var engine = new RainyDay('canvas', 'background', window.innerWidth, window.innerHeight);
 					engine.gravity = engine.GRAVITY_NON_LINEAR;
 					engine.trail = engine.TRAIL_DROPS;
 					engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
@@ -23,7 +24,7 @@
 		</script>
 	</head>
 	<body onload="demo();">
-		<img id="background" src="./img/city.jpg" alt="background" />
+		<img id="background" src="img/city.jpg" alt="background" />
 		<div id="cholder">
 			<canvas id="canvas"></canvas>
 		</div>
