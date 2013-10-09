@@ -94,6 +94,11 @@ figure {
 
 /* COMPATIBILITY TABLES */
 
+table {
+    border-collapse: separate;
+    border-spacing: 7px;
+}
+
 .compatibility {
     margin-left: 40px;
     margin-right: 40px;
