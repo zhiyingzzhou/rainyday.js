@@ -22,7 +22,6 @@ function RainyDay(options) {
 	this.prepareGlass();
 
 	this.drops = [];
-	this.animateDrops();
 
 	// assume default reflection mechanism
 	this.reflection = this.REFLECTION_MINIATURE;
@@ -94,6 +93,7 @@ RainyDay.prototype.prepareCanvas = function(element, autoHide) {
  * @param canvas the canvas
  * @param element the element below
  */
+
 function checkSize(canvas, element) {
 	if (canvas.style.width !== element.clientWidth) {
 		canvas.style.width = element.clientWidth;
@@ -184,6 +184,9 @@ RainyDay.prototype.rain = function(presets, speed) {
 	}
 
 	if (speed > 0) {
+
+		this.animateDrops();
+
 		// animation
 		this.presets = presets;
 
@@ -627,7 +630,7 @@ RainyDay.prototype.prepareBackground = function(width, height) {
 	this.background = document.createElement('canvas');
 	this.background.width = this.canvas.width;
 	this.background.height = this.canvas.height;
-	
+
 	this.clearbackground = document.createElement('canvas');
 	this.clearbackground.width = this.canvas.width;
 	this.clearbackground.height = this.canvas.height;
@@ -635,7 +638,7 @@ RainyDay.prototype.prepareBackground = function(width, height) {
 	var context = this.background.getContext('2d');
 	context.clearRect(0, 0, width, height);
 	context.drawImage(this.img, 0, 0, width, height);
-	
+
 	context = this.clearbackground.getContext('2d');
 	context.clearRect(0, 0, width, height);
 	context.drawImage(this.img, 0, 0, width, height);
