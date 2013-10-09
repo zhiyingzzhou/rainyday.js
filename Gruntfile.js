@@ -8,23 +8,35 @@ module.exports = function (grunt) {
             '<%= pkg.license.url %>*/\n',
 
         jshint:{
+            files: ['*.js'],
             options:{
-                curly:true,
-                eqeqeq:true,
-                forin:true,
-                indent:2,
-                latedef:false,
-                newcap:true,
-                noarg:true,
-                noempty:true,
-                white:false,
-                sub:true,
-                undef:true,
-                unused:true,
-                loopfunc:true,
-                expr:true,
-                evil:true,
-                eqnull:true
+                'browser': true,
+                'node': true,
+                /*'camelcase': true,*/
+                'curly': true,
+                'eqeqeq': true,
+                'eqnull': true,
+                'forin': true,
+                'immed': true,
+                'indent': 4,
+                /*'latedef': true,*/
+                'laxbreak': true,
+                'laxcomma': true,
+                'lastsemic': true,
+                'loopfunc': true,
+                'noarg': true,
+                'newcap': true,
+                'plusplus': false,
+                'quotmark': 'single',
+                'regexp': true,
+                'shadow': true,
+                'smarttabs': false,
+                'strict': false,
+                'sub': true,
+                'trailing': true,
+                'undef': true,
+                'unused': true,
+                ignores: ['bower_components', 'node_modules']
             }
         },
         uglify:{
