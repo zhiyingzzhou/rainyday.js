@@ -52,10 +52,6 @@ module.exports = function (grunt) {
                     report: 'min'
                 }
             }
-        },
-        watch:{
-            files:['src/*.js'],
-            tasks:'lint'
         }
     });
 
