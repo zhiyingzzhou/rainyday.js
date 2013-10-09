@@ -16,7 +16,7 @@
   "homepage": "https://github.com/maroslaw/rainyday.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:maroslaw/rainyday.js.git"
+    "url": "git://github.com/maroslaw/rainyday.js.git"
   },
   "bugs": {
     "url": "https://github.com/maroslaw/rainyday.js/issues"
