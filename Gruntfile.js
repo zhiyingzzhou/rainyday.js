@@ -12,9 +12,9 @@ module.exports = function (grunt) {
                 ' * Licensed under the <%= pkg.license %> license\n' +
                 ' */\n',
 
-        jshint:{
+        jshint: {
             files: ['*.js'],
-            options:{
+            options: {
                 'browser': true,
                 'node': false,
                 /*'camelcase': true,*/
@@ -44,17 +44,17 @@ module.exports = function (grunt) {
                 ignores: ['bower_components', 'node_modules']
             }
         },
-        uglify:{
-            dist:{
+        uglify: {
+            options: {
+                banner: '<%= banner %>',
+                compress: true,
+                mangle: true,
+                preserveComments: false,
+                report: 'min'
+            },
+            dist: {
                 files: {
                     'dist/rainyday.min.js': ['rainyday.js']
-                },
-                options: {
-                    banner: '<%= banner %>',
-                    compress: true,
-                    mangle: true,
-                    preserveComments: false,
-                    report: 'min'
                 }
             }
         }
