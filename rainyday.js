@@ -673,11 +673,12 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 	var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
 
 	var stackStart = new BlurStack();
+	var stackEnd = new BlurStack();
 	var stack = stackStart;
 	for (i = 1; i < div; i++) {
 		stack = stack.next = new BlurStack();
 		if (i === radiusPlus1) {
-			var stackEnd = stack;
+			stackEnd = stack;
 		}
 	}
 	stack.next = stackStart;
