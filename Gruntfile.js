@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             files: ['*.js'],
             options:{
                 'browser': true,
-                'node': true,
+                'node': false,
                 /*'camelcase': true,*/
                 'curly': true,
                 'eqeqeq': true,
@@ -30,10 +30,10 @@ module.exports = function (grunt) {
                 'lastsemic': true,
                 'loopfunc': true,
                 'noarg': true,
+                'noempty': true,
                 'newcap': true,
                 'plusplus': false,
                 'quotmark': 'single',
-                'regexp': true,
                 'shadow': true,
                 'smarttabs': false,
                 'strict': false,
