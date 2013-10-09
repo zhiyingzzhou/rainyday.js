@@ -9,10 +9,7 @@
     "name": "Marek Brodziakt",
     "email": "marek.brodziak@gmail.com"
   },
-  "license":{
-    "type": "GPLv2",
-    "url": "https://github.com/maroslaw/rainyday.js/blob/master/LICENSE.md"
-  },
+  "license": "GPLv2",
   "homepage": "https://github.com/maroslaw/rainyday.js",
   "repository": {
     "type": "git",
