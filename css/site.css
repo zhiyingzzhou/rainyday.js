@@ -1,6 +1,9 @@
-body {
-	background-image: url('../img/back.png');
+html {
 	font: lighter 14px "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+body {
+	background-image: url("../img/back.png");
 	overflow: hidden;
 }
 
@@ -26,6 +29,7 @@ body {
 	width: 55%;
 	overflow-y: auto;
 	margin-left: 20%;
+	padding-bottom: 14px;
 	bottom: 10px;
 	background-color: white;
 }
@@ -95,15 +99,15 @@ figure {
 /* COMPATIBILITY TABLES */
 
 table {
-    border-collapse: separate;
-    border-spacing: 7px;
+	border-collapse: separate;
+	border-spacing: 7px;
 }
 
 .compatibility {
-    margin-left: 40px;
-    margin-right: 40px;
-    border-spacing: 0.1em;
-    position: relative;
+	margin-left: 40px;
+	margin-right: 40px;
+	border-spacing: 0.1em;
+	position: relative;
 }
 
 .compatibility caption {
@@ -174,7 +178,7 @@ col[span="1"] {
 }
 
 .declaration {
-	background-color: #F2F3EF;
+	background-color: #f2f3ef;
 	text-align: right;
 	padding-right: 10px;
 	color: #666666;
@@ -182,7 +186,7 @@ col[span="1"] {
 }
 
 .comp {
-	font-family: verdana, sans-serif;
+	font-family: Verdana, sans-serif;
 	font-size: 95%;
 	text-transform: lowercase;
 	text-align: center;
@@ -192,12 +196,12 @@ col[span="1"] {
 
 .yes {
 	background-color: #7eb000;
-	color: #ffffff;
+	color: white;
 }
 
 .almost {
 	background-color: #40a662;
-	color: #ffffff;
+	color: white;
 }
 
 .incomplete {
@@ -223,33 +227,33 @@ col[span="1"] {
 
 .buggy {
 	background-color: #da4c57;
-	color: #ffffff;
+	color: white;
 }
 
 .severebug {
 	background-color: #82000a;
-	color: #ffffff;
+	color: white;
 }
 
 .no {
 	background-color: #ff0512;
-	color: #ffffff;
+	color: white;
 }
 
 .crash {
 	background-color: #535353;
-	color: #ffffff;
+	color: white;
 	font-weight: bold;
 	text-transform: uppercase;
 }
 
 .test {
 	background-color: #bbbbbb;
-	color: #ffffff;
+	color: white;
 }
 
 .clean {
-	background-color: #ffffff;
+	background-color: white;
 }
 
 td pre {
