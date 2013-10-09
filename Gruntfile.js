@@ -57,10 +57,11 @@ module.exports = function (grunt) {
 
 
     // load tasks
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     // Default task(s).
     grunt.registerTask('default', ['jshint', 'uglify']);
+    grunt.registerTask('dist', ['uglify']);
     grunt.registerTask('test', ['jshint']);
 };
