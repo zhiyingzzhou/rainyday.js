@@ -3,11 +3,10 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        meta: {
-            banner: '/* <%= pkg.description %>, <%= pkg.version %> <%= pkg.homepage %>\n' +
-                'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>, <%= pkg.license.type %> license ' +
-                '<%= pkg.license.url %>*/\n'
-        },
+        banner: '/* <%= pkg.description %>, <%= pkg.version %> <%= pkg.homepage %>\n' +
+            'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>, <%= pkg.license.type %> license ' +
+            '<%= pkg.license.url %>*/\n',
+
         jshint:{
             options:{
                 curly:true,
@@ -34,7 +33,11 @@ module.exports = function (grunt) {
                     'dist/rainyday.min.js': ['rainyday.js']
                 },
                 options: {
-                    banner: '<%=meta.banner%>'
+                    banner: '<%= banner %>',
+                    compress: true,
+                    mangle: true,
+                    preserveComments: false,
+                    report: 'min'
                 }
             }
         },
