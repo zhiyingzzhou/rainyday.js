@@ -308,23 +308,18 @@ Drop.prototype.draw = function() {
 	if (this.r < 3) {
 		this.context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
 		this.context.closePath();
-	} else if (this.colliding) {
-		var collider = this.colliding;
-		this.r = 1.001 * (this.r > collider.r ? this.r : collider.r);
-		this.x += (collider.x - this.x);
-		this.colliding = null;
+	} else if (this.colliding || this.yspeed > 2) {
+		if (this.colliding) {
+			var collider = this.colliding;
+			this.r = 1.001 * (this.r > collider.r ? this.r : collider.r);
+			this.x += (collider.x - this.x);
+			this.colliding = null;
+		}
 
-		var randomizer = 1;
 		var yr = 1 + 0.1 * this.yspeed;
 		this.context.moveTo(this.x - this.r / yr, this.y);
-		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
-		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
-	} else if (this.yspeed > 2) {
-		var randomizer = 1;
-		var yr = 1 + 0.1 * this.yspeed;
-		this.context.moveTo(this.x - this.r / yr, this.y);
-		this.context.bezierCurveTo(this.x - this.r / randomizer, this.y - this.r * 2, this.x + this.r / randomizer, this.y - this.r * 2, this.x + this.r / yr, this.y);
-		this.context.bezierCurveTo(this.x + this.r / randomizer, this.y + yr * this.r, this.x - this.r / randomizer, this.y + yr * this.r, this.x - this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x - this.r, this.y - this.r * 2, this.x + this.r, this.y - this.r * 2, this.x + this.r / yr, this.y);
+		this.context.bezierCurveTo(this.x + this.r, this.y + yr * this.r, this.x - this.r, this.y + yr * this.r, this.x - this.r / yr, this.y);
 	} else {
 		this.context.arc(this.x, this.y, this.r * 0.9, 0, Math.PI * 2, true);
 		this.context.closePath();
