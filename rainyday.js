@@ -667,9 +667,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 	yw = yi = 0;
 
 	var mul_sum = mul_table[radius];
-	var shg_sum = undefined;
+	var shg_sum;
 	for (var ssi = 0; ssi < shg_table.length; ++ssi) {
-		console.log(shg_table[ssi][0]);
 		if (radius <= shg_table[ssi][0]) {
 			shg_sum = shg_table[ssi - 1][1];
 			break;
