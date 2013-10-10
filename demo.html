@@ -69,7 +69,12 @@
 					}
 				};
 				image.crossOrigin = 'anonymous';
-				image.src='http://i.imgur.com/' + getURLParameter('imgur') + '.jpg';
+
+				if (getURLParameter('imgur')) {
+					image.src='http://i.imgur.com/' + getURLParameter('imgur') + '.jpg';
+				} else if (getURLParameter('img')) {
+					image.src=getURLParameter('img') + ".jpg";
+				}
 
 				var youtube = getURLParameter('youtube');
 				if (youtube) {
