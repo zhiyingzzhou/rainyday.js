@@ -329,12 +329,8 @@ Drop.prototype.clear = function(force) {
 		this.terminate = true;
 		return true;
 	}
-	if (this.y - this.r > this.rainyday.h) {
-		// over the bottom edge, stop the thread
-		return true;
-	}
-	if ((this.x - this.r > this.rainyday.w) || (this.x + this.r < 0)) {
-		// over the right or left edge, stop the thread
+	if ((this.y - this.r > this.rainyday.h) || (this.x - this.r > this.rainyday.w) || (this.x + this.r < 0)) {
+		// over edge so stop this drop
 		return true;
 	}
 	return false;
