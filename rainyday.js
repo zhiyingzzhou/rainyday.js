@@ -13,49 +13,27 @@ function RainyDay(options) {
 	this.blurRadius = options.blur || 10;
 	this.w = this.img.clientWidth;
 	this.h = this.img.clientHeight;
-	//Create a canvas element for drops
-	this.canvas = this.prepareCanvas(this.img, options.autoHide);
-	// draw and blur the background image
-	this.prepareBackground(this.w, this.h);
-
-	// create the glass canvas
-	this.prepareGlass();
-
 	this.drops = [];
 
-	// assume default reflection mechanism
+	// prepare canvas elements
+	this.canvas = this.prepareCanvas(this.img, options.autoHide);
+	this.prepareBackground(this.w, this.h);
+	this.prepareGlass();
+
+	// assume defaults
 	this.reflection = this.REFLECTION_MINIATURE;
-
-	// assume default trail mechanism
 	this.trail = this.TRAIL_DROPS;
-
-	// assume default gravity
 	this.gravity = this.GRAVITY_NON_LINEAR;
-
-	// drop size threshold for the gravity algorhitm
+	this.collision = this.COLLISION_SIMPLE;
 	this.VARIABLE_GRAVITY_THRESHOLD = 3;
-
-	// gravity angle
 	this.VARIABLE_GRAVITY_ANGLE = Math.PI / 2;
-
-	// angle variance
 	this.VARIABLE_GRAVITY_ANGLE_VARIANCE = 0;
-
-	// frames per second animation speed
 	this.VARIABLE_FPS = options.fps;
-
-	// context fill style when no REFLECTION_NONE is used
 	this.VARIABLE_FILL_STYLE = '#8ED6FF';
-
-	// collisions enabled by default
 	this.VARIABLE_COLLISIONS = true;
-
 	this.REFLECTION_SCALEDOWN_FACTOR = 5;
 	this.REFLECTION_DROP_MAPPING_WIDTH = 200;
 	this.REFLECTION_DROP_MAPPING_HEIGHT = 200;
-
-	// assume default collision algorhitm
-	this.collision = this.COLLISION_SIMPLE;
 }
 
 /**
@@ -73,9 +51,9 @@ RainyDay.prototype.prepareCanvas = function(element, autoHide) {
 	canvas.style.top = element.offsetTop;
 	document.getElementsByTagName('body')[0].appendChild(canvas);
 
-	setInterval(function() {
-		checkSize(canvas, element);
-	}, 500);
+	setInterval((function(self) {
+		self.checkSize(canvas, element);
+	})(this), 500);
 
 	if (autoHide === true) {
 		canvas.onmouseover = function() {
@@ -94,7 +72,7 @@ RainyDay.prototype.prepareCanvas = function(element, autoHide) {
  * @param element the element below
  */
 
-function checkSize(canvas, element) {
+RainyDay.prototype.checkSize = function(canvas, element) {
 	if (canvas.style.width !== element.clientWidth) {
 		canvas.style.width = element.clientWidth;
 	}
@@ -107,8 +85,11 @@ function checkSize(canvas, element) {
 	if (canvas.style.top !== element.offsetTop) {
 		canvas.style.top = element.offsetTop;
 	}
-}
+};
 
+/**
+ * Start animation loop
+ */
 RainyDay.prototype.animateDrops = function() {
 	var raf = window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
