@@ -78,7 +78,7 @@ RainyDay.prototype.checkSize = function(canvas, element) {
 /**
  * Start animation loop
  */
-RainyDay.prototype.animateDrops = function() {
+RainyDay.prototype.animateDrops = function () {
 	var raf = window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame;
@@ -105,7 +105,7 @@ RainyDay.prototype.animateDrops = function() {
 /**
  * Create the helper canvas for rendering raindrop reflections.
  */
-RainyDay.prototype.prepareReflections = function() {
+RainyDay.prototype.prepareReflections = function () {
 	this.reflected = document.createElement('canvas');
 	this.reflected.width = this.canvas.width / this.REFLECTION_SCALEDOWN_FACTOR;
 	this.reflected.height = this.canvas.height / this.REFLECTION_SCALEDOWN_FACTOR;
@@ -116,7 +116,7 @@ RainyDay.prototype.prepareReflections = function() {
 /**
  * Create the glass canvas and position it directly over the main one.
  */
-RainyDay.prototype.prepareGlass = function() {
+RainyDay.prototype.prepareGlass = function () {
 	this.glass = document.createElement('canvas');
 	this.glass.width = this.canvas.width;
 	this.glass.height = this.canvas.height;
@@ -165,7 +165,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 			}
 		}
 		var lastExecutionTime = 0;
-		this.addDropCallback = function() {
+		this.addDropCallback = function () {
 			var timestamp = new Date().getTime();
 			if (timestamp - lastExecutionTime < speed) {
 				return;
@@ -255,7 +255,7 @@ function Drop(rainyday, centerX, centerY, min, base) {
 /**
  * Draws a raindrop on canvas at the current position.
  */
-Drop.prototype.draw = function() {
+Drop.prototype.draw = function () {
 	this.context.save();
 	this.context.beginPath();
 
@@ -313,7 +313,7 @@ Drop.prototype.clear = function(force) {
 /**
  * Moves the raindrop to a new position according to the gravity.
  */
-Drop.prototype.animate = function() {
+Drop.prototype.animate = function () {
 	if (this.terminate) {
 		return false;
 	}
@@ -334,7 +334,7 @@ Drop.prototype.animate = function() {
  * TRAIL function: no trail at all
  * @param drop raindrop object
  */
-RainyDay.prototype.TRAIL_NONE = function() {
+RainyDay.prototype.TRAIL_NONE = function () {
 	// nothing going on here
 };
 
@@ -367,7 +367,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_NONE = function() {
+RainyDay.prototype.GRAVITY_NONE = function () {
 	return true;
 };
 
@@ -452,7 +452,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
  * REFLECTION function: no reflection at all
  * @param drop raindrop object
  */
-RainyDay.prototype.REFLECTION_NONE = function() {
+RainyDay.prototype.REFLECTION_NONE = function () {
 	this.context.fillStyle = this.VARIABLE_FILL_STYLE;
 	this.context.fill();
 };
@@ -554,10 +554,10 @@ RainyDay.prototype.prepareBackground = function(width, height) {
  * @param radius blur radius
  */
 RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
-	
+
 	var shg_table = [
-		[0, 9], [1, 11], [2, 12], [3, 13], [5, 14], [7, 15], [11, 16], [15, 17], [22, 18],
-		[31, 19], [45, 20], [63, 21], [90, 22], [127, 23], [181, 24]
+		[0,   9], [1,  11], [2,  12], [3,  13], [5,  14], [7,   15], [11,  16], [15, 17],
+		[22, 18], [31, 19], [45, 20], [63, 21], [90, 22], [127, 23], [181, 24]
 	];
 
 	var mul_table = [
@@ -614,7 +614,7 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 			break;
 		}
 	}
-	
+
 	for (y = 0; y < height; y++) {
 		r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
 
