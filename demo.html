@@ -40,10 +40,9 @@
 							opacity: 1,
 							fps: 30,
 							speed: 30,
-							autoHide: false
 						});
-						engine.rain([ engine.preset(1, 2, 8000) ]);
-						engine.rain([ engine.preset(3, 3, 0.88), engine.preset(5, 5, 0.9), engine.preset(6, 2, 1) ], 100);
+						engine.rain([ [1, 2, 8000] ]);
+						engine.rain([ [3, 3, 0.88], [5, 5, 0.9], [6, 2, 1] ], 100);
 					} else if (preset === '2') {
 						engine = new RainyDay({
 							element: 'background',
@@ -51,10 +50,9 @@
 							opacity: 1,
 							fps: 30,
 							speed: 30,
-							autoHide: false
 						});
 						engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
-						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
+						engine.rain([ [0, 2, 0.5], [4, 4, 1] ], 50);
 					} else if (preset === '3') {
 						engine = new RainyDay({
 							element: 'background',
@@ -62,10 +60,9 @@
 							opacity: 1,
 							fps: 30,
 							speed: 30,
-							autoHide: false
 						});
 						engine.trail = engine.TRAIL_SMUDGE;
-						engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 100);
+						engine.rain([ [0, 2, 0.5], [4, 4, 1] ], 100);
 					}
 				};
 				image.crossOrigin = 'anonymous';
