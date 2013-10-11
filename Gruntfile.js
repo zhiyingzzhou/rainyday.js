@@ -50,7 +50,7 @@ module.exports = function (grunt) {
 				compress: true,
 				mangle: true,
 				preserveComments: false,
-				report: 'min'
+				report: 'gzip'
 			},
 			dist: {
 				files: {
