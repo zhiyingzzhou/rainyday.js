@@ -30,7 +30,7 @@
 
 			function demo() {
 				var image = document.getElementById('background');
-				image.onload = function() {
+				image.onload = function () {
 					var engine = null;
 					var preset = getURLParameter('preset') || '1';
 					if (preset === '1') {
@@ -39,7 +39,7 @@
 							blur: 10,
 							opacity: 1,
 							fps: 30,
-							speed: 30,
+							speed: 30
 						});
 						engine.rain([ [1, 2, 8000] ]);
 						engine.rain([ [3, 3, 0.88], [5, 5, 0.9], [6, 2, 1] ], 100);
@@ -49,7 +49,7 @@
 							blur: 10,
 							opacity: 1,
 							fps: 30,
-							speed: 30,
+							speed: 30
 						});
 						engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
 						engine.rain([ [0, 2, 0.5], [4, 4, 1] ], 50);
@@ -59,7 +59,7 @@
 							blur: 10,
 							opacity: 1,
 							fps: 30,
-							speed: 30,
+							speed: 30
 						});
 						engine.trail = engine.TRAIL_SMUDGE;
 						engine.rain([ [0, 2, 0.5], [4, 4, 1] ], 100);
@@ -68,9 +68,9 @@
 				image.crossOrigin = 'anonymous';
 
 				if (getURLParameter('imgur')) {
-					image.src='http://i.imgur.com/' + getURLParameter('imgur') + '.jpg';
+					image.src = 'http://i.imgur.com/' + getURLParameter('imgur') + '.jpg';
 				} else if (getURLParameter('img')) {
-					image.src=getURLParameter('img') + ".jpg";
+					image.src = getURLParameter('img') + '.jpg';
 				}
 
 				var youtube = getURLParameter('youtube');
