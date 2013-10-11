@@ -344,8 +344,8 @@ RainyDay.prototype.TRAIL_NONE = function () {
  * @param drop raindrop object
  */
 RainyDay.prototype.TRAIL_DROPS = function(drop) {
-	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 100 * drop.r) {
-		drop.trail_y = drop.y;
+	if (!drop.trailY || drop.y - drop.trailY >= Math.random() * 100 * drop.r) {
+		drop.trailY = drop.y;
 		this.putDrop(new Drop(this, drop.x + (Math.random() * 2 - 1) * Math.random(), drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
 	}
 };
@@ -556,7 +556,7 @@ RainyDay.prototype.prepareBackground = function(width, height) {
  */
 RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 
-	var shg_table = [
+	var shgTable = [
 		[0, 9],
 		[1, 11],
 		[2, 12],
@@ -574,7 +574,7 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 		[181, 24]
 	];
 
-	var mul_table = [
+	var mulTable = [
 		512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512,
 		454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512,
 		482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456,
@@ -598,9 +598,9 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 	var context = this.background.getContext('2d');
 	var imageData = context.getImageData(0, 0, width, height);
 	var pixels = imageData.data;
-	var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum,
-		r_out_sum, g_out_sum, b_out_sum,
-		r_in_sum, g_in_sum, b_in_sum,
+	var x, y, i, p, yp, yi, yw, rSum, gSum, bSum,
+		rOutSum, gOutSum, bOutSum,
+		rInSum, gInSum, bInSum,
 		pr, pg, pb, rbs;
 	var radiusPlus1 = radius + 1;
 	var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
@@ -620,25 +620,25 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 
 	yw = yi = 0;
 
-	var mul_sum = mul_table[radius];
-	var shg_sum;
-	for (var ssi = 0; ssi < shg_table.length; ++ssi) {
-		if (radius <= shg_table[ssi][0]) {
-			shg_sum = shg_table[ssi - 1][1];
+	var mulSum = mulTable[radius];
+	var shgSum;
+	for (var ssi = 0; ssi < shgTable.length; ++ssi) {
+		if (radius <= shgTable[ssi][0]) {
+			shgSum = shgTable[ssi - 1][1];
 			break;
 		}
 	}
 
 	for (y = 0; y < height; y++) {
-		r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+		rInSum = gInSum = bInSum = rSum = gSum = bSum = 0;
 
-		r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-		g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
-		b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+		rOutSum = radiusPlus1 * (pr = pixels[yi]);
+		gOutSum = radiusPlus1 * (pg = pixels[yi + 1]);
+		bOutSum = radiusPlus1 * (pb = pixels[yi + 2]);
 
-		r_sum += sumFactor * pr;
-		g_sum += sumFactor * pg;
-		b_sum += sumFactor * pb;
+		rSum += sumFactor * pr;
+		gSum += sumFactor * pg;
+		bSum += sumFactor * pb;
 
 		stack = stackStart;
 
@@ -651,13 +651,13 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 
 		for (i = 1; i < radiusPlus1; i++) {
 			p = yi + ((width - 1 < i ? width - 1 : i) << 2);
-			r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
-			g_sum += (stack.g = (pg = pixels[p + 1])) * rbs;
-			b_sum += (stack.b = (pb = pixels[p + 2])) * rbs;
+			rSum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
+			gSum += (stack.g = (pg = pixels[p + 1])) * rbs;
+			bSum += (stack.b = (pb = pixels[p + 2])) * rbs;
 
-			r_in_sum += pr;
-			g_in_sum += pg;
-			b_in_sum += pb;
+			rInSum += pr;
+			gInSum += pg;
+			bInSum += pb;
 
 			stack = stack.next;
 		}
@@ -665,37 +665,37 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 		stackIn = stackStart;
 		stackOut = stackEnd;
 		for (x = 0; x < width; x++) {
-			pixels[yi] = (r_sum * mul_sum) >> shg_sum;
-			pixels[yi + 1] = (g_sum * mul_sum) >> shg_sum;
-			pixels[yi + 2] = (b_sum * mul_sum) >> shg_sum;
+			pixels[yi] = (rSum * mulSum) >> shgSum;
+			pixels[yi + 1] = (gSum * mulSum) >> shgSum;
+			pixels[yi + 2] = (bSum * mulSum) >> shgSum;
 
-			r_sum -= r_out_sum;
-			g_sum -= g_out_sum;
-			b_sum -= b_out_sum;
+			rSum -= rOutSum;
+			gSum -= gOutSum;
+			bSum -= bOutSum;
 
-			r_out_sum -= stackIn.r;
-			g_out_sum -= stackIn.g;
-			b_out_sum -= stackIn.b;
+			rOutSum -= stackIn.r;
+			gOutSum -= stackIn.g;
+			bOutSum -= stackIn.b;
 
 			p = (yw + ((p = x + radius + 1) < (width - 1) ? p : (width - 1))) << 2;
 
-			r_in_sum += (stackIn.r = pixels[p]);
-			g_in_sum += (stackIn.g = pixels[p + 1]);
-			b_in_sum += (stackIn.b = pixels[p + 2]);
+			rInSum += (stackIn.r = pixels[p]);
+			gInSum += (stackIn.g = pixels[p + 1]);
+			bInSum += (stackIn.b = pixels[p + 2]);
 
-			r_sum += r_in_sum;
-			g_sum += g_in_sum;
-			b_sum += b_in_sum;
+			rSum += rInSum;
+			gSum += gInSum;
+			bSum += bInSum;
 
 			stackIn = stackIn.next;
 
-			r_out_sum += (pr = stackOut.r);
-			g_out_sum += (pg = stackOut.g);
-			b_out_sum += (pb = stackOut.b);
+			rOutSum += (pr = stackOut.r);
+			gOutSum += (pg = stackOut.g);
+			bOutSum += (pb = stackOut.b);
 
-			r_in_sum -= pr;
-			g_in_sum -= pg;
-			b_in_sum -= pb;
+			rInSum -= pr;
+			gInSum -= pg;
+			bInSum -= pb;
 
 			stackOut = stackOut.next;
 
@@ -705,16 +705,16 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 	}
 
 	for (x = 0; x < width; x++) {
-		g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+		gInSum = bInSum = rInSum = gSum = bSum = rSum = 0;
 
 		yi = x << 2;
-		r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-		g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
-		b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+		rOutSum = radiusPlus1 * (pr = pixels[yi]);
+		gOutSum = radiusPlus1 * (pg = pixels[yi + 1]);
+		bOutSum = radiusPlus1 * (pb = pixels[yi + 2]);
 
-		r_sum += sumFactor * pr;
-		g_sum += sumFactor * pg;
-		b_sum += sumFactor * pb;
+		rSum += sumFactor * pr;
+		gSum += sumFactor * pg;
+		bSum += sumFactor * pb;
 
 		stack = stackStart;
 
@@ -730,13 +730,13 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 		for (i = 1; i < radiusPlus1; i++) {
 			yi = (yp + x) << 2;
 
-			r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
-			g_sum += (stack.g = (pg = pixels[yi + 1])) * rbs;
-			b_sum += (stack.b = (pb = pixels[yi + 2])) * rbs;
+			rSum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
+			gSum += (stack.g = (pg = pixels[yi + 1])) * rbs;
+			bSum += (stack.b = (pb = pixels[yi + 2])) * rbs;
 
-			r_in_sum += pr;
-			g_in_sum += pg;
-			b_in_sum += pb;
+			rInSum += pr;
+			gInSum += pg;
+			bInSum += pb;
 
 			stack = stack.next;
 
@@ -750,33 +750,33 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 		stackOut = stackEnd;
 		for (y = 0; y < height; y++) {
 			p = yi << 2;
-			pixels[p] = (r_sum * mul_sum) >> shg_sum;
-			pixels[p + 1] = (g_sum * mul_sum) >> shg_sum;
-			pixels[p + 2] = (b_sum * mul_sum) >> shg_sum;
+			pixels[p] = (rSum * mulSum) >> shgSum;
+			pixels[p + 1] = (gSum * mulSum) >> shgSum;
+			pixels[p + 2] = (bSum * mulSum) >> shgSum;
 
-			r_sum -= r_out_sum;
-			g_sum -= g_out_sum;
-			b_sum -= b_out_sum;
+			rSum -= rOutSum;
+			gSum -= gOutSum;
+			bSum -= bOutSum;
 
-			r_out_sum -= stackIn.r;
-			g_out_sum -= stackIn.g;
-			b_out_sum -= stackIn.b;
+			rOutSum -= stackIn.r;
+			gOutSum -= stackIn.g;
+			bOutSum -= stackIn.b;
 
 			p = (x + (((p = y + radiusPlus1) < (height - 1) ? p : (height - 1)) * width)) << 2;
 
-			r_sum += (r_in_sum += (stackIn.r = pixels[p]));
-			g_sum += (g_in_sum += (stackIn.g = pixels[p + 1]));
-			b_sum += (b_in_sum += (stackIn.b = pixels[p + 2]));
+			rSum += (rInSum += (stackIn.r = pixels[p]));
+			gSum += (gInSum += (stackIn.g = pixels[p + 1]));
+			bSum += (bInSum += (stackIn.b = pixels[p + 2]));
 
 			stackIn = stackIn.next;
 
-			r_out_sum += (pr = stackOut.r);
-			g_out_sum += (pg = stackOut.g);
-			b_out_sum += (pb = stackOut.b);
+			rOutSum += (pr = stackOut.r);
+			gOutSum += (pg = stackOut.g);
+			bOutSum += (pb = stackOut.b);
 
-			r_in_sum -= pr;
-			g_in_sum -= pg;
-			b_in_sum -= pb;
+			rInSum -= pr;
+			gInSum -= pg;
+			bInSum -= pb;
 
 			stackOut = stackOut.next;
 
