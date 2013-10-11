@@ -17,6 +17,6 @@ var engine = new RainyDay({
     blur: 0.5,              // Defines blur due to rain effect
     opacity: 1,             // Opacity of rain drops
     fps: 30,                // Frame rate per second
-    speed: 30              // Speed of rain drops
+    speed: 30               // Speed of rain drops
 });
 ```
