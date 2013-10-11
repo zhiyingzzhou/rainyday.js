@@ -222,7 +222,7 @@ RainyDay.prototype.putDrop = function (drop) {
  * Clear the drop and remove from the list if applicable.
  * @drop to be cleared
  * @force force removal from the list
- * result if true animatin of this drop should be stopped
+ * result if true animation of this drop should be stopped
  */
 RainyDay.prototype.clearDrop = function (drop, force) {
 	var result = drop.clear(force);
@@ -512,7 +512,7 @@ RainyDay.prototype.COLLISION_SIMPLE = function (drop, collisions) {
 };
 
 /**
- * Resizes canvas, draws original image and applies bluring algorithm.
+ * Resizes canvas, draws original image and applies blurring algorithm.
  * @param width width of the canvas
  * @param height height of the canvas
  */
