@@ -45,30 +45,38 @@ RainyDay.prototype.prepareCanvas = function(element) {
     canvas.style.left = element.offsetLeft;
     canvas.style.top = element.offsetTop;
     document.getElementsByTagName('body')[0].appendChild(canvas);
-
-    setInterval((function(self) {
-        self.checkSize(canvas, element);
-    })(this), 500);
+    window.setInterval(this.checkSize.bind(this), 100);
     return canvas;
 };
 
 /**
  * Periodically check the size of the underlying element
- * @param canvas the canvas
- * @param element the element below
  */
-RainyDay.prototype.checkSize = function(canvas, element) {
-    if (canvas.style.width !== element.clientWidth) {
-        canvas.style.width = element.clientWidth;
+RainyDay.prototype.checkSize = function() {
+    var changed = false;
+    if (this.canvas.width !== this.img.clientWidth) {
+        this.canvas.width = this.img.clientWidth;
+        changed = true;
     }
-    if (canvas.style.height !== element.clientHeight) {
-        canvas.style.height = element.clientHeight;
+    if (this.canvas.height !== this.img.clientHeight) {
+        this.canvas.height = this.img.clientHeight;
+        changed = true;
     }
-    if (canvas.style.left !== element.offsetLeft) {
-        canvas.style.left = element.offsetLeft;
+    if (this.canvas.offsetLeft !== this.img.offsetLeft) {
+        this.canvas.offsetLeft = this.img.offsetLeft;
+        changed = true;
     }
-    if (canvas.style.top !== element.offsetTop) {
-        canvas.style.top = element.offsetTop;
+    if (this.canvas.offsetTop !== this.img.offsetTop) {
+        this.canvas.offsetTop = this.img.offsetTop;
+        changed = true;
+    }
+    if (changed) {
+        this.w = this.canvas.width;
+        this.h = this.canvas.height;
+        this.prepareBackground(this.w, this.h);
+        this.glass.width = this.w;
+        this.glass.height = this.h;
+        this.prepareReflections();
     }
 };
 
