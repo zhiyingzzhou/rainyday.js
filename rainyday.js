@@ -179,7 +179,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 		// select matching preset
 		var preset;
 		for (var i = 0; i < presets.length; i++) {
-			if (presets[i][2] > 1 || presets[i][3] == -1) {
+			if (presets[i][2] > 1 || presets[i][3] === -1) {
 				if (presets[i][3] !== 0) {
 					presets[i][3]--;
 					for (var y = 0; y < presets[i][2]; ++y) {
