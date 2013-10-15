@@ -38,31 +38,29 @@
 							element: 'background',
 							blur: 10,
 							opacity: 1,
-							fps: 30,
-							speed: 30
+							fps: 30
 						});
-						engine.rain([ [1, 2, 8000] ]);
-						engine.rain([ [3, 3, 0.88], [5, 5, 0.9], [6, 2, 1] ], 100);
+						engine.trail = engine.TRAIL_SMUDGE;
+						engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 9;
+						engine.rain([ [1, 0, 1000], [3, 3, 1] ], 100);
 					} else if (preset === '2') {
 						engine = new RainyDay({
 							element: 'background',
 							blur: 10,
 							opacity: 1,
-							fps: 30,
-							speed: 30
+							fps: 30
 						});
 						engine.VARIABLE_GRAVITY_ANGLE = Math.PI / 8;
-						engine.rain([ [0, 2, 0.5], [4, 4, 1] ], 50);
+						engine.rain([ [0, 2, 1], [4, 4, 1] ], 50);
 					} else if (preset === '3') {
 						engine = new RainyDay({
 							element: 'background',
 							blur: 10,
 							opacity: 1,
-							fps: 30,
-							speed: 30
+							fps: 30
 						});
 						engine.trail = engine.TRAIL_SMUDGE;
-						engine.rain([ [0, 2, 0.5], [4, 4, 1] ], 100);
+						engine.rain([ [0, 2, 1], [4, 4, 1] ], 100);
 					}
 				};
 				image.crossOrigin = 'anonymous';

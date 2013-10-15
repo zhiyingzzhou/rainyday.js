@@ -1,10 +1,6 @@
 /**
  * Defines a new instance of the rainyday.js.
- * @param element DOM id of the image element used as background image
- * @param opacity opacity attribute value of the glass canvas (default: 1)
- * @param blur blur radius (default: 10)
- * @param fps desired fps for animation
- * @param speed desired speed for rain drops
+ * @param options options element with script parameters
  */
 
 function RainyDay(options) {
@@ -135,73 +131,74 @@ RainyDay.prototype.rain = function(presets, speed) {
 		this.prepareReflections();
 	}
 
-	if (speed > 0) {
+	this.animateDrops();
 
-		this.animateDrops();
+	// animation
+	this.presets = presets;
 
-		// animation
-		this.presets = presets;
+	this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.001) / 25;
+	this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.001) / 50;
 
-		this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.001) / 25;
-		this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.001) / 50;
+	// prepare gravity matrix
+	if (this.VARIABLE_COLLISIONS) {
 
-		// prepare gravity matrix
-		if (this.VARIABLE_COLLISIONS) {
-
-			// calculate max radius of a drop to establish gravity matrix resolution
-			var maxDropRadius = 0;
-			for (var i = 0; i < presets.length; i++) {
-				if (presets[i][0] + presets[i][1] > maxDropRadius) {
-					maxDropRadius = Math.floor(presets[i][0] + presets[i][1]);
-				}
-			}
-
-			if (maxDropRadius > 0) {
-				// initialize the gravity matrix
-				var mwi = Math.ceil(this.w / maxDropRadius);
-				var mhi = Math.ceil(this.h / maxDropRadius);
-				this.matrix = new CollisionMatrix(mwi, mhi, maxDropRadius);
-			} else {
-				this.VARIABLE_COLLISIONS = false;
+		// calculate max radius of a drop to establish gravity matrix resolution
+		var maxDropRadius = 0;
+		for (var i = 0; i < presets.length; i++) {
+			if (presets[i][0] + presets[i][1] > maxDropRadius) {
+				maxDropRadius = Math.floor(presets[i][0] + presets[i][1]);
 			}
 		}
-		var lastExecutionTime = 0;
-		this.addDropCallback = function () {
-			var timestamp = new Date().getTime();
-			if (timestamp - lastExecutionTime < speed) {
-				return;
-			}
-			lastExecutionTime = timestamp;
-			var context = this.canvas.getContext('2d');
-			context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
-			var random = Math.random();
-			// select matching preset
-			var preset;
-			for (var i = 0; i < presets.length; i++) {
-				if (random < presets[i][2]) {
-					preset = presets[i];
-					break;
-				}
-			}
-			if (preset) {
-				this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, preset[0], preset[1]));
-			}
-			context.save();
-			context.globalAlpha = this.opacity;
-			context.drawImage(this.glass, 0, 0, this.canvas.width, this.canvas.height);
-			context.restore();
-		}.bind(this);
 
-	} else {
-		// static picture
-		for (var i = 0; i < presets.length; i++) {
-			var preset = presets[i];
-			for (var c = 0; c < preset.quan; ++c) {
-				this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, preset[0], preset[1]));
-			}
+		if (maxDropRadius > 0) {
+			// initialize the gravity matrix
+			var mwi = Math.ceil(this.w / maxDropRadius);
+			var mhi = Math.ceil(this.h / maxDropRadius);
+			this.matrix = new CollisionMatrix(mwi, mhi, maxDropRadius);
+		} else {
+			this.VARIABLE_COLLISIONS = false;
 		}
 	}
+
+	for (var i = 0; i < presets.length; i++) {
+		if (!presets[i][3]) {
+			presets[i][3] = -1;
+		}
+	}
+
+	var lastExecutionTime = 0;
+	this.addDropCallback = function () {
+		var timestamp = new Date().getTime();
+		if (timestamp - lastExecutionTime < speed) {
+			return;
+		}
+		lastExecutionTime = timestamp;
+		var context = this.canvas.getContext('2d');
+		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
+		// select matching preset
+		var preset;
+		for (var i = 0; i < presets.length; i++) {
+			if (presets[i][2] > 1 || presets[i][3] == -1) {
+				if (presets[i][3] !== 0) {
+					presets[i][3]--;
+					for (var y = 0; y < presets[i][2]; ++y) {
+						this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, presets[i][0], presets[i][1]));
+					}
+				}
+			} else if (Math.random() < presets[i][2]) {
+				preset = presets[i];
+				break;
+			}
+		}
+		if (preset) {
+			this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, preset[0], preset[1]));
+		}
+		context.save();
+		context.globalAlpha = this.opacity;
+		context.drawImage(this.glass, 0, 0, this.canvas.width, this.canvas.height);
+		context.restore();
+	}.bind(this);
 };
 
 /**
