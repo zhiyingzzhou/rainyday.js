@@ -30,6 +30,9 @@ function RainyDay(options) {
     this.REFLECTION_SCALEDOWN_FACTOR = 5;
     this.REFLECTION_DROP_MAPPING_WIDTH = 200;
     this.REFLECTION_DROP_MAPPING_HEIGHT = 200;
+
+    // set polyfill of requestAnimationFrame
+    this.setRequestAnimFrame();
 }
 
 /**
