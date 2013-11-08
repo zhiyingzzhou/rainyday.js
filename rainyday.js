@@ -84,14 +84,6 @@ RainyDay.prototype.checkSize = function() {
  * Start animation loop
  */
 RainyDay.prototype.animateDrops = function () {
-    var raf = window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame;
-    if (!raf) {
-        raf = function(callback) {
-            window.setTimeout(callback, 1000 / this.VARIABLE_FPS);
-        };
-    }
     if (this.addDropCallback) {
         this.addDropCallback();
     }
@@ -104,7 +96,22 @@ RainyDay.prototype.animateDrops = function () {
         }
     }
     this.drops = newDrops;
-    raf(this.animateDrops.bind(this));
+    requestAnimFrame(this.animateDrops.bind(this));
+};
+
+/**
+ * Polyfill for requestAnimationFrame
+ */
+RainyDay.prototype.setRequestAnimFrame = function() {
+    var fps = this.VARIABLE_FPS;
+    window.requestAnimFrame = (function() {
+        return  window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+              window.setTimeout(callback, 1000 / fps);
+          };
+    })();
 };
 
 /**
