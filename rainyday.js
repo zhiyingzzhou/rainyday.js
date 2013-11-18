@@ -5,8 +5,8 @@
 
 function RainyDay(options) {
     this.img = document.getElementById(options.element);
-    this.opacity = typeof options.opacity === "undefined" ? 1 : options.opacity;
-    this.blurRadius = typeof options.blur === "undefined" ? 10 : options.blur;
+    this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
+    this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
     this.w = this.img.clientWidth;
     this.h = this.img.clientHeight;
     this.drops = [];
