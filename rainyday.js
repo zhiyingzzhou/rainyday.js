@@ -99,7 +99,7 @@ RainyDay.prototype.animateDrops = function () {
         }
     }
     this.drops = newDrops;
-    requestAnimFrame(this.animateDrops.bind(this));
+    window.requestAnimFrame(this.animateDrops.bind(this));
 };
 
 /**
@@ -112,8 +112,8 @@ RainyDay.prototype.setRequestAnimFrame = function() {
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||
           function( callback ){
-              window.setTimeout(callback, 1000 / fps);
-          };
+                window.setTimeout(callback, 1000 / fps);
+            };
     })();
 };
 
