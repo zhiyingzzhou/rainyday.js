@@ -19,7 +19,8 @@ var engine = new RainyDay({
     crop: [ 0, 0, 50, 60],  // Coordinates if only a part of the image should be used
                             // If not provided entire image will be used
     blur: 10,               // Defines blur due to rain effect
-                            // If not provided the blur effect is not applied
+                            // Assuming 10 if not provided.
+                            // Use 0 value to disable the blur.
     opacity: 1,             // Opacity of rain drops
                             // Assuming 1 if not provided
     fps: 30                 // Frame rate per second
