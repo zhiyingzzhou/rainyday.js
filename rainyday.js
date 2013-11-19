@@ -7,12 +7,22 @@ function RainyDay(options) {
     this.img = document.getElementById(options.element);
     this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
     this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
-    this.w = this.img.clientWidth;
-    this.h = this.img.clientHeight;
+
+    if (typeof options.crop === 'undefined') {
+        this.crop = [0, 0, this.img.clientWidth, this.img.clientHeight];
+        this.enableSizeChange = true;
+    } else {
+        this.crop = options.crop;
+        this.enableSizeChange = false;
+    }
+    this.w = this.crop[2];
+    this.h = this.crop[3];
+
+    this.parentElement = typeof options.parentElement === 'undefined' ? document.getElementsByTagName('body')[0] : options.parentElement;
     this.drops = [];
 
     // prepare canvas elements
-    this.canvas = this.prepareCanvas(this.img);
+    this.canvas = this.prepareCanvas();
     this.prepareBackground(this.w, this.h);
     this.prepareGlass();
 
@@ -37,18 +47,19 @@ function RainyDay(options) {
 
 /**
  * Create the main canvas over a given element
- * @param element to place the canvas on top of
  * @returns the canvas
  */
-RainyDay.prototype.prepareCanvas = function(element) {
+RainyDay.prototype.prepareCanvas = function() {
     var canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
-    canvas.width = element.clientWidth;
-    canvas.height = element.clientHeight;
-    canvas.style.left = element.offsetLeft;
-    canvas.style.top = element.offsetTop;
-    document.getElementsByTagName('body')[0].appendChild(canvas);
-    window.setInterval(this.checkSize.bind(this), 100);
+    canvas.width = this.w;
+    canvas.height = this.h;
+    canvas.style.left = this.crop[0] + 'px';
+    canvas.style.top = this.crop[1] + 'px';
+    this.parentElement.appendChild(canvas);
+    if (this.enableSizeChange) {
+        window.setInterval(this.checkSize.bind(this), 100);
+    }
     return canvas;
 };
 
@@ -86,7 +97,7 @@ RainyDay.prototype.checkSize = function() {
 /**
  * Start animation loop
  */
-RainyDay.prototype.animateDrops = function () {
+RainyDay.prototype.animateDrops = function() {
     if (this.addDropCallback) {
         this.addDropCallback();
     }
@@ -108,30 +119,30 @@ RainyDay.prototype.animateDrops = function () {
 RainyDay.prototype.setRequestAnimFrame = function() {
     var fps = this.VARIABLE_FPS;
     window.requestAnimFrame = (function() {
-        return  window.requestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame    ||
-          function( callback ){
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function(callback) {
                 window.setTimeout(callback, 1000 / fps);
-            };
+        };
     })();
 };
 
 /**
  * Create the helper canvas for rendering raindrop reflections.
  */
-RainyDay.prototype.prepareReflections = function () {
+RainyDay.prototype.prepareReflections = function() {
     this.reflected = document.createElement('canvas');
     this.reflected.width = this.canvas.width / this.REFLECTION_SCALEDOWN_FACTOR;
     this.reflected.height = this.canvas.height / this.REFLECTION_SCALEDOWN_FACTOR;
     var ctx = this.reflected.getContext('2d');
-    ctx.drawImage(this.img, 0, 0, this.reflected.width, this.reflected.height);
+    ctx.drawImage(this.img, this.crop[0], this.crop[1], this.crop[2], this.crop[3], 0, 0, this.reflected.width, this.reflected.height);
 };
 
 /**
- * Create the glass canvas and position it directly over the main one.
+ * Create the glass canvas.
  */
-RainyDay.prototype.prepareGlass = function () {
+RainyDay.prototype.prepareGlass = function() {
     this.glass = document.createElement('canvas');
     this.glass.width = this.canvas.width;
     this.glass.height = this.canvas.height;
@@ -185,7 +196,7 @@ RainyDay.prototype.rain = function(presets, speed) {
     }
 
     var lastExecutionTime = 0;
-    this.addDropCallback = function () {
+    this.addDropCallback = function() {
         var timestamp = new Date().getTime();
         if (timestamp - lastExecutionTime < speed) {
             return;
@@ -271,7 +282,7 @@ function Drop(rainyday, centerX, centerY, min, base) {
 /**
  * Draws a raindrop on canvas at the current position.
  */
-Drop.prototype.draw = function () {
+Drop.prototype.draw = function() {
     this.context.save();
     this.context.beginPath();
 
@@ -329,7 +340,7 @@ Drop.prototype.clear = function(force) {
 /**
  * Moves the raindrop to a new position according to the gravity.
  */
-Drop.prototype.animate = function () {
+Drop.prototype.animate = function() {
     if (this.terminate) {
         return false;
     }
@@ -350,7 +361,7 @@ Drop.prototype.animate = function () {
  * TRAIL function: no trail at all
  * @param drop raindrop object
  */
-RainyDay.prototype.TRAIL_NONE = function () {
+RainyDay.prototype.TRAIL_NONE = function() {
     // nothing going on here
 };
 
@@ -383,7 +394,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_NONE = function () {
+RainyDay.prototype.GRAVITY_NONE = function() {
     return true;
 };
 
@@ -468,7 +479,7 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
  * REFLECTION function: no reflection at all
  * @param drop raindrop object
  */
-RainyDay.prototype.REFLECTION_NONE = function () {
+RainyDay.prototype.REFLECTION_NONE = function() {
     this.context.fillStyle = this.VARIABLE_FILL_STYLE;
     this.context.fill();
 };
@@ -528,20 +539,8 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
 
 /**
  * Resizes canvas, draws original image and applies blurring algorithm.
- * @param width width of the canvas
- * @param height height of the canvas
  */
-RainyDay.prototype.prepareBackground = function(width, height) {
-    if (width && height) {
-        this.canvas.style.width = width + 'px';
-        this.canvas.style.height = height + 'px';
-        this.canvas.width = width;
-        this.canvas.height = height;
-    } else {
-        width = this.canvas.width;
-        height = this.canvas.height;
-    }
-
+RainyDay.prototype.prepareBackground = function() {
     this.background = document.createElement('canvas');
     this.background.width = this.canvas.width;
     this.background.height = this.canvas.height;
@@ -551,15 +550,16 @@ RainyDay.prototype.prepareBackground = function(width, height) {
     this.clearbackground.height = this.canvas.height;
 
     var context = this.background.getContext('2d');
-    context.clearRect(0, 0, width, height);
-    context.drawImage(this.img, 0, 0, width, height);
+    context.clearRect(0, 0, this.w, this.h);
+
+    context.drawImage(this.img, this.crop[0], this.crop[1], this.crop[2], this.crop[3], 0, 0, this.w, this.h);
 
     context = this.clearbackground.getContext('2d');
-    context.clearRect(0, 0, width, height);
-    context.drawImage(this.img, 0, 0, width, height);
+    context.clearRect(0, 0, this.w, this.h);
+    context.drawImage(this.img, this.crop[0], this.crop[1], this.crop[2], this.crop[3], 0, 0, this.w, this.h);
 
     if (!isNaN(this.blurRadius) && this.blurRadius >= 1) {
-        this.stackBlurCanvasRGB(width, height, this.blurRadius);
+        this.stackBlurCanvasRGB(this.w, this.h, this.blurRadius);
     }
 };
 
