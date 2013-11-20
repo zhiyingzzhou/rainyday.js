@@ -4,27 +4,11 @@
  */
 
 function RainyDay(options) {
-    this.img = document.getElementById(options.element);
+    this.options = options;
     this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
     this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
-
-    if (typeof options.crop === 'undefined') {
-        this.crop = [0, 0, this.img.clientWidth, this.img.clientHeight];
-        this.enableSizeChange = true;
-    } else {
-        this.crop = options.crop;
-        this.enableSizeChange = false;
-    }
-    this.w = this.crop[2];
-    this.h = this.crop[3];
-
-    this.parentElement = typeof options.parentElement === 'undefined' ? document.getElementsByTagName('body')[0] : options.parentElement;
+    this.parentElement = typeof options.parentElement === 'undefined' ? document.body : options.parentElement;
     this.drops = [];
-
-    // prepare canvas elements
-    this.canvas = this.prepareCanvas();
-    this.prepareBackground(this.w, this.h);
-    this.prepareGlass();
 
     // assume defaults
     this.reflection = this.REFLECTION_MINIATURE;
@@ -41,9 +25,75 @@ function RainyDay(options) {
     this.REFLECTION_DROP_MAPPING_WIDTH = 200;
     this.REFLECTION_DROP_MAPPING_HEIGHT = 200;
 
+    if (!options.element) {
+        options.element = document.body;
+    }
+
+    if (typeof options.element === "string") {
+        // use image element as background
+        var element = document.getElementById(options.element)
+        if (element.src) {
+            this.img = element;
+            this.htmlImage = true;
+        } else {
+            options.element = element;
+            this.htmlImage = false;
+        }
+    } else {
+        this.htmlImage = false;
+    }
+
+    if (!this.htmlImage) {
+        // use background image of a given element
+        this.img = new Image();
+        this.img.crossOrigin = 'anonymous';
+
+        var backgroundImage = null;
+        if (window.getComputedStyle) {
+            backgroundImage = window.getComputedStyle(options.element).getPropertyValue("background-image");
+        } else {
+            backgroundImage = options.element.currentStyle.backgroundImage;
+        }
+
+        this.img.style.display = "none";
+
+        var rainyday = this;
+        this.img.onload = function() { rainyday.prepare(); };
+        this.img.src = backgroundImage.slice(4, -1);
+        return;
+    }
+
+    this.prepare();
+}
+
+/**
+ * Image has been loaded so continue with script loading
+ */
+RainyDay.prototype.prepare = function() {
+    if (!this.htmlImage) {
+        document.body.appendChild(this.img);
+        this.img.clientWidth = 100;
+        this.img.clientHeight = 100;
+    }
+
+    if (typeof this.options.crop === 'undefined') {
+        this.crop = [0, 0, this.img.clientWidth || window.innerWidth, this.img.clientHeight || window.innerHeight];
+        this.enableSizeChange = true;
+    } else {
+        this.crop = options.crop;
+        this.enableSizeChange = false;
+    }
+    this.w = this.crop[2];
+    this.h = this.crop[3];
+
+    // prepare canvas elements
+    this.canvas = this.prepareCanvas();
+    this.prepareBackground(this.w, this.h);
+    this.prepareGlass();
+
     // set polyfill of requestAnimationFrame
     this.setRequestAnimFrame();
-}
+};
 
 /**
  * Create the main canvas over a given element
@@ -68,21 +118,25 @@ RainyDay.prototype.prepareCanvas = function() {
  */
 RainyDay.prototype.checkSize = function() {
     var changed = false;
-    if (this.canvas.width !== this.img.clientWidth) {
-        this.canvas.width = this.img.clientWidth;
-        changed = true;
-    }
-    if (this.canvas.height !== this.img.clientHeight) {
-        this.canvas.height = this.img.clientHeight;
-        changed = true;
-    }
-    if (this.canvas.offsetLeft !== this.img.offsetLeft) {
-        this.canvas.offsetLeft = this.img.offsetLeft;
-        changed = true;
-    }
-    if (this.canvas.offsetTop !== this.img.offsetTop) {
-        this.canvas.offsetTop = this.img.offsetTop;
-        changed = true;
+    if (this.htmlImage) {
+        if (this.canvas.width !== this.img.clientWidth) {
+            this.canvas.width = this.img.clientWidth;
+            changed = true;
+        }
+        if (this.canvas.height !== this.img.clientHeight) {
+            this.canvas.height = this.img.clientHeight;
+            changed = true;
+        }
+        if (this.canvas.offsetLeft !== this.img.offsetLeft) {
+            this.canvas.offsetLeft = this.img.offsetLeft;
+            changed = true;
+        }
+        if (this.canvas.offsetTop !== this.img.offsetTop) {
+            this.canvas.offsetTop = this.img.offsetTop;
+            changed = true;
+        }
+    } else {
+        
     }
     if (changed) {
         this.w = this.canvas.width;
@@ -610,6 +664,7 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 
     radius |= 0;
 
+    console.log(width + " " + height);
     var context = this.background.getContext('2d');
     var imageData = context.getImageData(0, 0, width, height);
     var pixels = imageData.data;
