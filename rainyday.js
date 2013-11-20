@@ -76,6 +76,7 @@ RainyDay.prototype.prepare = function() {
         this.img.clientHeight = 100;
     }
 
+    this.imgLoaded = true;
     if (typeof this.options.crop === 'undefined') {
         this.crop = [0, 0, this.img.clientWidth || window.innerWidth, this.img.clientHeight || window.innerHeight];
         this.enableSizeChange = true;
@@ -93,6 +94,11 @@ RainyDay.prototype.prepare = function() {
 
     // set polyfill of requestAnimationFrame
     this.setRequestAnimFrame();
+
+    if (this.rainRequested) {
+        this.rainRequested = false;
+        this.rain();
+    }
 };
 
 /**
@@ -209,15 +215,24 @@ RainyDay.prototype.prepareGlass = function() {
  * @param speed speed of the animation (if not provided or 0 static image will be generated)
  */
 RainyDay.prototype.rain = function(presets, speed) {
+    // animation
+    if (presets && speed) {
+        this.presets = presets;
+        this.speed = speed;
+    }
+
+    if (!this.imgLoaded) {
+        this.rainRequested = true;
+        return;
+    }
+
     // prepare canvas for drop reflections
+    console.log("rain");
     if (this.reflection !== this.REFLECTION_NONE) {
         this.prepareReflections();
     }
 
     this.animateDrops();
-
-    // animation
-    this.presets = presets;
 
     this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.001) / 25;
     this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.001) / 50;
@@ -227,9 +242,9 @@ RainyDay.prototype.rain = function(presets, speed) {
 
         // calculate max radius of a drop to establish gravity matrix resolution
         var maxDropRadius = 0;
-        for (var i = 0; i < presets.length; i++) {
-            if (presets[i][0] + presets[i][1] > maxDropRadius) {
-                maxDropRadius = Math.floor(presets[i][0] + presets[i][1]);
+        for (var i = 0; i < this.presets.length; i++) {
+            if (this.presets[i][0] + this.presets[i][1] > maxDropRadius) {
+                maxDropRadius = Math.floor(this.presets[i][0] + this.presets[i][1]);
             }
         }
 
@@ -243,16 +258,16 @@ RainyDay.prototype.rain = function(presets, speed) {
         }
     }
 
-    for (var i = 0; i < presets.length; i++) {
-        if (!presets[i][3]) {
-            presets[i][3] = -1;
+    for (var i = 0; i < this.presets.length; i++) {
+        if (!this.presets[i][3]) {
+            this.presets[i][3] = -1;
         }
     }
 
     var lastExecutionTime = 0;
     this.addDropCallback = function() {
         var timestamp = new Date().getTime();
-        if (timestamp - lastExecutionTime < speed) {
+        if (timestamp - lastExecutionTime < this.speed) {
             return;
         }
         lastExecutionTime = timestamp;
@@ -261,16 +276,16 @@ RainyDay.prototype.rain = function(presets, speed) {
         context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
         // select matching preset
         var preset;
-        for (var i = 0; i < presets.length; i++) {
-            if (presets[i][2] > 1 || presets[i][3] === -1) {
-                if (presets[i][3] !== 0) {
-                    presets[i][3]--;
-                    for (var y = 0; y < presets[i][2]; ++y) {
-                        this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, presets[i][0], presets[i][1]));
+        for (var i = 0; i < this.presets.length; i++) {
+            if (this.presets[i][2] > 1 || this.presets[i][3] === -1) {
+                if (this.presets[i][3] !== 0) {
+                    this.presets[i][3]--;
+                    for (var y = 0; y < this.presets[i][2]; ++y) {
+                        this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, this.presets[i][0], this.presets[i][1]));
                     }
                 }
-            } else if (Math.random() < presets[i][2]) {
-                preset = presets[i];
+            } else if (Math.random() < this.presets[i][2]) {
+                preset = this.presets[i];
                 break;
             }
         }
