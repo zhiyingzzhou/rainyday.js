@@ -29,9 +29,9 @@ function RainyDay(options) {
         options.element = document.body;
     }
 
-    if (typeof options.element === "string") {
+    if (typeof options.element === 'string') {
         // use image element as background
-        var element = document.getElementById(options.element)
+        var element = document.getElementById(options.element);
         if (element.src) {
             this.img = element;
             this.htmlImage = true;
@@ -50,15 +50,17 @@ function RainyDay(options) {
 
         var backgroundImage = null;
         if (window.getComputedStyle) {
-            backgroundImage = window.getComputedStyle(options.element).getPropertyValue("background-image");
+            backgroundImage = window.getComputedStyle(options.element).getPropertyValue('background-image');
         } else {
             backgroundImage = options.element.currentStyle.backgroundImage;
         }
 
-        this.img.style.display = "none";
+        this.img.style.display = 'none';
 
         var rainyday = this;
-        this.img.onload = function() { rainyday.prepare(); };
+        this.img.onload = function() {
+            rainyday.prepare();
+        };
         this.img.src = backgroundImage.slice(4, -1);
         return;
     }
@@ -81,7 +83,7 @@ RainyDay.prototype.prepare = function() {
         this.crop = [0, 0, this.img.clientWidth || window.innerWidth, this.img.clientHeight || window.innerHeight];
         this.enableSizeChange = true;
     } else {
-        this.crop = options.crop;
+        this.crop = this.options.crop;
         this.enableSizeChange = false;
     }
     this.w = this.crop[2];
@@ -142,7 +144,7 @@ RainyDay.prototype.checkSize = function() {
             changed = true;
         }
     } else {
-        
+        changed = false;
     }
     if (changed) {
         this.w = this.canvas.width;
@@ -227,7 +229,6 @@ RainyDay.prototype.rain = function(presets, speed) {
     }
 
     // prepare canvas for drop reflections
-    console.log("rain");
     if (this.reflection !== this.REFLECTION_NONE) {
         this.prepareReflections();
     }
@@ -679,7 +680,6 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
 
     radius |= 0;
 
-    console.log(width + " " + height);
     var context = this.background.getContext('2d');
     var imageData = context.getImageData(0, 0, width, height);
     var pixels = imageData.data;
