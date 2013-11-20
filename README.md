@@ -11,8 +11,9 @@ For demos and more information see the [project page](http://maroslaw.github.io/
 
 ```js
 var engine = new RainyDay({
-    element: 'background',  // ID of image element
-                            // This value is required
+    element: 'background',  // ID of image element or an element itself
+                            // If the element is not an Image the background-image property will be used
+                            // If not provided document.body will be used
     parentElement: someDiv, // Element to be used as a parent for the canvas
                             // If not provided assuming the 'body' element
     crop: [ 0, 0, 50, 60],  // Coordinates if only a part of the image should be used
