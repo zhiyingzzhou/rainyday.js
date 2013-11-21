@@ -4,7 +4,6 @@
  */
 
 function RainyDay(options) {
-    this.options = options;
     this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
     this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
     this.parentElement = typeof options.parentElement === 'undefined' ? document.body : options.parentElement;
@@ -28,6 +27,8 @@ function RainyDay(options) {
     if (!options.element) {
         options.element = document.body;
     }
+
+    this.options = options;
 
     if (typeof options.element === 'string') {
         // use image element as background
@@ -74,13 +75,13 @@ function RainyDay(options) {
 RainyDay.prototype.prepare = function() {
     if (!this.htmlImage) {
         document.body.appendChild(this.img);
-        this.img.clientWidth = 100;
-        this.img.clientHeight = 100;
+        this.img.width = this.options.element.width || window.innerWidth;
+        this.img.height = this.options.element.height || window.innerHeight;
     }
 
     this.imgLoaded = true;
     if (typeof this.options.crop === 'undefined') {
-        this.crop = [0, 0, this.img.clientWidth || window.innerWidth, this.img.clientHeight || window.innerHeight];
+        this.crop = [0, 0, this.img.clientWidth || this.img.width, this.img.clientHeight || this.img.height ];
         this.enableSizeChange = true;
     } else {
         this.crop = this.options.crop;
@@ -144,7 +145,22 @@ RainyDay.prototype.checkSize = function() {
             changed = true;
         }
     } else {
-        changed = false;
+        if (this.canvas.width !== this.img.clientWidth) {
+            this.canvas.width = this.img.clientWidth;
+            changed = true;
+        }
+        if (this.canvas.height !== this.img.clientHeight) {
+            this.canvas.height = this.img.clientHeight;
+            changed = true;
+        }
+        if (this.canvas.offsetLeft !== this.img.offsetLeft) {
+            this.canvas.offsetLeft = this.img.offsetLeft;
+            changed = true;
+        }
+        if (this.canvas.offsetTop !== this.img.offsetTop) {
+            this.canvas.offsetTop = this.img.offsetTop;
+            changed = true;
+        }
     }
     if (changed) {
         this.w = this.canvas.width;
