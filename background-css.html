@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Rainy JS Demo</title>
+        <style media="screen">
+            body {
+                background-image: url(http://i.imgur.com/nH2ziAk.jpg);
+                background-size: cover;
+            }
+
+            #content {
+                position: absolute;
+                left: 100px;
+                top: 10%;
+                min-width: 60%;
+                min-height: 80%;
+                background-image: url(http://i.imgur.com/YcPWX2h.jpg);
+                background-size: cover;
+            }
+        </style>
+        <script src="rainyday.js"></script>
+    </head>
+    <body onload="demo();">
+        <div id="content">
+        </div>
+        <script>
+            function demo() {
+                var engine = new RainyDay({
+                    blur: 3,
+                    opacity: 1,
+                    fps: 30
+                });
+                engine.trail = engine.TRAIL_SMUDGE;
+                engine.rain([ [0, 2, 1], [4, 4, 1] ], 100);
+
+                engine = new RainyDay({
+                    element: "content",
+                    blur: 10,
+                    opacity: 1,
+                    fps: 30
+                });
+                engine.trail = engine.TRAIL_SMUDGE;
+                engine.rain([ [0, 2, 1], [4, 4, 1] ], 100);
+            }
+        </script>
+    </body>
+</html>

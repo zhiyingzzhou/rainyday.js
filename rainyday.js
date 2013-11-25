@@ -4,27 +4,10 @@
  */
 
 function RainyDay(options) {
-    this.img = document.getElementById(options.element);
     this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
     this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
-
-    if (typeof options.crop === 'undefined') {
-        this.crop = [0, 0, this.img.clientWidth, this.img.clientHeight];
-        this.enableSizeChange = true;
-    } else {
-        this.crop = options.crop;
-        this.enableSizeChange = false;
-    }
-    this.w = this.crop[2];
-    this.h = this.crop[3];
-
-    this.parentElement = typeof options.parentElement === 'undefined' ? document.getElementsByTagName('body')[0] : options.parentElement;
+    this.parentElement = typeof options.parentElement === 'undefined' ? document.body : options.parentElement;
     this.drops = [];
-
-    // prepare canvas elements
-    this.canvas = this.prepareCanvas();
-    this.prepareBackground(this.w, this.h);
-    this.prepareGlass();
 
     // assume defaults
     this.reflection = this.REFLECTION_MINIATURE;
@@ -41,9 +24,85 @@ function RainyDay(options) {
     this.REFLECTION_DROP_MAPPING_WIDTH = 200;
     this.REFLECTION_DROP_MAPPING_HEIGHT = 200;
 
+    if (!options.element) {
+        options.element = document.body;
+    }
+
+    this.options = options;
+
+    if (typeof options.element === 'string') {
+        // use image element as background
+        var element = document.getElementById(options.element);
+        if (element.src) {
+            this.img = element;
+            this.htmlImage = true;
+        } else {
+            options.element = element;
+            this.htmlImage = false;
+        }
+    } else {
+        this.htmlImage = false;
+    }
+
+    if (!this.htmlImage) {
+        // use background image of a given element
+        this.img = new Image();
+        this.img.crossOrigin = 'anonymous';
+
+        var backgroundImage = null;
+        if (window.getComputedStyle) {
+            backgroundImage = window.getComputedStyle(options.element).getPropertyValue('background-image');
+        } else {
+            backgroundImage = options.element.currentStyle.backgroundImage;
+        }
+
+        this.img.style.display = 'none';
+
+        var rainyday = this;
+        this.img.onload = function() {
+            rainyday.prepare();
+        };
+        this.img.src = backgroundImage.slice(4, -1);
+        return;
+    }
+
+    this.prepare();
+}
+
+/**
+ * Image has been loaded so continue with script loading
+ */
+RainyDay.prototype.prepare = function() {
+    if (!this.htmlImage) {
+        document.body.appendChild(this.img);
+        this.img.width = this.options.element.width || window.innerWidth;
+        this.img.height = this.options.element.height || window.innerHeight;
+    }
+
+    this.imgLoaded = true;
+    if (typeof this.options.crop === 'undefined') {
+        this.crop = [0, 0, this.img.clientWidth || this.img.width, this.img.clientHeight || this.img.height ];
+        this.enableSizeChange = true;
+    } else {
+        this.crop = this.options.crop;
+        this.enableSizeChange = false;
+    }
+    this.w = this.crop[2];
+    this.h = this.crop[3];
+
+    // prepare canvas elements
+    this.canvas = this.prepareCanvas();
+    this.prepareBackground(this.w, this.h);
+    this.prepareGlass();
+
     // set polyfill of requestAnimationFrame
     this.setRequestAnimFrame();
-}
+
+    if (this.rainRequested) {
+        this.rainRequested = false;
+        this.rain();
+    }
+};
 
 /**
  * Create the main canvas over a given element
@@ -84,21 +143,40 @@ RainyDay.prototype.checkSize = function() {
     var canvasOffsetLeft = this.canvas.offsetLeft;
     var canvasOffsetTop = this.canvas.offsetTop;
 
-    if (canvasWidth !== clientWidth) {
-        canvasWidth = clientWidth;
-        changed = true;
-    }
-    if (canvasHeight !== clientHeight) {
-        canvasHeight = clientHeight;
-        changed = true;
-    }
-    if (canvasOffsetLeft !== clientOffsetLeft) {
-        canvasOffsetLeft = clientOffsetLeft;
-        changed = true;
-    }
-    if (canvasOffsetTop !== clientOffsetTop) {
-        canvasOffsetTop = clientOffsetTop;
-        changed = true;
+    if (this.htmlImage) {
+        if (canvasWidth !== clientWidth) {
+            this.canvas.width = clientWidth;
+            changed = true;
+        }
+        if (canvasHeight !== clientHeight) {
+            this.canvas.height = clientHeight;
+            changed = true;
+        }
+        if (canvasOffsetLeft !== clientOffsetLeft) {
+            this.canvas.offsetLeft = clientOffsetLeft;
+            changed = true;
+        }
+        if (canvasOffsetTop !== clientOffsetTop) {
+            this.canvas.offsetTop = clientOffsetTop;
+            changed = true;
+        }
+    } else {
+        if (canvasWidth !== clientWidth) {
+            this.canvas.width = clientWidth;
+            changed = true;
+        }
+        if (canvasHeight !== clientHeight) {
+            this.canvas.height = clientHeight;
+            changed = true;
+        }
+        if (canvasOffsetLeft !== clientOffsetLeft) {
+            this.canvas.offsetLeft = clientOffsetLeft;
+            changed = true;
+        }
+        if (canvasOffsetTop !== clientOffsetTop) {
+            this.canvas.offsetTop = clientOffsetTop;
+            changed = true;
+        }
     }
     if (changed) {
         this.w = this.canvas.width;
@@ -171,15 +249,23 @@ RainyDay.prototype.prepareGlass = function() {
  * @param speed speed of the animation (if not provided or 0 static image will be generated)
  */
 RainyDay.prototype.rain = function(presets, speed) {
+    // animation
+    if (presets && speed) {
+        this.presets = presets;
+        this.speed = speed;
+    }
+
+    if (!this.imgLoaded) {
+        this.rainRequested = true;
+        return;
+    }
+
     // prepare canvas for drop reflections
     if (this.reflection !== this.REFLECTION_NONE) {
         this.prepareReflections();
     }
 
     this.animateDrops();
-
-    // animation
-    this.presets = presets;
 
     this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = (this.VARIABLE_FPS * 0.001) / 25;
     this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.001) / 50;
@@ -189,9 +275,9 @@ RainyDay.prototype.rain = function(presets, speed) {
 
         // calculate max radius of a drop to establish gravity matrix resolution
         var maxDropRadius = 0;
-        for (var i = 0; i < presets.length; i++) {
-            if (presets[i][0] + presets[i][1] > maxDropRadius) {
-                maxDropRadius = Math.floor(presets[i][0] + presets[i][1]);
+        for (var i = 0; i < this.presets.length; i++) {
+            if (this.presets[i][0] + this.presets[i][1] > maxDropRadius) {
+                maxDropRadius = Math.floor(this.presets[i][0] + this.presets[i][1]);
             }
         }
 
@@ -205,16 +291,16 @@ RainyDay.prototype.rain = function(presets, speed) {
         }
     }
 
-    for (var i = 0; i < presets.length; i++) {
-        if (!presets[i][3]) {
-            presets[i][3] = -1;
+    for (var i = 0; i < this.presets.length; i++) {
+        if (!this.presets[i][3]) {
+            this.presets[i][3] = -1;
         }
     }
 
     var lastExecutionTime = 0;
     this.addDropCallback = function() {
         var timestamp = new Date().getTime();
-        if (timestamp - lastExecutionTime < speed) {
+        if (timestamp - lastExecutionTime < this.speed) {
             return;
         }
         lastExecutionTime = timestamp;
@@ -223,16 +309,16 @@ RainyDay.prototype.rain = function(presets, speed) {
         context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
         // select matching preset
         var preset;
-        for (var i = 0; i < presets.length; i++) {
-            if (presets[i][2] > 1 || presets[i][3] === -1) {
-                if (presets[i][3] !== 0) {
-                    presets[i][3]--;
-                    for (var y = 0; y < presets[i][2]; ++y) {
-                        this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, presets[i][0], presets[i][1]));
+        for (var i = 0; i < this.presets.length; i++) {
+            if (this.presets[i][2] > 1 || this.presets[i][3] === -1) {
+                if (this.presets[i][3] !== 0) {
+                    this.presets[i][3]--;
+                    for (var y = 0; y < this.presets[i][2]; ++y) {
+                        this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, this.presets[i][0], this.presets[i][1]));
                     }
                 }
-            } else if (Math.random() < presets[i][2]) {
-                preset = presets[i];
+            } else if (Math.random() < this.presets[i][2]) {
+                preset = this.presets[i];
                 break;
             }
         }
