@@ -68,20 +68,29 @@ RainyDay.prototype.prepareCanvas = function() {
  */
 RainyDay.prototype.checkSize = function() {
     var changed = false;
-    if (this.canvas.width !== this.img.clientWidth) {
-        this.canvas.width = this.img.clientWidth;
+    var clientWidth = this.img.clientWidth;
+    var clientHeight = this.img.clientHeight;
+    var clientOffsetLeft = this.img.offsetLeft;
+    var clientOffsetTop = this.img.offsetTop;
+    var canvasWidth = this.canvas.width;
+    var canvasHeight = this.canvas.height;
+    var canvasOffsetLeft = this.canvas.offsetLeft;
+    var canvasOffsetTop = this.canvas.offsetTop;
+
+    if (canvasWidth !== clientWidth) {
+        canvasWidth = clientWidth;
         changed = true;
     }
-    if (this.canvas.height !== this.img.clientHeight) {
-        this.canvas.height = this.img.clientHeight;
+    if (canvasHeight !== clientHeight) {
+        canvasHeight = clientHeight;
         changed = true;
     }
-    if (this.canvas.offsetLeft !== this.img.offsetLeft) {
-        this.canvas.offsetLeft = this.img.offsetLeft;
+    if (canvasOffsetLeft !== clientOffsetLeft) {
+        canvasOffsetLeft = clientOffsetLeft;
         changed = true;
     }
-    if (this.canvas.offsetTop !== this.img.offsetTop) {
-        this.canvas.offsetTop = this.img.offsetTop;
+    if (canvasOffsetTop !== clientOffsetTop) {
+        canvasOffsetTop = clientOffsetTop;
         changed = true;
     }
     if (changed) {
