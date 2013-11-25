@@ -145,40 +145,21 @@ RainyDay.prototype.checkSize = function() {
     var canvasOffsetLeft = this.canvas.offsetLeft;
     var canvasOffsetTop = this.canvas.offsetTop;
 
-    if (this.htmlImage) {
-        if (canvasWidth !== clientWidth) {
-            this.canvas.width = clientWidth;
-            changed = true;
-        }
-        if (canvasHeight !== clientHeight) {
-            this.canvas.height = clientHeight;
-            changed = true;
-        }
-        if (canvasOffsetLeft !== clientOffsetLeft) {
-            this.canvas.offsetLeft = clientOffsetLeft;
-            changed = true;
-        }
-        if (canvasOffsetTop !== clientOffsetTop) {
-            this.canvas.offsetTop = clientOffsetTop;
-            changed = true;
-        }
-    } else {
-        if (canvasWidth !== clientWidth) {
-            this.canvas.width = clientWidth;
-            changed = true;
-        }
-        if (canvasHeight !== clientHeight) {
-            this.canvas.height = clientHeight;
-            changed = true;
-        }
-        if (canvasOffsetLeft !== clientOffsetLeft) {
-            this.canvas.offsetLeft = clientOffsetLeft;
-            changed = true;
-        }
-        if (canvasOffsetTop !== clientOffsetTop) {
-            this.canvas.offsetTop = clientOffsetTop;
-            changed = true;
-        }
+    if (canvasWidth !== clientWidth) {
+        this.canvas.width = clientWidth;
+        changed = true;
+    }
+    if (canvasHeight !== clientHeight) {
+        this.canvas.height = clientHeight;
+        changed = true;
+    }
+    if (canvasOffsetLeft !== clientOffsetLeft) {
+        this.canvas.offsetLeft = clientOffsetLeft;
+        changed = true;
+    }
+    if (canvasOffsetTop !== clientOffsetTop) {
+        this.canvas.offsetTop = clientOffsetTop;
+        changed = true;
     }
     if (changed) {
         this.w = this.canvas.width;
