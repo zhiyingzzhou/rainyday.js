@@ -57,10 +57,17 @@ RainyDay.prototype.prepareCanvas = function() {
     canvas.style.left = this.crop[0] + 'px';
     canvas.style.top = this.crop[1] + 'px';
     this.parentElement.appendChild(canvas);
-    if (this.enableSizeChange) {
-        window.setInterval(this.checkSize.bind(this), 100);
-    }
+    this.enableSizeChange && this.setResizeHandler();
     return canvas;
+};
+
+RainyDay.prototype.setResizeHandler = function() {
+    // use setInterval if oneresize event already use by other.
+    if (window.onresize !== null) {
+        window.setInterval(this.checkSize.bind(this), 100);
+    } else {
+        window.onresize = this.checkSize.bind(this);
+    }
 };
 
 /**
