@@ -116,7 +116,9 @@ RainyDay.prototype.prepareCanvas = function() {
     canvas.style.left = this.crop[0] + 'px';
     canvas.style.top = this.crop[1] + 'px';
     this.parentElement.appendChild(canvas);
-    this.enableSizeChange && this.setResizeHandler();
+    if (this.enableSizeChange) {
+        this.setResizeHandler();
+    }
     return canvas;
 };
 
