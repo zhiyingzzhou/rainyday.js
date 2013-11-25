@@ -117,9 +117,18 @@ RainyDay.prototype.prepareCanvas = function() {
     canvas.style.top = this.crop[1] + 'px';
     this.parentElement.appendChild(canvas);
     if (this.enableSizeChange) {
-        window.setInterval(this.checkSize.bind(this), 100);
+        this.setResizeHandler();
     }
     return canvas;
+};
+
+RainyDay.prototype.setResizeHandler = function() {
+    // use setInterval if oneresize event already use by other.
+    if (window.onresize !== null) {
+        window.setInterval(this.checkSize.bind(this), 100);
+    } else {
+        window.onresize = this.checkSize.bind(this);
+    }
 };
 
 /**
@@ -127,40 +136,30 @@ RainyDay.prototype.prepareCanvas = function() {
  */
 RainyDay.prototype.checkSize = function() {
     var changed = false;
-    if (this.htmlImage) {
-        if (this.canvas.width !== this.img.clientWidth) {
-            this.canvas.width = this.img.clientWidth;
-            changed = true;
-        }
-        if (this.canvas.height !== this.img.clientHeight) {
-            this.canvas.height = this.img.clientHeight;
-            changed = true;
-        }
-        if (this.canvas.offsetLeft !== this.img.offsetLeft) {
-            this.canvas.offsetLeft = this.img.offsetLeft;
-            changed = true;
-        }
-        if (this.canvas.offsetTop !== this.img.offsetTop) {
-            this.canvas.offsetTop = this.img.offsetTop;
-            changed = true;
-        }
-    } else {
-        if (this.canvas.width !== this.img.clientWidth) {
-            this.canvas.width = this.img.clientWidth;
-            changed = true;
-        }
-        if (this.canvas.height !== this.img.clientHeight) {
-            this.canvas.height = this.img.clientHeight;
-            changed = true;
-        }
-        if (this.canvas.offsetLeft !== this.img.offsetLeft) {
-            this.canvas.offsetLeft = this.img.offsetLeft;
-            changed = true;
-        }
-        if (this.canvas.offsetTop !== this.img.offsetTop) {
-            this.canvas.offsetTop = this.img.offsetTop;
-            changed = true;
-        }
+    var clientWidth = this.img.clientWidth;
+    var clientHeight = this.img.clientHeight;
+    var clientOffsetLeft = this.img.offsetLeft;
+    var clientOffsetTop = this.img.offsetTop;
+    var canvasWidth = this.canvas.width;
+    var canvasHeight = this.canvas.height;
+    var canvasOffsetLeft = this.canvas.offsetLeft;
+    var canvasOffsetTop = this.canvas.offsetTop;
+
+    if (canvasWidth !== clientWidth) {
+        this.canvas.width = clientWidth;
+        changed = true;
+    }
+    if (canvasHeight !== clientHeight) {
+        this.canvas.height = clientHeight;
+        changed = true;
+    }
+    if (canvasOffsetLeft !== clientOffsetLeft) {
+        this.canvas.offsetLeft = clientOffsetLeft;
+        changed = true;
+    }
+    if (canvasOffsetTop !== clientOffsetTop) {
+        this.canvas.offsetTop = clientOffsetTop;
+        changed = true;
     }
     if (changed) {
         this.w = this.canvas.width;
