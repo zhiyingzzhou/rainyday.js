@@ -72,6 +72,7 @@ RainyDay.prototype.setResizeHandler = function() {
         window.setInterval(this.checkSize.bind(this), 100);
     } else {
         window.onresize = this.checkSize.bind(this);
+		window.onorientationchange = this.checkSize.bind(this);
     }
 };
 
@@ -89,30 +90,18 @@ RainyDay.prototype.checkSize = function() {
     var canvasOffsetLeft = this.canvas.offsetLeft;
     var canvasOffsetTop = this.canvas.offsetTop;
 
-    if (canvasWidth !== clientWidth) {
-        canvasWidth = clientWidth;
-        changed = true;
-    }
-    if (canvasHeight !== clientHeight) {
-        canvasHeight = clientHeight;
-        changed = true;
-    }
-    if (canvasOffsetLeft !== clientOffsetLeft) {
-        canvasOffsetLeft = clientOffsetLeft;
-        changed = true;
-    }
-    if (canvasOffsetTop !== clientOffsetTop) {
-        canvasOffsetTop = clientOffsetTop;
-        changed = true;
-    }
-    if (changed) {
-        this.imageWidth = this.canvas.width;
-        this.imageHeight = this.canvas.height;
+    if (canvasWidth !== clientWidth || canvasHeight !== clientHeight) {
+		this.canvas.width=this.imageWidth;
+        this.canvas.height=this.imageHeight;
         this.prepareBackground(this.imageWidth, this.imageHeight);
         this.glass.width = this.imageWidth;
         this.glass.height = this.imageHeight;
         this.prepareReflections();
     }
+	if(canvasOffsetLeft !== clientOffsetLeft || canvasOffsetTop !== clientOffsetTop){
+		this.canvas.offsetLeft=clientOffsetLeft;
+		this.canvas.offsetTop=clientOffsetTop;
+	}
 };
 
 /**
