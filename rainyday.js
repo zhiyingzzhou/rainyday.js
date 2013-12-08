@@ -80,7 +80,6 @@ RainyDay.prototype.setResizeHandler = function() {
  * Periodically check the size of the underlying element
  */
 RainyDay.prototype.checkSize = function() {
-    var changed = false;
     var clientWidth = this.img.clientWidth;
     var clientHeight = this.img.clientHeight;
     var clientOffsetLeft = this.img.offsetLeft;
