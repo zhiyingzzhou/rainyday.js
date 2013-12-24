@@ -25,8 +25,10 @@ var engine = new RainyDay({
     fps: 30                 // Frame rate per second
                             // This value is required
 });
-engine.rain([
-    [1, 0, 20],             // add 20 drops of size 1...
-    [3, 3, 1] ],            // ... and 1 drop of size from 3 - 6 ...
+engine.rain(
+    [
+        [1, 0, 20],         // add 20 drops of size 1...
+        [3, 3, 1]           // ... and 1 drop of size from 3 - 6 ...
+    ],                       
     100);                   // ... every 100ms
 ```
