@@ -4,6 +4,9 @@
  */
 
 function RainyDay(options) {
+	if(this === window){ //if *this* is the window object, start over with a *new* object
+      return new RainyDay(options);
+   }
 	this.img = document.getElementById(options.element);
 	this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
 	this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
