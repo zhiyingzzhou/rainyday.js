@@ -5,8 +5,8 @@
 
 function RainyDay(options) {
 	if(this === window){ //if *this* is the window object, start over with a *new* object
-      return new RainyDay(options);
-   }
+        return new RainyDay(options);
+    }
 	this.img = document.getElementById(options.element);
 	this.opacity = typeof options.opacity === 'undefined' ? 1 : options.opacity;
 	this.blurRadius = typeof options.blur === 'undefined' ? 10 : options.blur;
@@ -372,7 +372,6 @@ Drop.prototype.animate = function () {
 
 /**
  * TRAIL function: no trail at all
- * @param drop raindrop object
  */
 RainyDay.prototype.TRAIL_NONE = function () {
 	// nothing going on here
@@ -404,7 +403,6 @@ RainyDay.prototype.TRAIL_SMUDGE = function (drop) {
 
 /**
  * GRAVITY function: no gravity at all
- * @param drop raindrop object
  * @returns true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_NONE = function () {
@@ -490,7 +488,6 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function (drop) {
 
 /**
  * REFLECTION function: no reflection at all
- * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_NONE = function () {
 	this.context.fillStyle = this.VARIABLE_FILL_STYLE;
@@ -512,7 +509,7 @@ RainyDay.prototype.REFLECTION_MINIATURE = function (drop) {
 /**
  * COLLISION function: default collision implementation
  * @param drop one of the drops colliding
- * @param colllisions list of potential collisions
+ * @param collisions list of potential collisions
  */
 RainyDay.prototype.COLLISION_SIMPLE = function (drop, collisions) {
 	var item = collisions;
@@ -836,7 +833,6 @@ RainyDay.prototype.stackBlurCanvasRGB = function (width, height, radius) {
 /**
  * Defines a new helper object for Stack Blur Algorithm.
  */
-
 function BlurStack() {
 	this.r = 0;
 	this.g = 0;
@@ -850,7 +846,6 @@ function BlurStack() {
  * @param y number of rows in the matrix
  * @param r grid size
  */
-
 function CollisionMatrix(x, y, r) {
 	this.resolution = r;
 	this.xc = x;
@@ -867,7 +862,7 @@ function CollisionMatrix(x, y, r) {
 /**
  * Updates position of the given drop on the collision matrix.
  * @param drop raindrop to be positioned/repositioned
- * @forceDelete if true the raindrop will be removed from the matrix
+ * @param forceDelete if true the raindrop will be removed from the matrix
  * @returns collisions if any
  */
 CollisionMatrix.prototype.update = function (drop, forceDelete) {
@@ -947,7 +942,6 @@ CollisionMatrix.prototype.remove = function (drop) {
 /**
  * Defines a linked list item.
  */
-
 function DropItem(drop) {
 	this.drop = drop;
 	this.next = null;
