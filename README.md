@@ -32,3 +32,7 @@ engine.rain(
     ],                       
     100);                   // ... every 100ms
 ```
+
+### Sincere apologies
+
+To everyone reporting issues in the last couple of weeks I'd like to apologize for (usually) complete lack of response from my side. I've been a bit busy with my day job ;) I'll do my best to be more responsive in the future.
