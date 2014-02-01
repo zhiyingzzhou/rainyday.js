@@ -53,7 +53,7 @@ function RainyDay(options) {
 
 /**
  * Create the main canvas over a given element
- * @returns the canvas
+ * @returns HTMLElement the canvas
  */
 RainyDay.prototype.prepareCanvas = function () {
 	var canvas = document.createElement('canvas');
@@ -335,7 +335,7 @@ Drop.prototype.draw = function () {
 /**
  * Clears the raindrop region.
  * @param force force stop
- * @returns true if the animation is stopped
+ * @returns Boolean true if the animation is stopped
  */
 Drop.prototype.clear = function (force) {
 	this.context.clearRect(this.x - this.r - 1, this.y - this.r - 2, 2 * this.r + 2, 2 * this.r + 2);
@@ -403,7 +403,7 @@ RainyDay.prototype.TRAIL_SMUDGE = function (drop) {
 
 /**
  * GRAVITY function: no gravity at all
- * @returns true if the animation is stopped
+ * @returns Boolean true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_NONE = function () {
 	return true;
@@ -412,7 +412,7 @@ RainyDay.prototype.GRAVITY_NONE = function () {
 /**
  * GRAVITY function: linear gravity
  * @param drop raindrop object
- * @returns true if the animation is stopped
+ * @returns Boolean true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_LINEAR = function (drop) {
 	if (this.clearDrop(drop)) {
@@ -435,7 +435,7 @@ RainyDay.prototype.GRAVITY_LINEAR = function (drop) {
 /**
  * GRAVITY function: non-linear gravity (default)
  * @param drop raindrop object
- * @returns true if the animation is stopped
+ * @returns Boolean true if the animation is stopped
  */
 RainyDay.prototype.GRAVITY_NON_LINEAR = function (drop) {
 	if (this.clearDrop(drop)) {
@@ -899,7 +899,7 @@ CollisionMatrix.prototype.update = function (drop, forceDelete) {
 /**
  * Looks for collisions with the given raindrop.
  * @param drop raindrop to be checked
- * @returns list of drops that collide with it
+ * @returns DropItem list of drops that collide with it
  */
 CollisionMatrix.prototype.collisions = function (drop) {
 	var item = new DropItem(null);
