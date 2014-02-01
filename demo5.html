@@ -18,6 +18,10 @@
             	width: 100px;
             	height: 100px;
             }
+
+            img {
+            	width: ;
+            }
         </style>
         <script src="rainyday.js"></script>
         <script>
@@ -29,10 +33,10 @@
                         crop: [ 50, 50, 600, 400]
                     }, document.getElementById('canvas'));
                     engine.trail = engine.TRAIL_SMUDGE;
-                    engine.rain([ [3, 3, 0.8] ], 100);
+                    engine.rain([ [3, 3, 0.8] ], 300);
                 };
                 image.crossOrigin = 'anonymous';
-                image.src = 'http://i.imgur.com/N7ETzFO.jpg';
+                image.src = 'http://i.imgur.com/HRtuQo8.jpg';
             }
         </script>
     </head>
