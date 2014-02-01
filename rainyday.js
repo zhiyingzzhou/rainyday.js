@@ -143,7 +143,7 @@ RainyDay.prototype.setRequestAnimFrame = function() {
 			window.mozRequestAnimationFrame ||
 			function(callback) {
 				window.setTimeout(callback, 1000 / fps);
-		};
+			};
 	})();
 };
 
