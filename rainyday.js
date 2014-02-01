@@ -874,6 +874,9 @@ function CollisionMatrix(x, y, r) {
  */
 CollisionMatrix.prototype.update = function(drop, forceDelete) {
 	if (drop.gid) {
+		if (!this.matrix[drop.gmx] || !this.matrix[drop.gmx][drop.gmy]) {
+			return null;
+		}
 		this.matrix[drop.gmx][drop.gmy].remove(drop);
 		if (forceDelete) {
 			return null;
