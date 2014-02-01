@@ -143,7 +143,7 @@ RainyDay.prototype.setRequestAnimFrame = function() {
 			window.mozRequestAnimationFrame ||
 			function(callback) {
 				window.setTimeout(callback, 1000 / fps);
-			};
+		};
 	})();
 };
 
@@ -494,6 +494,29 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 };
 
 /**
+ * Utility function to return positive min value
+ * @param val1 first number
+ * @param val2 second number
+ */
+RainyDay.prototype.positiveMin = function(val1, val2) {
+	var result = 0;
+	if (val1 < val2) {
+		if (val1 < 0) {
+			result = val2;
+		} else {
+			result = val1;
+		}
+	} else {
+		if (val2 < 0) {
+			result = val1;
+		} else {
+			result = val2;
+		}
+	}
+	return result < 0 ? 1 : result;
+};
+
+/**
  * REFLECTION function: no reflection at all
  */
 RainyDay.prototype.REFLECTION_NONE = function() {
@@ -508,9 +531,11 @@ RainyDay.prototype.REFLECTION_NONE = function() {
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
 	var sx = Math.max((drop.x - this.options.reflectionDropMappingWidth) / this.options.reflectionScaledownFactor, 0);
 	var sy = Math.max((drop.y - this.options.reflectionDropMappingHeight) / this.options.reflectionScaledownFactor, 0);
-	var sw = Math.min(this.options.reflectionDropMappingWidth * 2 / this.options.reflectionScaledownFactor, this.reflected.width - sx);
-	var sh = Math.min(this.options.reflectionDropMappingHeight * 2 / this.options.reflectionScaledownFactor, this.reflected.height - sy);
-	this.context.drawImage(this.reflected, sx, sy, sw, sh, drop.x - 1.1 * drop.r, drop.y - 1.1 * drop.r, drop.r * 2, drop.r * 2);
+	var sw = this.positiveMin(this.options.reflectionDropMappingWidth * 2 / this.options.reflectionScaledownFactor, this.reflected.width - sx);
+	var sh = this.positiveMin(this.options.reflectionDropMappingHeight * 2 / this.options.reflectionScaledownFactor, this.reflected.height - sy);
+	var dx = Math.max(drop.x - 1.1 * drop.r, drop.r * 2);
+	var dy = Math.max(drop.y - 1.1 * drop.r, drop.r * 2);
+	this.context.drawImage(this.reflected, sx, sy, sw, sh, dx, dy, drop.r * 2, drop.r * 2);
 };
 
 /**
