@@ -22,10 +22,8 @@ var engine = new RainyDay({
     blur: 10,               // Defines blur due to rain effect
                             // Assuming 10 if not provided
                             // Use 0 value to disable the blur
-    opacity: 1,             // Opacity of rain drops
+    opacity: 1              // Opacity of rain drops
                             // Assuming 1 if not provided
-    fps: 30                 // Frame rate per second
-                            // This value is required
 });
 engine.rain(
     [
