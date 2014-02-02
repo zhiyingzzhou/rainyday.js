@@ -3,6 +3,8 @@
 
 # rainyday.js
 
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XWP2SR3FLGE6C)
+
 A simple script for simulating raindrops falling on a glass surface.
 
 For demos and more information see the [project page](http://maroslaw.github.io/rainyday.js/).
@@ -32,7 +34,3 @@ engine.rain(
     ],                       
     100);                   // ... every 100ms
 ```
-
-### Sincere apologies
-
-To everyone reporting issues in the last couple of weeks I'd like to apologize for (usually) complete lack of response from my side. I've been a bit busy with my day job ;) I'll do my best to be more responsive in the future.
