@@ -6,18 +6,12 @@
 		<style media="screen">
 			body {
 				overflow: hidden;
-			}
-
-			#parent {
-				width: 100%;
 				height: 100%;
-				margin: 0 auto;
-				position: absolute;
-				top: 0;
-				left: 0;
+				margin: 0;
+				padding: 0;
 			}
 
-			#parent img {
+			img {
 				width: 100%;
 				height: 100%;
 			}
@@ -25,19 +19,19 @@
 		<script src="dist/rainyday.0.1.2.min.js"></script>
 		<script>
 			function run() {
-				var engine = new RainyDay({
-					element: 'background',
-					blur: 10,
-					opacity: 1,
-					fps: 30
-				});
-				engine.rain([ [0, 2, 200], [3, 3, 1] ], 100);
-			}
+				var image = document.getElementById('background');
+				image.onload = function() {
+					var engine = new RainyDay({
+						image: this
+					});
+					engine.rain([ [0, 2, 200], [3, 3, 1] ], 100);
+				};
+				image.crossOrigin = 'anonymous';
+            	image.src = 'img/LWDAa.jpg';
+            }
 		</script>
 	</head>
 	<body onload="run();">
-		<div id="parent">
-			<img id="background" alt="background" src="img/LWDAa.jpg" />
-		</div>
+		<img id="background" alt="background" src="" />
 	</body>
 </html>
