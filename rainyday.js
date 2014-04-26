@@ -45,7 +45,7 @@ function RainyDay(options, canvas) {
 
 	// prepare canvas elements
 	this.canvas = canvas || this.prepareCanvas();
-	this.prepareBackground(this.canvas.width, this.canvas.height);
+	this.prepareBackground();
 	this.prepareGlass();
 
 	// assume defaults
@@ -70,7 +70,7 @@ RainyDay.prototype.prepareCanvas = function() {
 	canvas.width = this.options.width;
 	canvas.height = this.options.height;
 	this.options.parentElement.appendChild(canvas);
-	if (this.enableSizeChange) {
+	if (this.options.enableSizeChange) {
 		this.setResizeHandler();
 	}
 	return canvas;
@@ -100,9 +100,9 @@ RainyDay.prototype.checkSize = function() {
 	var canvasOffsetTop = this.canvas.offsetTop;
 
 	if (canvasWidth !== clientWidth || canvasHeight !== clientHeight) {
-		this.canvas.width = this.canvas.width;
-		this.canvas.height = this.canvas.height;
-		this.prepareBackground(this.canvas.width, this.canvas.height);
+		this.canvas.width = clientWidth;
+		this.canvas.height = clientHeight;
+		this.prepareBackground();
 		this.glass.width = this.canvas.width;
 		this.glass.height = this.canvas.height;
 		this.prepareReflections();
