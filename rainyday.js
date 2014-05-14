@@ -243,7 +243,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 			this.putDrop(new Drop(this, Math.random() * this.canvas.width, Math.random() * this.canvas.height, preset[0], preset[1]));
 		}
 		context.save();
-		context.globalAlpha = this.opacity;
+		context.globalAlpha = this.options.opacity;
 		context.drawImage(this.glass, 0, 0, this.canvas.width, this.canvas.height);
 		context.restore();
 	}
