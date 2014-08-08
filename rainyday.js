@@ -350,7 +350,7 @@ Drop.prototype.clear = function(force) {
 		this.terminate = true;
 		return true;
 	}
-	if ((this.y - this.r > this.rainyday.h) || (this.x - this.r > this.rainyday.w) || (this.x + this.r < 0)) {
+	if ((this.y - this.r > this.rainyday.canvas.height) || (this.x - this.r > this.rainyday.canvas.width) || (this.x + this.r < 0)) {
 		// over edge so stop this drop
 		return true;
 	}
