@@ -7,7 +7,7 @@
 function RainyDay(options, canvas) {
 
 	if (this === window) { //if *this* is the window object, start over with a *new* object
-		return new RainyDay(options);
+		return new RainyDay(options, canvas);
 	}
 
 	this.img = options.image;
