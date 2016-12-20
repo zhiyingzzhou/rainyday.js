@@ -129,7 +129,14 @@ RainyDay.prototype.animateDrops = function() {
 		}
 	}
 	this.drops = newDrops;
-	window.requestAnimFrame(this.animateDrops.bind(this));
+	this.requestID = window.requestAnimFrame(this.animateDrops.bind(this));
+};
+
+RainyDay.prototype.pause = function() {
+	window.cancelAnimationFrame(this.requestID);
+};
+RainyDay.prototype.resume = function() {
+	this.requestID = window.requestAnimFrame(this.animateDrops.bind(this));
 };
 
 /**
