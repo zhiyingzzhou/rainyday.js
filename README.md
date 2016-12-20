@@ -1,5 +1,7 @@
-[![devDependency Status](https://david-dm.org/maroslaw/rainyday.js/dev-status.png)](https://david-dm.org/maroslaw/rainyday.js#info=devDependencies)
-[![Build Status](https://travis-ci.org/maroslaw/rainyday.js.png)](https://travis-ci.org/maroslaw/rainyday.js)
+[![Build Status](https://travis-ci.org/maroslaw/rainyday.js.svg?branch=master)](https://travis-ci.org/maroslaw/rainyday.js)
+[![NPM version](https://badge.fury.io/js/thepiratebay.svg)](http://badge.fury.io/js/thepiratebay)
+[![Dependency Status](https://img.shields.io/david/maroslaw/rainyday.js.svg)](https://david-dm.org/maroslaw/rainyday.js)
+[![npm](https://img.shields.io/npm/dm/thepiratebay.svg?maxAge=2592000)]()
 
 # rainyday.js
 
