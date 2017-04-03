@@ -15,7 +15,7 @@ function RainyDay(options, canvas) {
 	if (src.tagName.toLowerCase() == 'img') {
 		this.imgSource = null;
 		this.img = src;
-		this.initialize(options);
+		this.initialize(options, canvas);
 	} else {
 		var self = this;
 		var style = src.currentStyle || window.getComputedStyle(src, false),
@@ -25,7 +25,7 @@ function RainyDay(options, canvas) {
 		imgTemp.onload = function () {
 			self.imgSource = src;
 			self.img = this;
-			self.initialize(options);
+			self.initialize(options, canvas);
 		}
 		imgTemp.src = bi;
 	}
@@ -35,7 +35,7 @@ function RainyDay(options, canvas) {
  * Initialize options
  */
 
-RainyDay.prototype.initialize = function (options) {
+RainyDay.prototype.initialize = function (options, canvas) {
 	var sourceParent = this.imgSource || options.parentElement || document.getElementsByTagName('body')[0];
 	var defaults = {
 		opacity: 1,
