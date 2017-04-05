@@ -11,7 +11,8 @@ function RainyDay(options, canvas) {
 		return new RainyDay(options, canvas);
 	}
 
-	var src = document.getElementById(options.image);
+	var src = typeof options.image == "string" ? document.getElementById(options.image) : options.image;
+	
 	if (src.tagName.toLowerCase() == 'img') {
 		this.imgSource = null;
 		this.img = src;
@@ -87,7 +88,7 @@ RainyDay.prototype.initialize = function (options, canvas) {
 
 	//Start rain engine	
 	this.rain([
-		[3, 3, 0.1]
+		[3, 3, 0.5]
 	], 33);
 }
 
@@ -1084,7 +1085,7 @@ DropItem.prototype.remove = function (drop) {
 window.offset = function (element) {
 
 	// Preserve chaining for setter
-	if (typeof element == "String") {
+	if (typeof element == "string") {
 		element = document.getElementById(element);
 	}
 
