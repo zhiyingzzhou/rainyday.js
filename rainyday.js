@@ -37,6 +37,8 @@ function RainyDay(options, canvas) {
 
 RainyDay.prototype.initialize = function (options, canvas) {
 	var sourceParent = this.imgSource || options.parentElement || document.getElementsByTagName('body')[0];
+	var parentOffset = offset(sourceParent);
+
 	var defaults = {
 		opacity: 1,
 		blur: 10,
@@ -55,8 +57,8 @@ RainyDay.prototype.initialize = function (options, canvas) {
 		width: sourceParent.clientWidth,
 		height: sourceParent.clientHeight,
 		position: 'absolute',
-		top: 0,
-		left: 0
+		top: parentOffset.top + 'px',
+		left: parentOffset.left + 'px'
 	};
 
 	// add the defaults to options
@@ -102,8 +104,22 @@ RainyDay.prototype.prepareCanvas = function () {
 	canvas.height = this.options.height;
 	if (this.img.style.zIndex) {
 		canvas.style.zIndex = this.img.style.zIndex;
+		this.img.style.zIndex += 1;
+	}else{
+		canvas.style.zIndex = 99;
 	}
-	this.options.parentElement.appendChild(canvas);
+	//this.options.parentElement.appendChild(canvas);
+	this.options.parentElement.parentNode.insertBefore(canvas, this.imgSource);
+
+	//Set z-index to show canvas on top of img/element
+	this.imgSource.style.zIndex = 100;
+	this.imgSource.style.position = this.options.position;
+	this.imgSource.style.top = this.options.top;
+	this.imgSource.style.left = this.options.left;
+	this.imgSource.style.width = this.options.width;
+	this.imgSource.style.height = this.options.height;
+	this.imgSource.style.background = 'none';
+
 	if (this.options.enableSizeChange) {
 		this.setResizeHandler();
 	}
@@ -1061,3 +1077,43 @@ DropItem.prototype.remove = function (drop) {
 		}
 	}
 };
+
+/**
+ * Jquery offset method
+ */
+window.offset = function (element) {
+
+	// Preserve chaining for setter
+	if (typeof element == "String") {
+		element = document.getElementById(element);
+	}
+
+	var doc, docElem, rect, win,
+		elem = element;
+
+	if (!elem) {
+		return;
+	}
+
+	// Return zeros for disconnected and hidden (display: none) elements (gh-2310)
+	// Support: IE <=11 only
+	// Running getBoundingClientRect on a
+	// disconnected node in IE throws an error
+	if (!elem.getClientRects().length) {
+		return {
+			top: 0,
+			left: 0
+		};
+	}
+
+	rect = elem.getBoundingClientRect();
+
+	doc = elem.ownerDocument;
+	docElem = doc.documentElement;
+	win = doc.defaultView;
+
+	return {
+		top: rect.top + win.pageYOffset - docElem.clientTop,
+		left: rect.left + win.pageXOffset - docElem.clientLeft
+	};
+}
