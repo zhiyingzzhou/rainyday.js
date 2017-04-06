@@ -27,10 +27,4 @@ var engine = new RainyDay({
     opacity: 1              // Opacity of rain drops
                             // Assuming 1 if not provided
 });
-engine.rain(
-    [
-        [1, 0, 20],         // add 20 drops of size 1...
-        [3, 3, 1]           // ... and 1 drop of size from 3 - 6 ...
-    ],                       
-    100);                   // ... every 100ms
 ```
