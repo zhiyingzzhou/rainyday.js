@@ -4,19 +4,18 @@
  * @param canvas to be used (if not defined a new one will be created)
  */
 
-function RainyDay(options, canvas) {
-
+function RainyDay(options, ) {
 	if (this === window) {
 		//if *this* is the window object, start over with a *new* object
-		return new RainyDay(options, canvas);
+		return new RainyDay(options);
 	}
 
 	var src = typeof options.image == "string" ? document.getElementById(options.image) : options.image;
-	
+
 	if (src.tagName.toLowerCase() == 'img') {
 		this.imgSource = null;
 		this.img = src;
-		this.initialize(options, canvas);
+		this.initialize(options);
 	} else {
 		var self = this;
 		var style = src.currentStyle || window.getComputedStyle(src, false),
@@ -26,7 +25,7 @@ function RainyDay(options, canvas) {
 		imgTemp.onload = function () {
 			self.imgSource = src;
 			self.img = this;
-			self.initialize(options, canvas);
+			self.initialize(options);
 		}
 		imgTemp.src = bi;
 	}
@@ -36,9 +35,9 @@ function RainyDay(options, canvas) {
  * Initialize options
  */
 
-RainyDay.prototype.initialize = function (options, canvas) {
+RainyDay.prototype.initialize = function (options) {
 	var sourceParent = this.imgSource || options.parentElement || document.getElementsByTagName('body')[0];
-	var parentOffset = offset(sourceParent);
+	var parentOffset = getOffset(sourceParent);
 
 	var defaults = {
 		opacity: 1,
@@ -73,13 +72,13 @@ RainyDay.prototype.initialize = function (options, canvas) {
 	this.drops = [];
 
 	// prepare canvas elements
-	this.canvas = canvas || this.prepareCanvas();
+	this.canvas = this.options.canvas || this.prepareCanvas();
 	this.prepareBackground();
 	this.prepareGlass();
 
 	// assume defaults
 	this.reflection = this.REFLECTION_MINIATURE;
-	this.trail = this.TRAIL_SMUDGE;
+	this.trail = this.TRAIL_DROPS;
 	this.gravity = this.GRAVITY_NON_LINEAR;
 	this.collision = this.COLLISION_SIMPLE;
 
@@ -106,7 +105,7 @@ RainyDay.prototype.prepareCanvas = function () {
 	if (this.img.style.zIndex) {
 		canvas.style.zIndex = this.img.style.zIndex;
 		this.img.style.zIndex += 1;
-	}else{
+	} else {
 		canvas.style.zIndex = 99;
 	}
 	//this.options.parentElement.appendChild(canvas);
@@ -128,38 +127,38 @@ RainyDay.prototype.prepareCanvas = function () {
 };
 
 RainyDay.prototype.setResizeHandler = function () {
-	// use setInterval if oneresize event already use by other.
-	if (window.onresize !== null) {
-		window.setInterval(this.checkSize.bind(this), 100);
-	} else {
-		window.onresize = this.checkSize.bind(this);
-		window.onorientationchange = this.checkSize.bind(this);
-	}
+	window.onresize = this.checkSize.bind(this);
+	window.onorientationchange = this.checkSize.bind(this);
 };
 
 /**
  * Periodically check the size of the underlying element
  */
 RainyDay.prototype.checkSize = function () {
-	var clientWidth = this.img.clientWidth;
-	var clientHeight = this.img.clientHeight;
-	var clientOffsetLeft = this.img.offsetLeft;
-	var clientOffsetTop = this.img.offsetTop;
+	var source = this.options.parentElement.getBoundingClientRect();
+	var sourceWidth = source.width;
+	var sourceHeight = source.bottom - source.top;
+
+	var clientWidth = sourceWidth;
+	var clientHeight = sourceHeight;
+	var clientOffsetLeft = source.left;
+	var clientOffsetTop = source.top;
+
 	var canvasWidth = this.canvas.width;
 	var canvasHeight = this.canvas.height;
 	var canvasOffsetLeft = this.canvas.offsetLeft;
 	var canvasOffsetTop = this.canvas.offsetTop;
 
-	if (this.img.style.zIndex) {
-		this.canvas.style.zIndex = this.img.style.zIndex;
+	if (this.options.parentElement.style.zIndex) {
+		this.canvas.style.zIndex = this.options.parentElement.style.zIndex;
 	}
 
 	if (canvasWidth !== clientWidth || canvasHeight !== clientHeight) {
 		this.canvas.width = clientWidth;
 		this.canvas.height = clientHeight;
-		this.prepareBackground();
 		this.glass.width = this.canvas.width;
 		this.glass.height = this.canvas.height;
+		this.prepareBackground();
 		this.prepareReflections();
 	}
 	if (canvasOffsetLeft !== clientOffsetLeft || canvasOffsetTop !== clientOffsetTop) {
@@ -662,12 +661,12 @@ RainyDay.prototype.prepareBackground = function () {
 	this.clearbackground.height = this.canvas.height;
 
 	var context = this.background.getContext('2d');
-	context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	//context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 	context.drawImage(this.img, this.options.crop[0], this.options.crop[1], this.options.crop[2], this.options.crop[3], 0, 0, this.canvas.width, this.canvas.height);
 
 	context = this.clearbackground.getContext('2d');
-	context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	//context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	context.drawImage(this.img, this.options.crop[0], this.options.crop[1], this.options.crop[2], this.options.crop[3], 0, 0, this.canvas.width, this.canvas.height);
 
 	if (!isNaN(this.options.blur) && this.options.blur >= 1) {
@@ -1080,9 +1079,9 @@ DropItem.prototype.remove = function (drop) {
 };
 
 /**
- * Jquery offset method
+ * Jquery getOffset method
  */
-window.offset = function (element) {
+window.getOffset = function (element) {
 
 	// Preserve chaining for setter
 	if (typeof element == "string") {
