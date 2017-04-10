@@ -109,16 +109,20 @@ RainyDay.prototype.prepareCanvas = function () {
 		canvas.style.zIndex = 99;
 	}
 	//this.options.parentElement.appendChild(canvas);
-	this.options.parentElement.parentNode.insertBefore(canvas, this.imgSource);
+	if (this.imgSource) {
+		this.options.parentElement.parentNode.insertBefore(canvas, this.imgSource);
 
-	//Set z-index to show canvas on top of img/element
-	this.imgSource.style.zIndex = 100;
-	this.imgSource.style.position = this.options.position;
-	this.imgSource.style.top = this.options.top;
-	this.imgSource.style.left = this.options.left;
-	this.imgSource.style.width = this.options.width;
-	this.imgSource.style.height = this.options.height;
-	this.imgSource.style.background = 'none';
+		//Set z-index to show canvas on top of img/element
+		this.imgSource.style.zIndex = 100;
+		this.imgSource.style.position = this.options.position;
+		this.imgSource.style.top = this.options.top;
+		this.imgSource.style.left = this.options.left;
+		this.imgSource.style.width = this.options.width;
+		this.imgSource.style.height = this.options.height;
+		this.imgSource.style.background = 'none';
+	} else {
+		this.options.parentElement.appendChild(canvas);
+	}
 
 	if (this.options.enableSizeChange) {
 		this.setResizeHandler();
@@ -213,8 +217,8 @@ RainyDay.prototype.setRequestAnimFrame = function () {
  */
 RainyDay.prototype.prepareReflections = function () {
 	this.reflected = document.createElement('canvas');
-	this.reflected.width = this.canvas.width / this.options.reflectionScaledownFactor;
-	this.reflected.height = this.canvas.height / this.options.reflectionScaledownFactor;
+	this.reflected.width = Math.floor(this.canvas.width / this.options.reflectionScaledownFactor);
+	this.reflected.height = Math.floor(this.canvas.height / this.options.reflectionScaledownFactor);
 	var ctx = this.reflected.getContext('2d');
 	ctx.drawImage(this.img, this.options.crop[0], this.options.crop[1], this.options.crop[2], this.options.crop[3], 0, 0, this.reflected.width, this.reflected.height);
 };
@@ -354,7 +358,7 @@ RainyDay.prototype.clearDrop = function (drop, force) {
 function Drop(rainyday, centerX, centerY, min, base) {
 	this.x = Math.floor(centerX);
 	this.y = Math.floor(centerY);
-	this.r = (Math.random() * base) + min;
+	this.r = Math.ceil((Math.random() * base) + min);
 	this.rainyday = rainyday;
 	this.context = rainyday.context;
 	this.reflection = rainyday.reflected;
@@ -368,7 +372,7 @@ Drop.prototype.draw = function () {
 	this.context.beginPath();
 
 	var orgR = this.r;
-	this.r = 0.95 * this.r;
+	this.r = Math.floor(0.95 * this.r);
 	if (this.r < 3) {
 		this.context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
 		this.context.closePath();
@@ -452,7 +456,7 @@ RainyDay.prototype.TRAIL_NONE = function () {
 RainyDay.prototype.TRAIL_DROPS = function (drop) {
 	if (!drop.trailY || drop.y - drop.trailY >= Math.random() * 100 * drop.r) {
 		drop.trailY = drop.y;
-		this.putDrop(new Drop(this, drop.x + (Math.random() * 2 - 1) * Math.random(), drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
+		this.putDrop(new Drop(this, Math.floor(drop.x + (Math.random() * 2 - 1) * Math.random()), drop.y - drop.r - 5, Math.ceil(drop.r / 5), 0));
 	}
 };
 
@@ -462,7 +466,7 @@ RainyDay.prototype.TRAIL_DROPS = function (drop) {
  */
 RainyDay.prototype.TRAIL_SMUDGE = function (drop) {
 	var y = drop.y - drop.r - 3;
-	var x = drop.x - drop.r / 2 + (Math.random() * 2);
+	var x = drop.x - Math.floor(drop.r / 2) + (Math.random() * 2);
 	if (y < 0 || x < 0) {
 		return;
 	}
@@ -489,13 +493,13 @@ RainyDay.prototype.GRAVITY_LINEAR = function (drop) {
 
 	if (drop.yspeed) {
 		drop.yspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r);
-		drop.xspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r);
+		drop.xspeed += Math.floor(this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r));
 	} else {
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
-		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
+		drop.xspeed = Math.floor(this.PRIVATE_GRAVITY_FORCE_FACTOR_X);
 	}
 
-	drop.y += drop.yspeed;
+	drop.y += Math.floor(drop.yspeed);
 	drop.draw();
 	return false;
 };
@@ -547,8 +551,8 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function (drop) {
 		drop.xspeed += ((Math.random() * 2 - 1) * drop.yspeed * this.options.gravityAngleVariance);
 	}
 
-	drop.y += drop.yspeed;
-	drop.x += drop.xspeed;
+	drop.y += Math.floor(drop.yspeed);
+	drop.x += Math.floor(drop.xspeed);
 
 	drop.draw();
 	return false;
@@ -596,7 +600,7 @@ RainyDay.prototype.REFLECTION_MINIATURE = function (drop) {
 	var sh = this.positiveMin(this.options.reflectionDropMappingHeight * 2 / this.options.reflectionScaledownFactor, this.reflected.height - sy);
 	var dx = Math.max(drop.x - 1.1 * drop.r, 0);
 	var dy = Math.max(drop.y - 1.1 * drop.r, 0);
-	this.context.drawImage(this.reflected, sx, sy, sw, sh, dx, dy, drop.r * 2, drop.r * 2);
+	this.context.drawImage(this.reflected, Math.floor(sx), Math.floor(sy), Math.floor(sw), Math.floor(sh), Math.floor(dx), Math.floor(dy), drop.r * 2, drop.r * 2);
 };
 
 /**
