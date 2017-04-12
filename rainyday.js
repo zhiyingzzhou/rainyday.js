@@ -4,7 +4,7 @@
  * @param canvas to be used (if not defined a new one will be created)
  */
 
-function RainyDay(options, ) {
+function RainyDay(options) {
 	if (this === window) {
 		//if *this* is the window object, start over with a *new* object
 		return new RainyDay(options);
