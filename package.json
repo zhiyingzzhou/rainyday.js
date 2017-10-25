@@ -1,10 +1,8 @@
 {
   "name": "rainyday.js",
   "description": "Simulating raindrops falling on a window",
-  "version": "0.1.2",
-  "keywords": [
-    "raindrops"
-  ],
+  "version": "0.1.5",
+  "keywords": ["raindrops"],
   "author": {
     "name": "Marek Brodziak",
     "email": "marek.brodziak@gmail.com"
@@ -19,7 +17,8 @@
     "url": "https://github.com/maroslaw/rainyday.js/issues"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "build": "grunt"
   },
   "dependencies": {},
   "devDependencies": {
