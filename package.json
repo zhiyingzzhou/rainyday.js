@@ -2,7 +2,9 @@
   "name": "rainyday.js",
   "description": "Simulating raindrops falling on a window",
   "version": "0.1.5",
-  "keywords": ["raindrops"],
+  "keywords": [
+    "raindrops"
+  ],
   "author": {
     "name": "Marek Brodziak",
     "email": "marek.brodziak@gmail.com"
