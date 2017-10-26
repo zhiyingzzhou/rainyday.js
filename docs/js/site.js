@@ -1,0 +1,3 @@
+new RainyDay({
+  image: 'rainyDayHeader'
+})

@@ -19,7 +19,7 @@
     "url": "https://github.com/maroslaw/rainyday.js/issues"
   },
   "scripts": {
-    "test": "grunt",
+    "test": "grunt test",
     "build": "grunt"
   },
   "dependencies": {},

@@ -14,7 +14,7 @@ module.exports = function(grunt) {
       ' */\n',
 
     jshint: {
-      files: ['*.js'],
+      files: ['src/*.js'],
       options: {
         asi: true,
         browser: true,
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
         eqnull: true,
         forin: true,
         immed: true,
-        indent: 4,
+        indent: 2,
         lastsemic: true,
         laxbreak: true,
         laxcomma: true,
