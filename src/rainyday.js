@@ -35,7 +35,6 @@ function RainyDay(options) {
  */
 RainyDay.prototype.destroy = function() {
   // TODO implement destroy
-  // Pause rainyDay
   this.pause()
   //console.log(this.canvas)
   //console.log(this)
@@ -130,10 +129,11 @@ RainyDay.prototype.prepareCanvas = function() {
     this.imgSource.style.width = this.options.width
     this.imgSource.style.height = this.options.height
     this.imgSource.style.background = 'none'
-    this.imgSource.style.width = '100%'
+    this.imgSource.style.width = this.options.width + 'px'
   } else {
     this.options.parentElement.appendChild(canvas)
   }
+  //this.options.parentElement.parentNode.style.position = 'relative'
   this.options.parentElement.parentNode.style.height = this.options.height + 'px'
 
   if (this.options.enableSizeChange) {
