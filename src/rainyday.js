@@ -101,7 +101,7 @@ RainyDay.prototype.initialize = function(options) {
   this.setRequestAnimFrame()
 
   //Start rain engine
-  this.rain([[3, 3, 0.5]], 33)
+  this.rain([[3, 5, 0.5]], 50)
 }
 
 /**
@@ -133,9 +133,11 @@ RainyDay.prototype.prepareCanvas = function() {
     this.imgSource.style.width = this.options.width
     this.imgSource.style.height = this.options.height
     this.imgSource.style.background = 'none'
+    this.imgSource.style.width = '100%'
   } else {
     this.options.parentElement.appendChild(canvas)
   }
+  this.options.parentElement.parentNode.style.height = this.options.height + 'px'
 
   if (this.options.enableSizeChange) {
     this.setResizeHandler()
