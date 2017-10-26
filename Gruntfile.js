@@ -54,7 +54,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/rainyday.min.js': ['rainyday.js']
+          'dist/rainyday.min.js': ['src/rainyday.js'],
+          'docs/js/rainyday.min.js': ['src/rainyday.js']
         }
       }
     }

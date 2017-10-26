@@ -37,11 +37,8 @@ RainyDay.prototype.destroy = function() {
   // TODO implement destroy
   // Pause rainyDay
   this.pause()
-  if (this.styleBackup) {
-    console.log(this.styleBackup)
-  }
-  console.log(this.canvas)
-  console.log(this)
+  //console.log(this.canvas)
+  //console.log(this)
   // Remove canvas
   // Delete all props of this
 }
