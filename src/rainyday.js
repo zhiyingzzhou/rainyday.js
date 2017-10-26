@@ -27,6 +27,8 @@ function RainyDay(options) {
       self.initialize(options)
     }
     imgTemp.src = bi
+    // backup bck url
+    self.bckStyle = style
   }
 }
 
@@ -34,12 +36,16 @@ function RainyDay(options) {
  * Destroy RainyDay.js
  */
 RainyDay.prototype.destroy = function() {
-  // TODO implement destroy
   this.pause()
-  //console.log(this.canvas)
-  //console.log(this)
-  // Remove canvas
-  // Delete all props of this
+  this.canvas.parentNode.removeChild(this.canvas)
+
+  if (this.bckStyle) {
+    this.imgSource.style.background = this.bckStyle.background
+  }
+  //TODO restore bck style
+  Object.keys(this).forEach(item => {
+    delete this[item]
+  })
 }
 
 /**
