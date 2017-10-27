@@ -1455,6 +1455,5 @@ function downscaleImage(img, width) {
   cv.width = width || 50
   cv.height = cv.width * img.height / img.width
   ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, cv.width, cv.height)
-  document.body.appendChild(cv)
   return cv
 }
