@@ -43,7 +43,7 @@ RainyDay.prototype.destroy = function() {
     this.imgSource.style.background = this.bckStyle.background
   }
 
-  Object.keys(this).forEach(item => {
+  Object.keys(this).forEach(function(item) {
     delete this[item]
   })
 }
