@@ -57,6 +57,9 @@ RainyDay.prototype.initialize = function(options) {
   var parentOffset = window.getOffset(sourceParent)
 
   this.imgDownscaled = this.customDrop || downscaleImage(this.img, 50)
+  if (options.sound) {
+    playSound(options.sound)
+  }
 
   var defaults = {
     opacity: 1,
@@ -1456,4 +1459,15 @@ function downscaleImage(img, width) {
   cv.height = cv.width * img.height / img.width
   ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, cv.width, cv.height)
   return cv
+}
+
+/**
+ * Play sound loop
+ */
+
+function playSound(url) {
+  var audio = new Audio(url)
+  audio.loop = true
+  audio.volume = 0.25
+  audio.play()
 }

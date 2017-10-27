@@ -2,7 +2,7 @@
 
 A simple script for simulating raindrops falling on a glass surface.
 
-For demos, options & methods available please visit [project page](http://mubaidr.github.io/rainyday.js/).
+[Project Page](http://mubaidr.github.io/rainyday.js/)
 
 ## How to use
 
@@ -13,3 +13,11 @@ new RainyDay({
     image: img, // [Required][Image Id or Image element itself, Id of Element having background Image or Element itself]
 });
 ```
+
+## Documentation
+
+- [Demos](http://mubaidr.github.io/rainyday.js#demos)
+
+- [Options](http://mubaidr.github.io/rainyday.js#options)
+
+- [Methods](http://mubaidr.github.io/rainyday.js#methods)

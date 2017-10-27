@@ -1,3 +1,4 @@
 new RainyDay({
-  image: 'rainyDayHeader'
+  image: 'rainyDayHeader',
+  sound: 'sound/rain.mp3'
 })
