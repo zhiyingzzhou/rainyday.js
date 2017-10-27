@@ -42,7 +42,7 @@ RainyDay.prototype.destroy = function() {
   if (this.bckStyle) {
     this.imgSource.style.background = this.bckStyle.background
   }
-  //TODO restore bck style
+
   Object.keys(this).forEach(item => {
     delete this[item]
   })
@@ -55,6 +55,8 @@ RainyDay.prototype.destroy = function() {
 RainyDay.prototype.initialize = function(options) {
   var sourceParent = this.imgSource || options.parentElement || document.getElementsByTagName('body')[0]
   var parentOffset = window.getOffset(sourceParent)
+
+  this.imgDownscaled = this.customDrop || downscaleImage(this.img, 50)
 
   var defaults = {
     opacity: 1,
@@ -242,11 +244,11 @@ RainyDay.prototype.prepareReflections = function() {
   this.reflected.height = Math.floor(this.canvas.height / this.options.reflectionScaledownFactor)
   var ctx = this.reflected.getContext('2d')
   ctx.drawImage(
-    this.img,
-    this.options.crop[0],
-    this.options.crop[1],
-    this.options.crop[2],
-    this.options.crop[3],
+    this.imgDownscaled,
+    0,
+    0,
+    this.imgDownscaled.width,
+    this.imgDownscaled.height,
     0,
     0,
     this.reflected.width,
@@ -486,6 +488,7 @@ Drop.prototype.animate = function() {
   if (this.terminate) {
     return false
   }
+
   var stopped = this.rainyday.gravity(this)
   if (!stopped && this.rainyday.trail) {
     this.rainyday.trail(this)
@@ -1441,4 +1444,17 @@ window.getOffset = function(element) {
     top: rect.top + win.pageYOffset - docElem.clientTop,
     left: rect.left + win.pageXOffset - docElem.clientLeft
   }
+}
+
+/**
+ * Image downscale
+ */
+function downscaleImage(img, width) {
+  var cv = document.createElement('canvas')
+  var ctx = cv.getContext('2d')
+  cv.width = width || 50
+  cv.height = cv.width * img.height / img.width
+  ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, cv.width, cv.height)
+  document.body.appendChild(cv)
+  return cv
 }
