@@ -9,7 +9,10 @@ function RainyDay(options) {
     return new RainyDay(options)
   }
 
-  var src = typeof options.image === 'string' ? document.getElementById(options.image) : options.image
+  var src =
+    typeof options.image === 'string'
+      ? document.getElementById(options.image)
+      : options.image
 
   if (src.tagName.toLowerCase() === 'img') {
     this.imgSource = null
@@ -53,7 +56,10 @@ RainyDay.prototype.destroy = function() {
  */
 
 RainyDay.prototype.initialize = function(options) {
-  var sourceParent = this.imgSource || options.parentElement || document.getElementsByTagName('body')[0]
+  var sourceParent =
+    this.imgSource ||
+    options.parentElement ||
+    document.getElementsByTagName('body')[0]
   var parentOffset = window.getOffset(sourceParent)
 
   this.imgDownscaled = this.customDrop || downscaleImage(this.img, 50)
@@ -145,7 +151,8 @@ RainyDay.prototype.prepareCanvas = function() {
     this.options.parentElement.appendChild(canvas)
   }
   //this.options.parentElement.parentNode.style.position = 'relative'
-  this.options.parentElement.parentNode.style.height = this.options.height + 'px'
+  this.options.parentElement.parentNode.style.height =
+    this.options.height + 'px'
 
   if (this.options.enableSizeChange) {
     this.setResizeHandler()
@@ -188,9 +195,12 @@ RainyDay.prototype.checkSize = function() {
     this.prepareBackground()
     this.prepareReflections()
   }
-  if (canvasOffsetLeft !== clientOffsetLeft || canvasOffsetTop !== clientOffsetTop) {
-    this.canvas.offsetLeft = clientOffsetLeft
-    this.canvas.offsetTop = clientOffsetTop
+  if (
+    canvasOffsetLeft !== clientOffsetLeft ||
+    canvasOffsetTop !== clientOffsetTop
+  ) {
+    this.canvas.style.left = clientOffsetLeft
+    this.canvas.style.top = clientOffsetTop
   }
 }
 
@@ -243,8 +253,12 @@ RainyDay.prototype.setRequestAnimFrame = function() {
  */
 RainyDay.prototype.prepareReflections = function() {
   this.reflected = document.createElement('canvas')
-  this.reflected.width = Math.floor(this.canvas.width / this.options.reflectionScaledownFactor)
-  this.reflected.height = Math.floor(this.canvas.height / this.options.reflectionScaledownFactor)
+  this.reflected.width = Math.floor(
+    this.canvas.width / this.options.reflectionScaledownFactor
+  )
+  this.reflected.height = Math.floor(
+    this.canvas.height / this.options.reflectionScaledownFactor
+  )
   var ctx = this.reflected.getContext('2d')
   ctx.drawImage(
     this.imgDownscaled,
@@ -286,7 +300,8 @@ RainyDay.prototype.rain = function(presets, speed) {
   this.presets = presets
 
   this.PRIVATE_GRAVITY_FORCE_FACTOR_Y = this.options.fps * 0.001 / 25
-  this.PRIVATE_GRAVITY_FORCE_FACTOR_X = (Math.PI / 2 - this.options.gravityAngle) * (this.options.fps * 0.001) / 50
+  this.PRIVATE_GRAVITY_FORCE_FACTOR_X =
+    (Math.PI / 2 - this.options.gravityAngle) * (this.options.fps * 0.001) / 50
 
   // prepare gravity matrix
   if (this.options.enableCollisions) {
@@ -323,7 +338,13 @@ RainyDay.prototype.rain = function(presets, speed) {
     lastExecutionTime = timestamp
     var context = this.canvas.getContext('2d')
     context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height)
+    context.drawImage(
+      this.background,
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    )
     // select matching preset
     var preset
     for (var i = 0; i < presets.length; i++) {
@@ -349,7 +370,13 @@ RainyDay.prototype.rain = function(presets, speed) {
     }
     if (preset) {
       this.putDrop(
-        new Drop(this, Math.random() * this.canvas.width, Math.random() * this.canvas.height, preset[0], preset[1])
+        new Drop(
+          this,
+          Math.random() * this.canvas.width,
+          Math.random() * this.canvas.height,
+          preset[0],
+          preset[1]
+        )
       )
     }
     context.save()
@@ -468,7 +495,12 @@ Drop.prototype.draw = function() {
  * @returns Boolean true if the animation is stopped
  */
 Drop.prototype.clear = function(force) {
-  this.context.clearRect(this.x - this.r - 1, this.y - this.r - 2, 2 * this.r + 2, 2 * this.r + 2)
+  this.context.clearRect(
+    this.x - this.r - 1,
+    this.y - this.r - 2,
+    2 * this.r + 2,
+    2 * this.r + 2
+  )
   if (force) {
     this.terminate = true
     return true
@@ -564,7 +596,9 @@ RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
 
   if (drop.yspeed) {
     drop.yspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r)
-    drop.xspeed += Math.floor(this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r))
+    drop.xspeed += Math.floor(
+      this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r)
+    )
   } else {
     drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y
     drop.xspeed = Math.floor(this.PRIVATE_GRAVITY_FORCE_FACTOR_X)
@@ -609,8 +643,10 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
       drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y
       drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X
     } else {
-      drop.yspeed += 1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r)
-      drop.xspeed += 1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r)
+      drop.yspeed +=
+        1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r)
+      drop.xspeed +=
+        1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r)
     }
   } else {
     drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y
@@ -618,7 +654,8 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
   }
 
   if (this.options.gravityAngleVariance !== 0) {
-    drop.xspeed += (Math.random() * 2 - 1) * drop.yspeed * this.options.gravityAngleVariance
+    drop.xspeed +=
+      (Math.random() * 2 - 1) * drop.yspeed * this.options.gravityAngleVariance
   }
 
   drop.y += Math.floor(drop.yspeed)
@@ -664,14 +701,26 @@ RainyDay.prototype.REFLECTION_NONE = function() {
  * @param drop raindrop object
  */
 RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
-  var sx = Math.max((drop.x - this.options.reflectionDropMappingWidth) / this.options.reflectionScaledownFactor, 0)
-  var sy = Math.max((drop.y - this.options.reflectionDropMappingHeight) / this.options.reflectionScaledownFactor, 0)
+  var sx = Math.max(
+    (drop.x - this.options.reflectionDropMappingWidth) /
+      this.options.reflectionScaledownFactor,
+    0
+  )
+  var sy = Math.max(
+    (drop.y - this.options.reflectionDropMappingHeight) /
+      this.options.reflectionScaledownFactor,
+    0
+  )
   var sw = this.positiveMin(
-    this.options.reflectionDropMappingWidth * 2 / this.options.reflectionScaledownFactor,
+    this.options.reflectionDropMappingWidth *
+      2 /
+      this.options.reflectionScaledownFactor,
     this.reflected.width - sx
   )
   var sh = this.positiveMin(
-    this.options.reflectionDropMappingHeight * 2 / this.options.reflectionScaledownFactor,
+    this.options.reflectionDropMappingHeight *
+      2 /
+      this.options.reflectionScaledownFactor,
     this.reflected.height - sy
   )
   var dx = Math.max(drop.x - 1.1 * drop.r, 0)
@@ -704,7 +753,10 @@ RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
     var dy = drop.y - p.y
     if (Math.abs(dx) < radiusSum) {
       if (Math.abs(dy) < radiusSum) {
-        if (Math.sqrt(Math.pow(drop.x - p.x, 2) + Math.pow(drop.y - p.y, 2)) < drop.r + p.r) {
+        if (
+          Math.sqrt(Math.pow(drop.x - p.x, 2) + Math.pow(drop.y - p.y, 2)) <
+          drop.r + p.r
+        ) {
           drop2 = p
           break
         }
@@ -779,7 +831,11 @@ RainyDay.prototype.prepareBackground = function() {
   )
 
   if (!isNaN(this.options.blur) && this.options.blur >= 1) {
-    this.stackBlurCanvasRGB(this.canvas.width, this.canvas.height, this.options.blur)
+    this.stackBlurCanvasRGB(
+      this.canvas.width,
+      this.canvas.height,
+      this.options.blur
+    )
   }
 }
 
@@ -1071,7 +1127,26 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
   var context = this.background.getContext('2d')
   var imageData = context.getImageData(0, 0, width, height)
   var pixels = imageData.data
-  var x, y, i, p, yp, yi, yw, rSum, gSum, bSum, rOutSum, gOutSum, bOutSum, rInSum, gInSum, bInSum, pr, pg, pb, rbs
+  var x,
+    y,
+    i,
+    p,
+    yp,
+    yi,
+    yw,
+    rSum,
+    gSum,
+    bSum,
+    rOutSum,
+    gOutSum,
+    bOutSum,
+    rInSum,
+    gInSum,
+    bInSum,
+    pr,
+    pg,
+    pb,
+    rbs
   var radiusPlus1 = radius + 1
   var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2
 
@@ -1232,7 +1307,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(width, height, radius) {
       gOutSum -= stackIn.g
       bOutSum -= stackIn.b
 
-      p = (x + ((p = y + radiusPlus1) < height - 1 ? p : height - 1) * width) << 2
+      p =
+        (x + ((p = y + radiusPlus1) < height - 1 ? p : height - 1) * width) << 2
 
       rSum += rInSum += stackIn.r = pixels[p]
       gSum += gInSum += stackIn.g = pixels[p + 1]
